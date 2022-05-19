@@ -1,0 +1,13 @@
+#/bin/bash
+
+(cd ../bin; ./simulator)&
+
+sleep 1
+
+(cd ../bin; ./Viewer)
+
+killall simulator
+
+sleep 1
+
+

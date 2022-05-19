@@ -1,0 +1,15 @@
+#!/bin/bash
+
+ARGS="--param ../Labs/CiberAVLabs/cen-2-cfg.xml"
+ARGS+=" --lab ../Labs/CiberAVLabs/cen-2-lab.xml"
+ARGS+=" --grid ../Labs/CiberAVLabs/cen-2-grd.xml"
+ARGS+=" --beacon"
+(cd ../bin; ./simulator $ARGS) &
+
+sleep 1
+
+(cd ../bin; ./Viewer --autoconnect)
+
+killall simulator
+
+sleep 1

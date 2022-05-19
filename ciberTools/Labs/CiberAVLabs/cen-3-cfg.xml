@@ -1,0 +1,8 @@
+<Parameters SimTime="1000" CycleTime="50"
+		CompassNoise="0" BeaconNoise="2" ObstacleNoise="0.02"
+		MotorsNoise="2" RunningTimeout="1000"
+        GPS="On" GPSLinNoise="0.0" GPSDirNoise="0.0"
+        ShowActions="False" NBeacons="2" 
+        Lab="../Labs/CiberAVLabs/cen-3-lab.xml"
+		Grid="../Labs/CiberAVLabs/cen-3-grd.xml"
+/>
