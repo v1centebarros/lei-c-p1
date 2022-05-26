@@ -1,1 +1,4 @@
 NUM a = 20; NUM b = 19.5; BOOL conditionA = True; BOOL conditionB = true; TEXT txt = "ola mundo"; ENUM enumA = "banana" | "laranja" | "papaia"; ENUM enumB = "banana", 1 | "laranja", 2 | "papaia", 3; ROBOT rb = ("ola", 20);
+
+/*NUM a = 20; NUM b = 19.5; BOOL conditionA = True; BOOL conditionB = true; TEXT txt = "ola mundo"; ENUM enumA = "banana" | "laranja" | "papaia"; ENUM enumB = "banana", 1 | "laranja", 2 | "papaia", 3; ROBOT rb = ("ola", 20);*/
+NUM x = 20;
