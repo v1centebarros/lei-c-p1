@@ -22,45 +22,27 @@ public interface MusVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStat(MusParser.StatContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code AssignNum}
-	 * labeled alternative in {@link MusParser#assignment}.
+	 * Visit a parse tree produced by {@link MusParser#assignment}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAssignNum(MusParser.AssignNumContext ctx);
+	T visitAssignment(MusParser.AssignmentContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code AssignBool}
-	 * labeled alternative in {@link MusParser#assignment}.
+	 * Visit a parse tree produced by {@link MusParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAssignBool(MusParser.AssignBoolContext ctx);
+	T visitExpr(MusParser.ExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code AssignText}
-	 * labeled alternative in {@link MusParser#assignment}.
+	 * Visit a parse tree produced by {@link MusParser#call}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAssignText(MusParser.AssignTextContext ctx);
+	T visitCall(MusParser.CallContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code AssignEnum}
-	 * labeled alternative in {@link MusParser#assignment}.
+	 * Visit a parse tree produced by {@link MusParser#type}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAssignEnum(MusParser.AssignEnumContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code AssignEnumWithValues}
-	 * labeled alternative in {@link MusParser#assignment}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAssignEnumWithValues(MusParser.AssignEnumWithValuesContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code AssignRobot}
-	 * labeled alternative in {@link MusParser#assignment}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAssignRobot(MusParser.AssignRobotContext ctx);
+	T visitType(MusParser.TypeContext ctx);
 }

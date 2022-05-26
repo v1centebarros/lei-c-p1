@@ -39,73 +39,49 @@ public class MusBaseListener implements MusListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAssignNum(MusParser.AssignNumContext ctx) { }
+	@Override public void enterAssignment(MusParser.AssignmentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAssignNum(MusParser.AssignNumContext ctx) { }
+	@Override public void exitAssignment(MusParser.AssignmentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAssignBool(MusParser.AssignBoolContext ctx) { }
+	@Override public void enterExpr(MusParser.ExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAssignBool(MusParser.AssignBoolContext ctx) { }
+	@Override public void exitExpr(MusParser.ExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAssignText(MusParser.AssignTextContext ctx) { }
+	@Override public void enterCall(MusParser.CallContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAssignText(MusParser.AssignTextContext ctx) { }
+	@Override public void exitCall(MusParser.CallContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAssignEnum(MusParser.AssignEnumContext ctx) { }
+	@Override public void enterType(MusParser.TypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAssignEnum(MusParser.AssignEnumContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAssignEnumWithValues(MusParser.AssignEnumWithValuesContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAssignEnumWithValues(MusParser.AssignEnumWithValuesContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAssignRobot(MusParser.AssignRobotContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAssignRobot(MusParser.AssignRobotContext ctx) { }
+	@Override public void exitType(MusParser.TypeContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

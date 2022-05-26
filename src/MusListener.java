@@ -27,75 +27,43 @@ public interface MusListener extends ParseTreeListener {
 	 */
 	void exitStat(MusParser.StatContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code AssignNum}
-	 * labeled alternative in {@link MusParser#assignment}.
+	 * Enter a parse tree produced by {@link MusParser#assignment}.
 	 * @param ctx the parse tree
 	 */
-	void enterAssignNum(MusParser.AssignNumContext ctx);
+	void enterAssignment(MusParser.AssignmentContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code AssignNum}
-	 * labeled alternative in {@link MusParser#assignment}.
+	 * Exit a parse tree produced by {@link MusParser#assignment}.
 	 * @param ctx the parse tree
 	 */
-	void exitAssignNum(MusParser.AssignNumContext ctx);
+	void exitAssignment(MusParser.AssignmentContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code AssignBool}
-	 * labeled alternative in {@link MusParser#assignment}.
+	 * Enter a parse tree produced by {@link MusParser#expr}.
 	 * @param ctx the parse tree
 	 */
-	void enterAssignBool(MusParser.AssignBoolContext ctx);
+	void enterExpr(MusParser.ExprContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code AssignBool}
-	 * labeled alternative in {@link MusParser#assignment}.
+	 * Exit a parse tree produced by {@link MusParser#expr}.
 	 * @param ctx the parse tree
 	 */
-	void exitAssignBool(MusParser.AssignBoolContext ctx);
+	void exitExpr(MusParser.ExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code AssignText}
-	 * labeled alternative in {@link MusParser#assignment}.
+	 * Enter a parse tree produced by {@link MusParser#call}.
 	 * @param ctx the parse tree
 	 */
-	void enterAssignText(MusParser.AssignTextContext ctx);
+	void enterCall(MusParser.CallContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code AssignText}
-	 * labeled alternative in {@link MusParser#assignment}.
+	 * Exit a parse tree produced by {@link MusParser#call}.
 	 * @param ctx the parse tree
 	 */
-	void exitAssignText(MusParser.AssignTextContext ctx);
+	void exitCall(MusParser.CallContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code AssignEnum}
-	 * labeled alternative in {@link MusParser#assignment}.
+	 * Enter a parse tree produced by {@link MusParser#type}.
 	 * @param ctx the parse tree
 	 */
-	void enterAssignEnum(MusParser.AssignEnumContext ctx);
+	void enterType(MusParser.TypeContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code AssignEnum}
-	 * labeled alternative in {@link MusParser#assignment}.
+	 * Exit a parse tree produced by {@link MusParser#type}.
 	 * @param ctx the parse tree
 	 */
-	void exitAssignEnum(MusParser.AssignEnumContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code AssignEnumWithValues}
-	 * labeled alternative in {@link MusParser#assignment}.
-	 * @param ctx the parse tree
-	 */
-	void enterAssignEnumWithValues(MusParser.AssignEnumWithValuesContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code AssignEnumWithValues}
-	 * labeled alternative in {@link MusParser#assignment}.
-	 * @param ctx the parse tree
-	 */
-	void exitAssignEnumWithValues(MusParser.AssignEnumWithValuesContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code AssignRobot}
-	 * labeled alternative in {@link MusParser#assignment}.
-	 * @param ctx the parse tree
-	 */
-	void enterAssignRobot(MusParser.AssignRobotContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code AssignRobot}
-	 * labeled alternative in {@link MusParser#assignment}.
-	 * @param ctx the parse tree
-	 */
-	void exitAssignRobot(MusParser.AssignRobotContext ctx);
+	void exitType(MusParser.TypeContext ctx);
 }

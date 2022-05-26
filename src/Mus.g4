@@ -5,21 +5,31 @@ program:
     ;
 
 stat:
-    assignment? NEWLINE
-    ;
+    assignment | call ;
 
 assignment:
-    'NUM' VAR '=' NUM #AssignNum
-    | 'BOOL' VAR '=' BOOL #AssignBool
-    | 'TEXT' VAR '=' TEXT #AssignText
-    | 'ENUM' VAR '=' TEXT ('|' TEXT)* #AssignEnum
-    | 'ENUM' VAR '=' TEXT ',' NUM  ('|' TEXT ',' NUM)* #AssignEnumWithValues
-    | 'ROBOT' VAR '=' '(' TEXT ',' NUM ')' #AssignRobot   
+    type? VAR '=' expr ';';
+
+expr:
+    '(' expr ')'
+    | NUM
+    | BOOL
+    | TEXT
+    | VAR
+    | (TEXT ('|' TEXT))*
+    | TEXT ',' NUM  ('|' TEXT ',' NUM)*
+    | call
     ;
+
+call: VAR '.' VAR ( ('('(expr (',' expr)*))')' | '()');
+
+type:  'NUM' | 'BOOL' | 'TEXT' | 'ENUM' | 'ROBOT';
+
 NUM: [0-9]+('.'[0-9]+)?;
-BOOL: [tT]'rue' | [fF]'alse'; 
-TEXT: '"' (~[\r\n"] | '""')* '"';
+BOOL: [tT]'rue' | [fF]'alse';
+TEXT: '"' (~["] | '""')* '"';
+UPPERCASE: [A-Z]+; 
 VAR: [a-zA-Z_]+;
-NEWLINE: '\r'? '\n';
-WS: [ \t]+ -> skip;
-COMMENT: '#' .*? '\n' -> skip;
+WS: [ \t\r\n]+ -> skip;
+COMMENT_INLINE: '#' .*? '\n' -> skip;
+//COMMENT_MULTILINE: '/*' ~"*/" '*/' -> skip;

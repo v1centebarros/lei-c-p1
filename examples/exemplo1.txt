@@ -1,0 +1,19 @@
+/* _________________________ EXEMPLO 1 _________________________
+
+
+    Neste fazemos o seguinte:
+        1. criar um robot com o nome myRobot na posicao inicial 0
+        2. rodar o robo sobre si proprio até estar na posicao do beaconAngle
+        3. mover em direcao ao beacon
+
+*/
+
+
+ROBOT myRobot = robot("myRobot", 0)        #criar robot chamado myRobot na posicao 0
+
+
+
+
+
+
+

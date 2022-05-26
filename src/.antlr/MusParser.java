@@ -17,27 +17,29 @@ public class MusParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		T__9=10, NUM=11, BOOL=12, TEXT=13, VAR=14, NEWLINE=15, WS=16, COMMENT=17;
+		T__9=10, T__10=11, T__11=12, T__12=13, NUM=14, BOOL=15, TEXT=16, UPPERCASE=17, 
+		VAR=18, WS=19, COMMENT_INLINE=20;
 	public static final int
-		RULE_program = 0, RULE_stat = 1, RULE_assignment = 2;
+		RULE_program = 0, RULE_stat = 1, RULE_assignment = 2, RULE_expr = 3, RULE_call = 4, 
+		RULE_type = 5;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"program", "stat", "assignment"
+			"program", "stat", "assignment", "expr", "call", "type"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'NUM'", "'='", "'BOOL'", "'TEXT'", "'ENUM'", "'|'", "','", "'ROBOT'", 
-			"'('", "')'"
+			null, "'='", "';'", "'('", "')'", "'|'", "','", "'.'", "'()'", "'NUM'", 
+			"'BOOL'", "'TEXT'", "'ENUM'", "'ROBOT'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, null, null, null, null, null, "NUM", 
-			"BOOL", "TEXT", "VAR", "NEWLINE", "WS", "COMMENT"
+			null, null, null, null, null, null, null, null, null, null, null, null, 
+			null, null, "NUM", "BOOL", "TEXT", "UPPERCASE", "VAR", "WS", "COMMENT_INLINE"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -112,21 +114,21 @@ public class MusParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(9);
+			setState(15);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__2) | (1L << T__3) | (1L << T__4) | (1L << T__7) | (1L << NEWLINE))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__8) | (1L << T__9) | (1L << T__10) | (1L << T__11) | (1L << T__12) | (1L << VAR))) != 0)) {
 				{
 				{
-				setState(6);
+				setState(12);
 				stat();
 				}
 				}
-				setState(11);
+				setState(17);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(12);
+			setState(18);
 			match(EOF);
 			}
 		}
@@ -142,9 +144,11 @@ public class MusParser extends Parser {
 	}
 
 	public static class StatContext extends ParserRuleContext {
-		public TerminalNode NEWLINE() { return getToken(MusParser.NEWLINE, 0); }
 		public AssignmentContext assignment() {
 			return getRuleContext(AssignmentContext.class,0);
+		}
+		public CallContext call() {
+			return getRuleContext(CallContext.class,0);
 		}
 		public StatContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -155,22 +159,24 @@ public class MusParser extends Parser {
 	public final StatContext stat() throws RecognitionException {
 		StatContext _localctx = new StatContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_stat);
-		int _la;
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(15);
+			setState(22);
 			_errHandler.sync(this);
-			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__2) | (1L << T__3) | (1L << T__4) | (1L << T__7))) != 0)) {
+			switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {
+			case 1:
+				enterOuterAlt(_localctx, 1);
 				{
-				setState(14);
+				setState(20);
 				assignment();
 				}
-			}
-
-			setState(17);
-			match(NEWLINE);
+				break;
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(21);
+				call();
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -185,56 +191,17 @@ public class MusParser extends Parser {
 	}
 
 	public static class AssignmentContext extends ParserRuleContext {
+		public TerminalNode VAR() { return getToken(MusParser.VAR, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public TypeContext type() {
+			return getRuleContext(TypeContext.class,0);
+		}
 		public AssignmentContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_assignment; }
-	 
-		public AssignmentContext() { }
-		public void copyFrom(AssignmentContext ctx) {
-			super.copyFrom(ctx);
-		}
-	}
-	public static class AssignBoolContext extends AssignmentContext {
-		public TerminalNode VAR() { return getToken(MusParser.VAR, 0); }
-		public TerminalNode BOOL() { return getToken(MusParser.BOOL, 0); }
-		public AssignBoolContext(AssignmentContext ctx) { copyFrom(ctx); }
-	}
-	public static class AssignNumContext extends AssignmentContext {
-		public TerminalNode VAR() { return getToken(MusParser.VAR, 0); }
-		public TerminalNode NUM() { return getToken(MusParser.NUM, 0); }
-		public AssignNumContext(AssignmentContext ctx) { copyFrom(ctx); }
-	}
-	public static class AssignEnumContext extends AssignmentContext {
-		public TerminalNode VAR() { return getToken(MusParser.VAR, 0); }
-		public List<TerminalNode> TEXT() { return getTokens(MusParser.TEXT); }
-		public TerminalNode TEXT(int i) {
-			return getToken(MusParser.TEXT, i);
-		}
-		public AssignEnumContext(AssignmentContext ctx) { copyFrom(ctx); }
-	}
-	public static class AssignEnumWithValuesContext extends AssignmentContext {
-		public TerminalNode VAR() { return getToken(MusParser.VAR, 0); }
-		public List<TerminalNode> TEXT() { return getTokens(MusParser.TEXT); }
-		public TerminalNode TEXT(int i) {
-			return getToken(MusParser.TEXT, i);
-		}
-		public List<TerminalNode> NUM() { return getTokens(MusParser.NUM); }
-		public TerminalNode NUM(int i) {
-			return getToken(MusParser.NUM, i);
-		}
-		public AssignEnumWithValuesContext(AssignmentContext ctx) { copyFrom(ctx); }
-	}
-	public static class AssignRobotContext extends AssignmentContext {
-		public TerminalNode VAR() { return getToken(MusParser.VAR, 0); }
-		public TerminalNode TEXT() { return getToken(MusParser.TEXT, 0); }
-		public TerminalNode NUM() { return getToken(MusParser.NUM, 0); }
-		public AssignRobotContext(AssignmentContext ctx) { copyFrom(ctx); }
-	}
-	public static class AssignTextContext extends AssignmentContext {
-		public TerminalNode VAR() { return getToken(MusParser.VAR, 0); }
-		public TerminalNode TEXT() { return getToken(MusParser.TEXT, 0); }
-		public AssignTextContext(AssignmentContext ctx) { copyFrom(ctx); }
 	}
 
 	public final AssignmentContext assignment() throws RecognitionException {
@@ -242,139 +209,170 @@ public class MusParser extends Parser {
 		enterRule(_localctx, 4, RULE_assignment);
 		int _la;
 		try {
-			setState(65);
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(25);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
+			_la = _input.LA(1);
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__8) | (1L << T__9) | (1L << T__10) | (1L << T__11) | (1L << T__12))) != 0)) {
+				{
+				setState(24);
+				type();
+				}
+			}
+
+			setState(27);
+			match(VAR);
+			setState(28);
+			match(T__0);
+			setState(29);
+			expr();
+			setState(30);
+			match(T__1);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class ExprContext extends ParserRuleContext {
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public List<TerminalNode> NUM() { return getTokens(MusParser.NUM); }
+		public TerminalNode NUM(int i) {
+			return getToken(MusParser.NUM, i);
+		}
+		public TerminalNode BOOL() { return getToken(MusParser.BOOL, 0); }
+		public List<TerminalNode> TEXT() { return getTokens(MusParser.TEXT); }
+		public TerminalNode TEXT(int i) {
+			return getToken(MusParser.TEXT, i);
+		}
+		public TerminalNode VAR() { return getToken(MusParser.VAR, 0); }
+		public CallContext call() {
+			return getRuleContext(CallContext.class,0);
+		}
+		public ExprContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_expr; }
+	}
+
+	public final ExprContext expr() throws RecognitionException {
+		ExprContext _localctx = new ExprContext(_ctx, getState());
+		enterRule(_localctx, 6, RULE_expr);
+		int _la;
+		try {
+			setState(61);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,5,_ctx) ) {
 			case 1:
-				_localctx = new AssignNumContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(19);
-				match(T__0);
-				setState(20);
-				match(VAR);
-				setState(21);
-				match(T__1);
-				setState(22);
-				match(NUM);
+				setState(32);
+				match(T__2);
+				setState(33);
+				expr();
+				setState(34);
+				match(T__3);
 				}
 				break;
 			case 2:
-				_localctx = new AssignBoolContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(23);
-				match(T__2);
-				setState(24);
-				match(VAR);
-				setState(25);
-				match(T__1);
-				setState(26);
-				match(BOOL);
+				setState(36);
+				match(NUM);
 				}
 				break;
 			case 3:
-				_localctx = new AssignTextContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(27);
-				match(T__3);
-				setState(28);
-				match(VAR);
-				setState(29);
-				match(T__1);
-				setState(30);
-				match(TEXT);
+				setState(37);
+				match(BOOL);
 				}
 				break;
 			case 4:
-				_localctx = new AssignEnumContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(31);
-				match(T__4);
-				setState(32);
-				match(VAR);
-				setState(33);
-				match(T__1);
-				setState(34);
+				setState(38);
 				match(TEXT);
-				setState(39);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				while (_la==T__5) {
-					{
-					{
-					setState(35);
-					match(T__5);
-					setState(36);
-					match(TEXT);
-					}
-					}
-					setState(41);
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-				}
 				}
 				break;
 			case 5:
-				_localctx = new AssignEnumWithValuesContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(42);
-				match(T__4);
-				setState(43);
+				setState(39);
 				match(VAR);
-				setState(44);
-				match(T__1);
+				}
+				break;
+			case 6:
+				enterOuterAlt(_localctx, 6);
+				{
 				setState(45);
-				match(TEXT);
-				setState(46);
-				match(T__6);
-				setState(47);
-				match(NUM);
-				setState(54);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				while (_la==T__5) {
+				while (_la==TEXT) {
 					{
 					{
-					setState(48);
-					match(T__5);
-					setState(49);
+					setState(40);
 					match(TEXT);
-					setState(50);
-					match(T__6);
-					setState(51);
-					match(NUM);
+					{
+					setState(41);
+					match(T__4);
+					setState(42);
+					match(TEXT);
 					}
 					}
-					setState(56);
+					}
+					setState(47);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
 				}
 				break;
-			case 6:
-				_localctx = new AssignRobotContext(_localctx);
-				enterOuterAlt(_localctx, 6);
+			case 7:
+				enterOuterAlt(_localctx, 7);
 				{
-				setState(57);
-				match(T__7);
-				setState(58);
-				match(VAR);
-				setState(59);
-				match(T__1);
-				setState(60);
-				match(T__8);
-				setState(61);
+				setState(48);
 				match(TEXT);
-				setState(62);
-				match(T__6);
-				setState(63);
+				setState(49);
+				match(T__5);
+				setState(50);
 				match(NUM);
-				setState(64);
-				match(T__9);
+				setState(57);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				while (_la==T__4) {
+					{
+					{
+					setState(51);
+					match(T__4);
+					setState(52);
+					match(TEXT);
+					setState(53);
+					match(T__5);
+					setState(54);
+					match(NUM);
+					}
+					}
+					setState(59);
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+				}
+				}
+				break;
+			case 8:
+				enterOuterAlt(_localctx, 8);
+				{
+				setState(60);
+				call();
 				}
 				break;
 			}
@@ -390,26 +388,151 @@ public class MusParser extends Parser {
 		return _localctx;
 	}
 
+	public static class CallContext extends ParserRuleContext {
+		public List<TerminalNode> VAR() { return getTokens(MusParser.VAR); }
+		public TerminalNode VAR(int i) {
+			return getToken(MusParser.VAR, i);
+		}
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
+		}
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
+		}
+		public CallContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_call; }
+	}
+
+	public final CallContext call() throws RecognitionException {
+		CallContext _localctx = new CallContext(_ctx, getState());
+		enterRule(_localctx, 8, RULE_call);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(63);
+			match(VAR);
+			setState(64);
+			match(T__6);
+			setState(65);
+			match(VAR);
+			setState(78);
+			_errHandler.sync(this);
+			switch (_input.LA(1)) {
+			case T__2:
+				{
+				{
+				setState(66);
+				match(T__2);
+				{
+				setState(67);
+				expr();
+				setState(72);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				while (_la==T__5) {
+					{
+					{
+					setState(68);
+					match(T__5);
+					setState(69);
+					expr();
+					}
+					}
+					setState(74);
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+				}
+				}
+				}
+				setState(75);
+				match(T__3);
+				}
+				break;
+			case T__7:
+				{
+				setState(77);
+				match(T__7);
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class TypeContext extends ParserRuleContext {
+		public TypeContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_type; }
+	}
+
+	public final TypeContext type() throws RecognitionException {
+		TypeContext _localctx = new TypeContext(_ctx, getState());
+		enterRule(_localctx, 10, RULE_type);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(80);
+			_la = _input.LA(1);
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__8) | (1L << T__9) | (1L << T__10) | (1L << T__11) | (1L << T__12))) != 0)) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\23F\4\2\t\2\4\3\t"+
-		"\3\4\4\t\4\3\2\7\2\n\n\2\f\2\16\2\r\13\2\3\2\3\2\3\3\5\3\22\n\3\3\3\3"+
-		"\3\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4"+
-		"\3\4\7\4(\n\4\f\4\16\4+\13\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\7"+
-		"\4\67\n\4\f\4\16\4:\13\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\5\4D\n\4\3\4"+
-		"\2\2\5\2\4\6\2\2\2K\2\13\3\2\2\2\4\21\3\2\2\2\6C\3\2\2\2\b\n\5\4\3\2\t"+
-		"\b\3\2\2\2\n\r\3\2\2\2\13\t\3\2\2\2\13\f\3\2\2\2\f\16\3\2\2\2\r\13\3\2"+
-		"\2\2\16\17\7\2\2\3\17\3\3\2\2\2\20\22\5\6\4\2\21\20\3\2\2\2\21\22\3\2"+
-		"\2\2\22\23\3\2\2\2\23\24\7\21\2\2\24\5\3\2\2\2\25\26\7\3\2\2\26\27\7\20"+
-		"\2\2\27\30\7\4\2\2\30D\7\r\2\2\31\32\7\5\2\2\32\33\7\20\2\2\33\34\7\4"+
-		"\2\2\34D\7\16\2\2\35\36\7\6\2\2\36\37\7\20\2\2\37 \7\4\2\2 D\7\17\2\2"+
-		"!\"\7\7\2\2\"#\7\20\2\2#$\7\4\2\2$)\7\17\2\2%&\7\b\2\2&(\7\17\2\2\'%\3"+
-		"\2\2\2(+\3\2\2\2)\'\3\2\2\2)*\3\2\2\2*D\3\2\2\2+)\3\2\2\2,-\7\7\2\2-."+
-		"\7\20\2\2./\7\4\2\2/\60\7\17\2\2\60\61\7\t\2\2\618\7\r\2\2\62\63\7\b\2"+
-		"\2\63\64\7\17\2\2\64\65\7\t\2\2\65\67\7\r\2\2\66\62\3\2\2\2\67:\3\2\2"+
-		"\28\66\3\2\2\289\3\2\2\29D\3\2\2\2:8\3\2\2\2;<\7\n\2\2<=\7\20\2\2=>\7"+
-		"\4\2\2>?\7\13\2\2?@\7\17\2\2@A\7\t\2\2AB\7\r\2\2BD\7\f\2\2C\25\3\2\2\2"+
-		"C\31\3\2\2\2C\35\3\2\2\2C!\3\2\2\2C,\3\2\2\2C;\3\2\2\2D\7\3\2\2\2\7\13"+
-		"\21)8C";
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\26U\4\2\t\2\4\3\t"+
+		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\3\2\7\2\20\n\2\f\2\16\2\23\13\2\3\2"+
+		"\3\2\3\3\3\3\5\3\31\n\3\3\4\5\4\34\n\4\3\4\3\4\3\4\3\4\3\4\3\5\3\5\3\5"+
+		"\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\7\5.\n\5\f\5\16\5\61\13\5\3\5\3\5\3\5"+
+		"\3\5\3\5\3\5\3\5\7\5:\n\5\f\5\16\5=\13\5\3\5\5\5@\n\5\3\6\3\6\3\6\3\6"+
+		"\3\6\3\6\3\6\7\6I\n\6\f\6\16\6L\13\6\3\6\3\6\3\6\5\6Q\n\6\3\7\3\7\3\7"+
+		"\2\2\b\2\4\6\b\n\f\2\3\3\2\13\17\2\\\2\21\3\2\2\2\4\30\3\2\2\2\6\33\3"+
+		"\2\2\2\b?\3\2\2\2\nA\3\2\2\2\fR\3\2\2\2\16\20\5\4\3\2\17\16\3\2\2\2\20"+
+		"\23\3\2\2\2\21\17\3\2\2\2\21\22\3\2\2\2\22\24\3\2\2\2\23\21\3\2\2\2\24"+
+		"\25\7\2\2\3\25\3\3\2\2\2\26\31\5\6\4\2\27\31\5\n\6\2\30\26\3\2\2\2\30"+
+		"\27\3\2\2\2\31\5\3\2\2\2\32\34\5\f\7\2\33\32\3\2\2\2\33\34\3\2\2\2\34"+
+		"\35\3\2\2\2\35\36\7\24\2\2\36\37\7\3\2\2\37 \5\b\5\2 !\7\4\2\2!\7\3\2"+
+		"\2\2\"#\7\5\2\2#$\5\b\5\2$%\7\6\2\2%@\3\2\2\2&@\7\20\2\2\'@\7\21\2\2("+
+		"@\7\22\2\2)@\7\24\2\2*+\7\22\2\2+,\7\7\2\2,.\7\22\2\2-*\3\2\2\2.\61\3"+
+		"\2\2\2/-\3\2\2\2/\60\3\2\2\2\60@\3\2\2\2\61/\3\2\2\2\62\63\7\22\2\2\63"+
+		"\64\7\b\2\2\64;\7\20\2\2\65\66\7\7\2\2\66\67\7\22\2\2\678\7\b\2\28:\7"+
+		"\20\2\29\65\3\2\2\2:=\3\2\2\2;9\3\2\2\2;<\3\2\2\2<@\3\2\2\2=;\3\2\2\2"+
+		">@\5\n\6\2?\"\3\2\2\2?&\3\2\2\2?\'\3\2\2\2?(\3\2\2\2?)\3\2\2\2?/\3\2\2"+
+		"\2?\62\3\2\2\2?>\3\2\2\2@\t\3\2\2\2AB\7\24\2\2BC\7\t\2\2CP\7\24\2\2DE"+
+		"\7\5\2\2EJ\5\b\5\2FG\7\b\2\2GI\5\b\5\2HF\3\2\2\2IL\3\2\2\2JH\3\2\2\2J"+
+		"K\3\2\2\2KM\3\2\2\2LJ\3\2\2\2MN\7\6\2\2NQ\3\2\2\2OQ\7\n\2\2PD\3\2\2\2"+
+		"PO\3\2\2\2Q\13\3\2\2\2RS\t\2\2\2S\r\3\2\2\2\n\21\30\33/;?JP";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

@@ -12,37 +12,25 @@ public class Interpreter extends MusBaseVisitor<String> {
       //return res;
    }
 
-   @Override public String visitAssignNum(MusParser.AssignNumContext ctx) {
+   @Override public String visitAssignment(MusParser.AssignmentContext ctx) {
       String res = null;
       return visitChildren(ctx);
       //return res;
    }
 
-   @Override public String visitAssignBool(MusParser.AssignBoolContext ctx) {
+   @Override public String visitExpr(MusParser.ExprContext ctx) {
       String res = null;
       return visitChildren(ctx);
       //return res;
    }
 
-   @Override public String visitAssignText(MusParser.AssignTextContext ctx) {
+   @Override public String visitCall(MusParser.CallContext ctx) {
       String res = null;
       return visitChildren(ctx);
       //return res;
    }
 
-   @Override public String visitAssignEnum(MusParser.AssignEnumContext ctx) {
-      String res = null;
-      return visitChildren(ctx);
-      //return res;
-   }
-
-   @Override public String visitAssignEnumWithValues(MusParser.AssignEnumWithValuesContext ctx) {
-      String res = null;
-      return visitChildren(ctx);
-      //return res;
-   }
-
-   @Override public String visitAssignRobot(MusParser.AssignRobotContext ctx) {
+   @Override public String visitType(MusParser.TypeContext ctx) {
       String res = null;
       return visitChildren(ctx);
       //return res;

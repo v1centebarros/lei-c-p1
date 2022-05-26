@@ -30,40 +30,26 @@ public class MusBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements Mu
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAssignNum(MusParser.AssignNumContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAssignment(MusParser.AssignmentContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAssignBool(MusParser.AssignBoolContext ctx) { return visitChildren(ctx); }
+	@Override public T visitExpr(MusParser.ExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAssignText(MusParser.AssignTextContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCall(MusParser.CallContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAssignEnum(MusParser.AssignEnumContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitAssignEnumWithValues(MusParser.AssignEnumWithValuesContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitAssignRobot(MusParser.AssignRobotContext ctx) { return visitChildren(ctx); }
+	@Override public T visitType(MusParser.TypeContext ctx) { return visitChildren(ctx); }
 }
