@@ -1,7 +1,7 @@
 /*
-    This file is part of ciberRatoToolsSrc.
+    This file is part of ciberRatoTools.
 
-    Copyright (C) 2001-2011 Universidade de Aveiro
+    Copyright (C) 2001-2022 Universidade de Aveiro
 
     ciberRatoToolsSrc is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,8 +20,8 @@
 
 /* RobSock.h
  *
- * Interface to libRobSock.a, the library that allows programming
- * CiberRato Robot Agents using C.
+ * Interface to libRobSock.a/so, the library that allows programming
+ * CiberRato Robot Agents using C and C++.
  *
  * For more information about the CiberRato Robot Simulator 
  * please see http://microrato.ua.pt/ or contact us.
@@ -36,14 +36,15 @@
 #  define ROBSOCK_EXPORT Q_DECL_IMPORT
 #endif
 
-#define CENTER 0
-#define LEFT   1
-#define RIGHT  2
-#define OTHER1 3
-
 #define CELLROWS 7
 #define CELLCOLS 14
 
+#define CENTER  0
+#define FRONTAL 0
+#define LEFT    1
+#define RIGHT   2
+#define OTHER1  3
+#define REAR    3
 
 #ifdef __cplusplus
 extern "C" 
@@ -52,134 +53,378 @@ extern "C"
 typedef unsigned char bool;
 #endif
 
+/**
+ * \defgroup CRobSock C interface for RobSock library
+ * \brief C interface for RobSock library
+ * \details 
+ *   Set of functions that represents the default C interaction with the simulator.
+ *   These functions are wrappers of the corresponding C++ equivalents.
+ *
+ * \defgroup registering RobSock registering functions
+ * \ingroup CRobSock
+ * \brief Registering agent in simulator
+ * \details
+ *   An agent acts as a client in the simulation environment, being the simulator the server.<br/>
+ *   So, it has to register into the simulator, before being able to control its robot.
+ *
+ * \defgroup driving RobSock driving functions
+ * \ingroup CRobSock
+ * \brief Sending actuating orders to wheels
+ * \details
+ *   A robot is equipped with two parallel wheels, driven by two independent motors.<br/>
+ *   An agent can control the desired velocity of every wheel.<br/>
+ *   The possible values for the velocity range in interval [-0.15, +0.15], where a value of
+ *   0.1 means that the wheel moves 0.1 units in one simulation cycle.<br/>
+ *   The unit of lenght corresponds to the diameter of a robot.<br/>
+ *   It is assumed that inertia and noise are presented, so the actual movement of the wheels can
+ *   be different than the control values.
+ *
+ * \defgroup synchronization RobSock synchronization functions
+ * \ingroup CRobSock
+ * \brief Wait for next simulator's data record
+ * \details
+ *   The simulator makes the state of the world evolve at every cycle, 
+ *   which by default is set to 50ms.<br/>
+ *   The agent needs to be synchronized with the simulator, in order to have updated information from the simulator.<br/>
+ *   This update is done every time the agent calls the \c ReadSensors function.<br/>
+ *   \c ReadSensors is a blocking function, that only returns after new data is received from the simulator.<br/>
+ *   All information related to the last simulation step come in a single message and is cached locally.<br/>
+ *   This means that all functions that return data (sensors, buttons, leds, time),
+ *   just retrieve values cached in the last synchronization step.
+ *
+ * \defgroup sensing RobSock sensing functions
+ * \ingroup CRobSock
+ * \brief Consulting sensor values
+ * \details 
+ *   After cycle synchronization (ReadSensors called), 
+ *   the values of all available sensors are cached locally.
+ *   The funcions in this group just retrieve values cached in the last synchronization step.
+ *
+ * \defgroup leds RobSock led manipulation functions
+ * \ingroup CRobSock
+ * \brief Setting and getting the state of robot leds
+ * \details 
+ *   The setting actions are sent immediately to the simulator, 
+ *   but only take effect at the next simulation step.
+ *   Information from the simulator is only received through the \c ReadSensors call,
+ *   being cached locally.
+ *   So, the getting functions just retrieve values cached in the last synchronization step.
+ *
+ * \defgroup buttons RobSock button state functions
+ * \ingroup CRobSock
+ * \brief Get the state of the buttons
+ * \details
+ *   The robot body has 2 buttons that are manipulated only by the simulator.<br/>
+ *   The \c start button is pressed by the simulator to start the run or to resume it after a stoppage.<br/>
+ *   The \c stop button is pressed by the simulator to suspend the run in order to issue any required action,
+ *   for instance, to remove a badly behaved robot. 
+ *   Information from the simulator is only received through the \c ReadSensors call,
+ *   being cached locally.
+ *   So, these getting functions just retrieve values cached in the last synchronization step.
+ *
+ * \defgroup times RobSock time funcions
+ * \ingroup CRobSock
+ * \brief Get time
+ * \details
+ *   In general, in a challenge 3 times are defined: <br/>
+ *   - \c final time, representing the overall time available for the run;<br/>
+ *   - \c key time, representing the time until a first phase is completed;<br/>
+ *   - \c cycle time, representing the time step at which simulation is done.<br/>
+ *   These time are received at registering time and are cached locally.
+ *   At every \c ReadSensors, the agent receives the current simulation time,
+ *
+ * \defgroup config RobSock configuration parameters
+ * \ingroup CRobSock
+ * \brief Get parameters of current simulation
+ * \details
+ *   This parameters are received on registration and cached locally.
+ *   The funcions in this group just retrieve values cached at that time.
+ */
+
 /**************************************************************************/
-/************* Initialization *********************************************/
+/************* registration *********************************************/
 /**************************************************************************/
 
-/*! Initializes Robot and Connects to Simulator 
- *  Parameters : 
- *          name - Robot name
- *          host - Host where simulator is running 
- *  Returns -1 in case of error
+/** 
+ * \brief Connects to simulator and initializes local caching of data
+ * \ingroup registering
+ * \param [in] name Name as agent appears in score panel
+ * \param [in] pos Position of robot in the starting grid (0 for first available)
+ * \param [in] host IP address of simulator 
+ * \returns 0 on success; -1 otherwise
  */
-extern int           InitRobot(char *name,int id, char *host);
+int InitRobot(char *name, int pos, char *host);
 
-/*! Initializes Robot and Connects to Simulator 
- *  Parameters : 
- *          name - Robot name
- *          host - Host where simulator is running 
- *          IRSensorAngles - contais the angles of the 4 IR Sensors 
- *                           with respect to the front of the robot (in degrees).
- *   Returns -1 in case of error
+/** 
+ * \brief Connects to simulator, setting obstacle sensors' positions, and initializes local caching of data
+ * \ingroup registering
+ * \param [in] name Name as agent appears in score panel
+ * \param [in] pos Position of robot in the starting grid (0 for first available)
+ * \param [in] IRSensorAngles Angular position for the obstacle sensors
+ * \param [in] host IP address of simulator 
+ * \returns 0 on success; -1 otherwise
  */
-extern int           InitRobot2(char *name,int id, double IRSensorAngles[4], char *host);
+int InitRobot2(char *name, int pos, double IRSensorAngles[4], char *host);
 
-/*! Initializes Robot that also works as the beacon and Connects to Simulator 
- *  Parameters : 
- *          name - Robot name
- *          id   - Robot position in starting grid
- *          height - Height of beacon
- *          host - Host where simulator is running 
- *  Returns -1 in case of error
+/** 
+ * \brief Initializes robot that also works as a beacon and connects to simulator 
+ * \ingroup registering
+ * \param [in] name Name as agent appears in score panel
+ * \param [in] pos Position of robot in the starting grid (0 for first available)
+ * \param [in] height Height of the beacon
+ * \param [in] host IP address of simulator 
+ * \returns 0 on success; -1 otherwise
  */
-extern int           InitRobotBeacon(char *name, int id, double height, char *host);
+int InitRobotBeacon(char *name, int pos, double height, char *host);
 
 
 /**************************************************************************/
-/************* Sensors ****************************************************/
+/************* synchronization ********************************************/
 /**************************************************************************/
 
-/*! Gets the next Sensor Values sent by Simulator 
- *  if no message is present waits 
- *  Returns -1 in case of error 
+/**
+ * \brief Blocks until next simulator's data record has been received
+ * \ingroup synchronization
+ * \details 
+ *   This is a blocking call that waits until a new record with data has been received from the simulator.
+ *   It only blocks if the new record hasn't yet been received.
+ *   The received data record (XML message) is parsed and sensor data is cached locally.
+ * \returns 0 on success; -1 otherwise
  */
-extern int           ReadSensors(void);
+int ReadSensors(void);
 
-/*  The following functions access values that have been read by ReadSensors() 
- *  they do not read new values 
+
+/**************************************************************************/
+/************* sensing ****************************************************/
+/**************************************************************************/
+
+/**
+ * \brief Retrieves the last received simulation time 
+ * \ingroup times
+ * \return The last received current simulation time
  */
+unsigned int GetTime(void);
 
-/*  simulation time */
-extern unsigned int   GetTime(void);
-
-/*! Indicates if a new Obstacle measure from sensor id has arrived. 
- *  The value of GetObstacleSensor is invalid when IsObstacleReady returns false
+/**
+ * \brief Indicates if a new measure of the given obstacle sensor was received in the last synchronization step.
+ * \ingroup sensing
+ * \details
+ *   If not ready, the value returned by \c GetObstacleSensor is invalid.
+ * \param id Sensor id (one of FRONTAL, LEFT, RIGHT, REAR)
+ * \returns \c true if a measure exists; \c false otherwise
+ * \see GetObstacleSensor
  */
-extern bool            IsObstacleReady(int id);
+bool IsObstacleReady(int id);
 
-/*! GetObstacleSensor value is inversely proportional to obstacle distance  
- *  id may be one of LEFT, RIGHT, CENTER or OTHER1 
+/**
+ * \brief Retrieves the last received measure of the given obstacle sensor 
+ * \ingroup sensing
+ * \details
+ *   The value returned by an obstacle sensor is inversely proportional to the 
+ *   distance to the closest obstacle captured by the sensor.
+ * \param id Sensor id (one of FRONTAL, LEFT, RIGHT, REAR)
+ * \returns the last received measure of the given obstacle sensor
  */
-extern double          GetObstacleSensor(int id); 
+double GetObstacleSensor(int id); 
     
-/*! Indicates if a new beacon measure has arrived. 
- *  The value of GetBeaconSensor is invalid when IsBeaconReady returns false
+/**
+ * \brief Indicates if a new measure of the given beacon sensor was received in the last synchronization step.
+ * \ingroup sensing
+ * \details
+ *   If not ready, the value returned by \c GetBeaconSensor is invalid.
+ * \param id Beacon id (from 0 to n-1, being n the number of beacons)
+ * \returns \c true if a measure exists; \c false otherwise
+ * \see GetBeaconSensor, GetNumberOfBeacons, beaconMeasure
  */
-extern bool            IsBeaconReady(int id);
+bool IsBeaconReady(int id);
 
+/**
+ * \brief Get the number of beacons in the maze
+ * \ingroup sensing
+ * \returns The number of beacons in the maze
+ * \see GetBeaconSensor, GetNumberOfBeacons, beaconMeasure
+ */
+int GetNumberOfBeacons(void);     
+
+/**
+ * \brief The data type returned by the \c GetBeaconSensor function
+ * \ingroup sensing
+ * \details
+ *   If there is no line of sight between the robot and a beacon,
+ *   because they are too far apart or there is a wall in between,
+ *   the beacon is said to be not visible.
+ *   If it is visible, the measure is the angle between the frontal axis of the robot
+ *   and the beacon, in degrees.
+ * \see GetBeaconSensor, GetNumberOfBeacons, IsBeaconReady
+ */
 struct beaconMeasure {
-        bool   beaconVisible;  /* true if robot can see beacon */
-        double beaconDir;      /* direction of beacon */
-                               /*   only valid if beaconVisible is true */
+        bool   beaconVisible;  ///< \c true if robot can see beacon; \c false otherwise
+        double beaconDir;      ///< angular position of beacon, in range [-180,+180] (only valid if \c beaconVisible is true)
 };
 
-/* GetNumberOfBeacons returns the number of beacons in the lab
+/**
+ * \brief Retrieves the last received measure of the given beacon sensor 
+ * \ingroup sensing
+ * \details
+ *   The value returned by a beacon sensor is a structure containing a flag
+ *   indicatinf if the beacon is visible and its angular position, in range [-180,+180], if it is visible.
+ * \param id Beacon id (from 0 to n-1, being n the number of beacons)
+ * \returns the last received measure of the given beacon sensor
+ * \see IsBeaconReady, GetNumberOfBeacons, beaconMeasure
  */
-extern int GetNumberOfBeacons(void);     
-
-/* GetBeaconSensor value is the direction of Beacon 
- * in Robot coordinates (-180.0, 180.0) 
- */
-extern struct beaconMeasure GetBeaconSensor(int id);     
+struct beaconMeasure GetBeaconSensor(int id);    
     
-/*! Indicates if a new compass measure has arrived. 
- *  The value of GetCompassSensor is invalid when IsCompassReady returns false
+/**
+ * \brief Indicates if a new measure of the compass was received in the last synchronization step.
+ * \ingroup sensing
+ * \details
+ *   If not ready, the value returned by \c GetCompassSensor is invalid.
+ * \returns \c true if a measure exists; \c false otherwise
+ * \see GetCompassSensor
  */
-extern bool            IsCompassReady(void);
+bool IsCompassReady(void);
 
-/* GetCompassSensor value is the direction of Robot in Ground 
- * coordinates (-180.0, 180.0) 
+/**
+ * \brief Retrieves the last received measure of the compass sensor 
+ * \ingroup sensing
+ * \details
+ *   The value returned by the compass sensor is the angular position, in range [-180,+180],
+ *   of the robot in relation to the north,
+ *   which, in this simulation environment, corresponds to X axis.
+ * \returns the last received measure of the compass sensor
  */
-extern double          GetCompassSensor(void);    
+double GetCompassSensor(void);
     
-/*! Indicates if a new ground measure has arrived. 
- *  The value of GetGroundSensor is invalid when IsGroundReady returns false
+/**
+ * \brief Indicates if a new measure of the ground sensor was received in the last synchronization step.
+ * \ingroup sensing
+ * \details
+ *   If not ready, the value returned by \c GetGroundSensor is invalid.
+ * \returns \c true if a measure exists; \c false otherwise
+ * \see GetGroundSensor
  */
-extern bool            IsGroundReady(void);
+bool IsGroundReady(void);
 
-/* if robot is inside a target area returns the id of the area, otherwise returns -1 */
-extern int            GetGroundSensor(void);     
+/**
+ * \brief Retrieves the last received measure of the ground sensor 
+ * \ingroup sensing
+ * \details
+ *   The value returned by the sensor indicates the type of floor on which the robot is located.
+ *   It is related to the target areas that exist in the maze.
+ *   Being N the number of target areas, it is an integer value between 0 and N-1.
+ * \returns the last received measure of the ground sensor
+ * \see IsGroundReady
+ */
+int GetGroundSensor(void);     
     
-/*! Indicates if a new bumper measure has arrived. 
- *  The value of GetBumperSensor is invalid when IsBumperReady returns false
+/**
+ * \brief Indicates if a new measure of the bumper sensor was received in the last synchronization step.
+ * \ingroup sensing
+ * \details
+ *   If not ready, the value returned by \c GetBumperSensor is invalid.
+ * \returns \c true if a measure exists; \c false otherwise
+ * \see GetBumperSensor
  */
-extern bool            IsBumperReady(void);
+bool IsBumperReady(void);
 
-/* active when robot collides */
-extern bool           GetBumperSensor(void);     
+/**
+ * \brief Retrieves the last received measure of the bumper sensor 
+ * \ingroup sensing
+ * \details
+ *   The value returned by the sensor indicates if the robot has collided with
+ *   obstacles (walls or other robots).
+ *   It is a ring placed around the robot, so it is impossible to know where in the 
+ *   robot's perimeter the collision occurs.
+ * \returns the last received measure of the bumper sensor
+ * \see IsBumperReady
+ */
+bool GetBumperSensor(void);     
 
-/*! Indicates if score can be retrieved using score sensor 
+/**
+ * \brief Indicates if a new measure of the score sensor was received in the last synchronization step.
+ * \ingroup sensing
+ * \details
+ *   If not ready, the value returned by \c GetScoreSensor is invalid.
+ * \returns \c true if a measure exists; \c false otherwise
+ * \see GetScoreSensor
  */
 bool IsScoreReady(void);
 
-/* returns current score */
+/**
+ * \brief Retrieves the last received measure of the score sensor 
+ * \ingroup sensing
+ * \details
+ *   The value returned by the sensor is the current score of the robot.
+ * \returns the last received measure of the score sensor
+ * \see IsScoreReady
+ */
 int GetScoreSensor(void);
 
-/*! Indicates if a new GPS measure has arrived. 
- *  The value of GetX, GetY and GetDir is invalid when IsGPSReady returns false
+/**
+ * \brief Indicates if a new measure of the GPS sensor was received in the last synchronization step.
+ * \ingroup sensing
+ * \details
+ *   If not ready, the values returned by \c GetX, \c GetY and \c GetDir are invalid.
+ * \returns \c true if a measure exists; \c false otherwise
+ * \see IsGPSDirReady, GetX, GetY, GetDir
  */
-extern bool            IsGPSReady();
-extern bool            IsGPSDirReady();
+bool IsGPSReady();
 
+/**
+ * \brief Indicates if a new measure of the GPS sensor related to direction was received in the last synchronization step.
+ * \ingroup sensing
+ * \details
+ *   If not ready, the values returned by \c GetDir is invalid.
+ * \returns \c true if a measure exists; \c false otherwise
+ * \see IsGPSReady, GetX, GetY, GetDir
+ */
+bool IsGPSDirReady();
+
+/**
+ * \brief Retrieves the X component of the last received measure of the GPS sensor 
+ * \ingroup sensing
+ * \details
+ *   The value returned by the sensor is the X position of the robot in the world, not in the maze.
+ * \returns the X component of the last received measure of the GPS sensor
+ * \see IsGPSReady, IsGPSDirReady, GetY, GetDir
+ */
+double GetX(void); 
+
+/**
+ * \brief Retrieves the Y component of the last received measure of the GPS sensor 
+ * \ingroup sensing
+ * \details
+ *   The value returned by the sensor is the Y position of the robot in the world, not in the maze.
+ * \returns the Y component of the last received measure of the GPS sensor
+ * \see IsGPSReady, IsGPSDirReady, GetX, GetDir
+ */
+double GetY(void); 
+
+/**
+ * \brief Retrieves the Dir component of the last received measure of the GPS sensor 
+ * \ingroup sensing
+ * \details
+ *   The value returned by the sensor is the orientation of the robot in the world, being the same as the orientation in the maze.
+ * \returns the Dir component of the last received measure of the GPS sensor
+ * \see IsGPSReady, IsGPSDirReady, GetX, GetY
+ */
+double GetDir(void);
+
+
+/**************************************************************************/
+/************* communication **********************************************/
+/**************************************************************************/
 
 extern bool NewMessageFrom(int id);
 extern char* GetMessageFrom(int id);
 
-/* GPS sensor - can be used for debug, invoke simulator with "-gps" option */
-extern double          GetX(void); 
-extern double          GetY(void); 
-extern double          GetDir(void);
+/* Broadcast message */
+extern void           Say(char * msg);
 
+
+/**************************************************************************/
+/************* requesting *************************************************/
+/**************************************************************************/
 
 /*
  Request a list of nReqs Sensors
@@ -187,36 +432,6 @@ extern double          GetDir(void);
     "Compass", "Ground", "Collision", "IRSensor0", IRSensor1", etc, "Beacon0", "Beacon1", etc
 */
 void RequestSensors(int nReqs, ...);
-
-
-/**************************************************************************/
-/************* Buttons ****************************************************/
-/**************************************************************************/
-
-/* Start */   
-extern bool           GetStartButton(void);
-
-/* Stop */
-extern bool           GetStopButton(void);
-
-/**************************************************************************/
-/************* Actions ****************************************************/
-/**************************************************************************/
-
-/* Drive right motor with rPow and left motor with lPow - Powers in (-0.15,0.15) */
-extern void           DriveMotors(double lPow,double rPow);
-
-/* Signal the end of phase 1 (go to target) */
-extern void           SetReturningLed(bool val);
-
-/* Set the state of visiting Led */
-extern void           SetVisitingLed(bool val);
-
-/* Finish the round */
-extern void           Finish(void);
-
-/* Broadcast message */
-extern void           Say(char * msg);
 
 /* Requests */
 void RequestCompassSensor(void);
@@ -226,49 +441,148 @@ void RequestBeaconSensor(int Id);
 
 
 /**************************************************************************/
-/************* Checking Actions *******************************************/
+/************* Buttons ****************************************************/
 /**************************************************************************/
 
-/* Verify if SetReturningLed() was executed */
-extern bool           GetReturningLed(void);
+/**
+ * \brief Retrieves the last received state of the start button
+ * \ingroup buttons
+ * \returns \c true if button was pressed; \c false otherwise
+ */
+bool GetStartButton(void);
 
-/* Verify state of Visiting Led */
-extern bool           GetVisitingLed(void);
+/**
+ * \brief Retrieves the last received state of the stop button
+ * \ingroup buttons
+ * \returns \c true if button was pressed; \c false otherwise
+ */
+bool GetStopButton(void);
 
-/* Verify if Finish() was executed */
-extern bool           GetFinished(void);
+
+/**************************************************************************/
+/************* driving ****************************************************/
+/**************************************************************************/
+
+/* Drive right motor with rPow and left motor with lPow - Powers in (-0.15,0.15) */
+/**
+ * \brief Define the desired velocity of the two robot wheels.
+ * \ingroup driving
+ * \details
+ *   A robot has two parallel wheels, driven by independent motors.
+ *   An agent can define the desired velocity for every wheel.
+ *   The possible values range in interval [-0.15, +0.15], where a value of
+ *   0.1 means that the wheel moves 0.1 units in one simulation cycle.
+ *   The unit of lenght corresponds to diameter of a robot.
+ * \param [in] lVel Desired velocity for the left wheel
+ * \param [in] rVel Desired velocity for the right wheel
+ */
+void DriveMotors(double lVel, double rVel);
+
+
+/**************************************************************************/
+/************* Led manipulation *******************************************/
+/**************************************************************************/
+
+/**
+ * \brief Turn \c returning led ON and OFF
+ * \ingroup leds
+ * \details
+ *   In general, when a challenge involves a returning phase, ie., 
+ *   when the robot has to return to its starting spot or to a home area,
+ *   it has to signal, over a target area, that it is starting that phase.
+ *   This signalization is done turning the returning led ON and OFF afterwards.
+ * \param [in] val \c true to turn the led ON and \c false otherwise
+ */
+void SetReturningLed(bool val);
+
+/**
+ * \brief Turn \c visiting led ON and OFF
+ * \ingroup leds
+ * \details
+ *   In general, a robot has to signal it is over a given target area.
+ *   This signalization is done turning the \c visiting led ON and OFF afterwards.
+ *   The robot must be over a target area to be succeful. Otherwise it is penalized.
+ * \param [in] val \c true to turn the led ON and \c false otherwise
+ */
+void SetVisitingLed(bool val);
+
+/**
+ * \brief Turn \c end led ON
+ * \ingroup leds
+ * \details
+ *   In general, a robot has to signal it has finished its run.
+ *   This signalization is done turning the \c end led ON.
+ *   The simulador finishes the robot's run as soon as this command is issued.
+ *   If at the end of the run the robot doesn't send this command a penalty is applied to it.
+ */
+void Finish(void);
+
+/**
+ * \brief Retrieves the last received state of the returning led
+ * \ingroup leds
+ * \returns \c true if led is ON; \c false otherwise
+ */
+bool GetReturningLed(void);
+
+/**
+ * \brief Retrieves the last received state of the visiting led
+ * \ingroup leds
+ * \returns \c true if led is ON; \c false otherwise
+ */
+bool GetVisitingLed(void);
+
+/**
+ * \brief Retrieves the last received state of the end led
+ * \ingroup leds
+ * \returns \c true if led is ON; \c false otherwise
+ */
+bool GetFinished(void);
+
+/**************************************************************************/
+/**************************************************************************/
 
 /**************************************************************************/
 /************* Parameters *************************************************/
 /**************************************************************************/
 
-/* Return the simulation cycle time */
-extern int GetCycleTime(void);
+/** 
+ * \brief Retrieves the cycle time
+ * \ingroup times
+ * \returns The cycle time, in milliseconds
+ */
+int GetCycleTime(void);
 
-/* Return the total simulation time */
-extern int GetFinalTime(void);
+/** 
+ * \brief Retrieves the total time
+ * \ingroup times
+ * \returns The total time, in milliseconds
+ */
+int GetFinalTime(void);
 
-/* Return the key time */
-extern int GetKeyTime(void);
-
+/** 
+ * \brief Retrieves the key time
+ * \ingroup times
+ * \returns The key time, in milliseconds
+ */
+int GetKeyTime(void);
 
 /*****
         Functions returning noise levels
 ******/
 
 /* Returns maximum additive noise of infra-red sensors */
-extern double GetNoiseObstacleSensor(void);
+double GetNoiseObstacleSensor(void);
 
 /* Returns maximum additive noise of beacon angular direction */
-extern double GetNoiseBeaconSensor(void);
+double GetNoiseBeaconSensor(void);
 
 /* Returns maximum additive noise of compass */
-extern double GetNoiseCompassSensor(void);
+double GetNoiseCompassSensor(void);
 
 /* Returns maximum multipicative noise of motors */
-extern double GetNoiseMotors(void);
+double GetNoiseMotors(void);
 
-unsigned int  GetNumberRequestsPerCycle(void);
+unsigned int GetNumberRequestsPerCycle(void);
 
 double GetBeaconAperture();
 
