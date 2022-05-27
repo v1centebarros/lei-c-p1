@@ -6,7 +6,7 @@ ARGS+=" --grid ../Labs/CiberAVLabs/cen-1-grd.xml"
 ARGS+=" --beacon"
 (cd ../bin; ./simulator $ARGS) &
 
-sleep 1
+sleep 2
 
 (cd ../bin; ./Viewer --autoconnect)
 

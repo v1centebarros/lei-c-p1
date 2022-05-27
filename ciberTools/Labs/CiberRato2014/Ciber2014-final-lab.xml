@@ -14,7 +14,7 @@
 <Corner X="28.00" Y="7.00"/>
 <Corner X="22.00" Y="7.00"/>
 </Wall>
-<Wall Height="3.00">
+<Wall Height="6.00">
 <Corner X="25.00" Y="2.00"/>
 <Corner X="5.50" Y="2.00"/>
 <Corner X="5.50" Y="2.50"/>

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+ARGS="--param ../Labs/CiberAVLabs/cen-5-cfg.xml"
+ARGS+=" --lab ../Labs/CiberRato2014/Ciber2014-final-lab.xml"
+ARGS+=" --grid ../Labs/CiberRato2014/Ciber2014-final-grd.xml"
+ARGS+=" --beacon"
+(cd ../bin; ./simulator $ARGS) &
+
+sleep 1
+
+(cd ../bin; ./Viewer --autoconnect)
+
+killall simulator
+
+sleep 1
