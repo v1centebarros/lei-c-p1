@@ -1,5 +1,5 @@
 #pasta gerada pelo antle
-#.antlr
+.antlr
 
 #todos os ficheiros terminados com .class
-#*.class
+*.class
