@@ -1,0 +1,95 @@
+#exemplo da tradução do a4.cpp para .mus
+
+NUM position = 0;
+ROBOT Grimmy = ("Grimmy", position);
+
+NUM i = beaconCount;
+WHILE i > 0 DO
+    PRINT "Going to beacon ", i, "\n";
+    
+    # gotoBeacon(i);
+    ROTATE 80 UNTIL (-10 < beaconAngle(bn) < 10);
+
+    WHILE groundType() != bn DO
+        NUM linearPower = 80.0;
+        NUM angularPower = 1 * beaconAngle(bn);
+
+        NUM fdist = obstacleDistance(FRONTSENSOR);
+        NUM ldist = obstacleDistance(LEFTSENSOR);
+        NUM rdist = obstacleDistance(RIGHTSENSOR);
+
+        IF collides() DO
+            linearPower = 0.0;
+            angularPower = -50.0;
+        END;
+        ELSE IF fdist < 1.5 DO
+            IF ldist < 1.5 DO
+                linearPower = 0.0;
+                angularPower = -50.0;
+            END;
+            ELSE DO
+                linearPower = 0.0;
+                angularPower = 50.0;
+            END;
+        END;
+        ELSE IF ldist < 1.5 DO
+            angularPower = -30.0;
+        END;
+        ELSE IF rdist < 1.5 DO
+            angularPower = 30.0;
+        END;
+
+        MOVE (linearPower - angularPower, linearPower + angularPower);
+    END;
+
+    STOP;
+    
+    pickUp();
+    i = i - 1;
+END;
+
+returning();
+
+ROTATE 80 UNTIL (-10 < startAngle() <10);
+
+WHILE startDistance() > 2 DO
+    NUM linearPower = 80.0;
+    NUM angularPower = 1 * startAngle();
+
+    NUM fdist = obstacleDistance(FRONTSENSOR);
+    NUM ldist = obstacleDistance(LEFTSENSOR);
+    NUM rdist = obstacleDistance(RIGHTSENSOR);
+
+    IF collides() DO
+        linearPower = 0.0;
+        angularPower = -50.0;
+    END;
+    ELSE IF fdist < 1.5 DO
+        IF ldist < 1.5 DO
+            linearPower = 0.0;
+            angularPower = -50.0;
+        END;
+        ELSE DO
+            linearPower = 0.0;
+            angularPower = 50.0;
+        END;
+    END;
+    ELSE IF ldist < 1.5 DO
+        angularPower = -30.0;
+    END;
+    ELSE IF rdist < 1.5 DO
+        angularPower = 30.0;
+    END;
+
+    MOVE (linearPower - angularPower, linearPower + angularPower);
+END;
+
+WHILE startDistance() > 0.3 DO
+    NUM linearPower = 40.0;
+    NUM angularPower = 1 * startAngle();
+    MOVE (linearPower - angularPower, linearPower + angularPower);
+END;
+
+STOP;
+
+finish();
