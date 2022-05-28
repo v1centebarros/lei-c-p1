@@ -830,6 +830,7 @@ WARN_LOGFILE           =
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  = ../src/libRobSock/RobSock.h \
+                            ../src/libRobSock/croblink.h \
                             ../src/libCiberAV/CiberAV.h
 
 # This tag can be used to specify the character encoding of the source files
@@ -2312,7 +2313,7 @@ COLLABORATION_GRAPH    = YES
 # The default value is: YES.
 # This tag requires that the tag HAVE_DOT is set to YES.
 
-GROUP_GRAPHS           = YES
+GROUP_GRAPHS           = NO
 
 # If the UML_LOOK tag is set to YES, doxygen will generate inheritance and
 # collaboration diagrams in a style similar to the OMG's Unified Modeling

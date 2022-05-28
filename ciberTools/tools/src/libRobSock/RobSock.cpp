@@ -1,7 +1,7 @@
 /*
     This file is part of ciberRatoToolsSrc.
 
-    Copyright (C) 2001-2011 Universidade de Aveiro
+    Copyright (C) 2001-2022 Universidade de Aveiro
 
     ciberRatoToolsSrc is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -41,11 +41,10 @@ void *Link(void)
     return robLink;
 }
 
-
 int InitRobot(char *rob_name, int rob_id, char *host)
 {
     assert(robLink==0);
-    robLink=new CRobLink(rob_name, rob_id, host);
+    robLink = new CRobLink(rob_name, rob_id, host);
     setlocale(LC_ALL,"C");
     return robLink->status();
 }
@@ -53,7 +52,7 @@ int InitRobot(char *rob_name, int rob_id, char *host)
 int InitRobot2(char *rob_name, int rob_id, double IRSensorAngles[NUM_IR_SENSORS], char *host)
 {
     assert(robLink==0);
-    robLink=new CRobLink(rob_name, rob_id, IRSensorAngles, host);
+    robLink = new CRobLink(rob_name, rob_id, IRSensorAngles, host);
     setlocale(LC_ALL,"C");
     return robLink->status();
 }
@@ -61,7 +60,7 @@ int InitRobot2(char *rob_name, int rob_id, double IRSensorAngles[NUM_IR_SENSORS]
 int InitRobotBeacon(char *rob_name, int rob_id, double height, char *host)
 {
     assert(robLink==0);
-    robLink=new CRobLink(rob_name, rob_id, height, host);
+    robLink = new CRobLink(rob_name, rob_id, height, host);
     setlocale(LC_ALL,"C");
     return robLink->status();
 }

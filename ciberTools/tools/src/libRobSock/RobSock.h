@@ -224,6 +224,7 @@ bool IsObstacleReady(int id);
  *   distance to the closest obstacle captured by the sensor.
  * \param id Sensor id (one of FRONTAL, LEFT, RIGHT, REAR)
  * \returns the last received measure of the given obstacle sensor
+ * \see IsObstacleReady
  */
 double GetObstacleSensor(int id); 
     
@@ -463,7 +464,6 @@ bool GetStopButton(void);
 /************* driving ****************************************************/
 /**************************************************************************/
 
-/* Drive right motor with rPow and left motor with lPow - Powers in (-0.15,0.15) */
 /**
  * \brief Define the desired velocity of the two robot wheels.
  * \ingroup driving
