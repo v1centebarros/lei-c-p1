@@ -19,15 +19,16 @@ public class MusParser extends Parser {
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
 		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
 		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, T__23=24, 
-		NUM=25, BOOL=26, TEXT=27, VAR=28, LOGICALOP=29, WS=30, COMMENT_INLINE=31, 
-		COMMENT_MULTILINE=32;
+		T__24=25, T__25=26, T__26=27, T__27=28, T__28=29, T__29=30, T__30=31, 
+		T__31=32, NUM=33, BOOL=34, TEXT=35, VAR=36, WS=37, COMMENT_INLINE=38, 
+		COMMENT_MULTILINE=39;
 	public static final int
 		RULE_program = 0, RULE_stat = 1, RULE_block = 2, RULE_assignment = 3, 
-		RULE_expr = 4, RULE_bool = 5, RULE_numeric = 6, RULE_call = 7, RULE_type = 8;
+		RULE_expr = 4, RULE_call = 5, RULE_logicalop = 6, RULE_type = 7;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"program", "stat", "block", "assignment", "expr", "bool", "numeric", 
-			"call", "type"
+			"program", "stat", "block", "assignment", "expr", "call", "logicalop", 
+			"type"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -35,8 +36,9 @@ public class MusParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "';'", "'if'", "'then'", "'end'", "'while'", "'do'", "'until'", 
-			"'='", "'('", "','", "')'", "'|'", "'-'", "'*'", "'/'", "'%'", "'+'", 
-			"'.'", "'()'", "'NUM'", "'BOOL'", "'TEXT'", "'ENUM'", "'ROBOT'"
+			"'='", "'('", "','", "')'", "'|'", "'not'", "'-'", "'*'", "'/'", "'%'", 
+			"'+'", "'.'", "'and'", "'or'", "'>'", "'>='", "'<'", "'<='", "'=='", 
+			"'!='", "'NUM'", "'BOOL'", "'TEXT'", "'ENUM'", "'ROBOT'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -44,8 +46,8 @@ public class MusParser extends Parser {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
 			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, "NUM", "BOOL", "TEXT", "VAR", "LOGICALOP", "WS", "COMMENT_INLINE", 
-			"COMMENT_MULTILINE"
+			null, null, null, null, null, null, null, null, null, "NUM", "BOOL", 
+			"TEXT", "VAR", "WS", "COMMENT_INLINE", "COMMENT_MULTILINE"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -133,21 +135,21 @@ public class MusParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(21);
+			setState(19);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__4) | (1L << T__5) | (1L << T__19) | (1L << T__20) | (1L << T__21) | (1L << T__22) | (1L << T__23) | (1L << VAR))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__4) | (1L << T__27) | (1L << T__28) | (1L << T__29) | (1L << T__30) | (1L << T__31) | (1L << VAR))) != 0)) {
 				{
 				{
-				setState(18);
+				setState(16);
 				stat();
 				}
 				}
-				setState(23);
+				setState(21);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(24);
+			setState(22);
 			match(EOF);
 			}
 		}
@@ -195,20 +197,20 @@ public class MusParser extends Parser {
 		StatContext _localctx = new StatContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_stat);
 		try {
-			setState(31);
+			setState(29);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(26);
+				setState(24);
 				block();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(27);
+				setState(25);
 				assignment();
 				}
 				break;
@@ -216,9 +218,9 @@ public class MusParser extends Parser {
 				enterOuterAlt(_localctx, 3);
 				{
 				{
-				setState(28);
+				setState(26);
 				call();
-				setState(29);
+				setState(27);
 				match(T__0);
 				}
 				}
@@ -325,34 +327,34 @@ public class MusParser extends Parser {
 		enterRule(_localctx, 4, RULE_block);
 		int _la;
 		try {
-			setState(61);
+			setState(58);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__1:
 				_localctx = new BlockIfContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(33);
+				setState(31);
 				match(T__1);
-				setState(34);
-				expr();
-				setState(35);
+				setState(32);
+				expr(0);
+				setState(33);
 				match(T__2);
-				setState(39);
+				setState(37);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__4) | (1L << T__5) | (1L << T__19) | (1L << T__20) | (1L << T__21) | (1L << T__22) | (1L << T__23) | (1L << VAR))) != 0)) {
+				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__4) | (1L << T__27) | (1L << T__28) | (1L << T__29) | (1L << T__30) | (1L << T__31) | (1L << VAR))) != 0)) {
 					{
 					{
-					setState(36);
+					setState(34);
 					stat();
 					}
 					}
-					setState(41);
+					setState(39);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(42);
+				setState(40);
 				match(T__3);
 				}
 				break;
@@ -360,43 +362,41 @@ public class MusParser extends Parser {
 				_localctx = new BlockWhileContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(44);
+				setState(42);
 				match(T__4);
-				setState(45);
-				expr();
-				setState(46);
+				setState(43);
+				expr(0);
+				setState(44);
 				match(T__5);
-				setState(50);
+				setState(48);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__4) | (1L << T__5) | (1L << T__19) | (1L << T__20) | (1L << T__21) | (1L << T__22) | (1L << T__23) | (1L << VAR))) != 0)) {
+				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__4) | (1L << T__27) | (1L << T__28) | (1L << T__29) | (1L << T__30) | (1L << T__31) | (1L << VAR))) != 0)) {
 					{
 					{
-					setState(47);
+					setState(45);
 					stat();
 					}
 					}
-					setState(52);
+					setState(50);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(53);
+				setState(51);
 				match(T__3);
 				}
 				break;
-			case T__5:
+			case VAR:
 				_localctx = new BlockUntilContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(55);
-				match(T__5);
-				setState(56);
+				setState(53);
 				call();
-				setState(57);
+				setState(54);
 				match(T__6);
-				setState(58);
-				expr();
-				setState(59);
+				setState(55);
+				expr(0);
+				setState(56);
 				match(T__0);
 				}
 				break;
@@ -449,23 +449,23 @@ public class MusParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(64);
+			setState(61);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__19) | (1L << T__20) | (1L << T__21) | (1L << T__22) | (1L << T__23))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__27) | (1L << T__28) | (1L << T__29) | (1L << T__30) | (1L << T__31))) != 0)) {
 				{
-				setState(63);
+				setState(60);
 				type();
 				}
 			}
 
-			setState(66);
+			setState(63);
 			match(VAR);
-			setState(67);
+			setState(64);
 			match(T__7);
-			setState(68);
-			expr();
-			setState(69);
+			setState(65);
+			expr(0);
+			setState(66);
 			match(T__0);
 			}
 		}
@@ -532,59 +532,100 @@ public class MusParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class ExprEnumContext extends ExprContext {
-		public List<TerminalNode> TEXT() { return getTokens(MusParser.TEXT); }
-		public TerminalNode TEXT(int i) {
-			return getToken(MusParser.TEXT, i);
+	public static class BoolNegationContext extends ExprContext {
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
 		}
-		public ExprEnumContext(ExprContext ctx) { copyFrom(ctx); }
+		public BoolNegationContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).enterExprEnum(this);
+			if ( listener instanceof MusListener ) ((MusListener)listener).enterBoolNegation(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).exitExprEnum(this);
+			if ( listener instanceof MusListener ) ((MusListener)listener).exitBoolNegation(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitExprEnum(this);
+			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitBoolNegation(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class ExprTextContext extends ExprContext {
-		public TerminalNode TEXT() { return getToken(MusParser.TEXT, 0); }
-		public ExprTextContext(ExprContext ctx) { copyFrom(ctx); }
+	public static class NumericAddSubContext extends ExprContext {
+		public Token op;
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
+		}
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
+		}
+		public NumericAddSubContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).enterExprText(this);
+			if ( listener instanceof MusListener ) ((MusListener)listener).enterNumericAddSub(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).exitExprText(this);
+			if ( listener instanceof MusListener ) ((MusListener)listener).exitNumericAddSub(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitExprText(this);
+			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitNumericAddSub(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class ExprNumericContext extends ExprContext {
-		public NumericContext numeric() {
-			return getRuleContext(NumericContext.class,0);
+	public static class NumericNegativeContext extends ExprContext {
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
 		}
-		public ExprNumericContext(ExprContext ctx) { copyFrom(ctx); }
+		public NumericNegativeContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).enterExprNumeric(this);
+			if ( listener instanceof MusListener ) ((MusListener)listener).enterNumericNegative(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).exitExprNumeric(this);
+			if ( listener instanceof MusListener ) ((MusListener)listener).exitNumericNegative(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitExprNumeric(this);
+			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitNumericNegative(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class NumericLiteralContext extends ExprContext {
+		public TerminalNode NUM() { return getToken(MusParser.NUM, 0); }
+		public NumericLiteralContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MusListener ) ((MusListener)listener).enterNumericLiteral(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MusListener ) ((MusListener)listener).exitNumericLiteral(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitNumericLiteral(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ExprParenthesisContext extends ExprContext {
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public ExprParenthesisContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MusListener ) ((MusListener)listener).enterExprParenthesis(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MusListener ) ((MusListener)listener).exitExprParenthesis(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitExprParenthesis(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -606,311 +647,23 @@ public class MusParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class ExprCallFuncContext extends ExprContext {
-		public CallContext call() {
-			return getRuleContext(CallContext.class,0);
+	public static class BoolDoubleCompareNumContext extends ExprContext {
+		public LogicalopContext op1;
+		public LogicalopContext op2;
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
 		}
-		public ExprCallFuncContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).enterExprCallFunc(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).exitExprCallFunc(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitExprCallFunc(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class ExprBoolContext extends ExprContext {
-		public BoolContext bool() {
-			return getRuleContext(BoolContext.class,0);
-		}
-		public ExprBoolContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).enterExprBool(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).exitExprBool(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitExprBool(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final ExprContext expr() throws RecognitionException {
-		ExprContext _localctx = new ExprContext(_ctx, getState());
-		enterRule(_localctx, 8, RULE_expr);
-		int _la;
-		try {
-			setState(101);
-			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,8,_ctx) ) {
-			case 1:
-				_localctx = new ExprRobotContext(_localctx);
-				enterOuterAlt(_localctx, 1);
-				{
-				setState(71);
-				match(T__8);
-				setState(72);
-				match(TEXT);
-				setState(73);
-				match(T__9);
-				setState(74);
-				match(NUM);
-				setState(75);
-				match(T__10);
-				}
-				break;
-			case 2:
-				_localctx = new ExprEnumContext(_localctx);
-				enterOuterAlt(_localctx, 2);
-				{
-				setState(76);
-				match(TEXT);
-				setState(81);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				while (_la==T__11) {
-					{
-					{
-					setState(77);
-					match(T__11);
-					setState(78);
-					match(TEXT);
-					}
-					}
-					setState(83);
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-				}
-				}
-				break;
-			case 3:
-				_localctx = new ExprEnumWithValuesContext(_localctx);
-				enterOuterAlt(_localctx, 3);
-				{
-				setState(84);
-				match(TEXT);
-				setState(85);
-				match(T__9);
-				setState(86);
-				match(NUM);
-				setState(93);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				while (_la==T__11) {
-					{
-					{
-					setState(87);
-					match(T__11);
-					setState(88);
-					match(TEXT);
-					setState(89);
-					match(T__9);
-					setState(90);
-					match(NUM);
-					}
-					}
-					setState(95);
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-				}
-				}
-				break;
-			case 4:
-				_localctx = new ExprBoolContext(_localctx);
-				enterOuterAlt(_localctx, 4);
-				{
-				setState(96);
-				bool(0);
-				}
-				break;
-			case 5:
-				_localctx = new ExprNumericContext(_localctx);
-				enterOuterAlt(_localctx, 5);
-				{
-				setState(97);
-				numeric(0);
-				}
-				break;
-			case 6:
-				_localctx = new ExprVarContext(_localctx);
-				enterOuterAlt(_localctx, 6);
-				{
-				setState(98);
-				match(VAR);
-				}
-				break;
-			case 7:
-				_localctx = new ExprTextContext(_localctx);
-				enterOuterAlt(_localctx, 7);
-				{
-				setState(99);
-				match(TEXT);
-				}
-				break;
-			case 8:
-				_localctx = new ExprCallFuncContext(_localctx);
-				enterOuterAlt(_localctx, 8);
-				{
-				setState(100);
-				call();
-				}
-				break;
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class BoolContext extends ParserRuleContext {
-		public BoolContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_bool; }
-	 
-		public BoolContext() { }
-		public void copyFrom(BoolContext ctx) {
-			super.copyFrom(ctx);
-		}
-	}
-	public static class BoolCompareNumContext extends BoolContext {
-		public List<NumericContext> numeric() {
-			return getRuleContexts(NumericContext.class);
-		}
-		public NumericContext numeric(int i) {
-			return getRuleContext(NumericContext.class,i);
-		}
-		public TerminalNode LOGICALOP() { return getToken(MusParser.LOGICALOP, 0); }
-		public BoolCompareNumContext(BoolContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).enterBoolCompareNum(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).exitBoolCompareNum(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitBoolCompareNum(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class BoolDoubleCompareContext extends BoolContext {
-		public List<BoolContext> bool() {
-			return getRuleContexts(BoolContext.class);
-		}
-		public BoolContext bool(int i) {
-			return getRuleContext(BoolContext.class,i);
-		}
-		public List<TerminalNode> LOGICALOP() { return getTokens(MusParser.LOGICALOP); }
-		public TerminalNode LOGICALOP(int i) {
-			return getToken(MusParser.LOGICALOP, i);
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
 		}
 		public TerminalNode VAR() { return getToken(MusParser.VAR, 0); }
-		public BoolDoubleCompareContext(BoolContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).enterBoolDoubleCompare(this);
+		public List<LogicalopContext> logicalop() {
+			return getRuleContexts(LogicalopContext.class);
 		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).exitBoolDoubleCompare(this);
+		public LogicalopContext logicalop(int i) {
+			return getRuleContext(LogicalopContext.class,i);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitBoolDoubleCompare(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class BoolCompareContext extends BoolContext {
-		public List<BoolContext> bool() {
-			return getRuleContexts(BoolContext.class);
-		}
-		public BoolContext bool(int i) {
-			return getRuleContext(BoolContext.class,i);
-		}
-		public TerminalNode LOGICALOP() { return getToken(MusParser.LOGICALOP, 0); }
-		public BoolCompareContext(BoolContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).enterBoolCompare(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).exitBoolCompare(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitBoolCompare(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class BoolLiteralContext extends BoolContext {
-		public TerminalNode BOOL() { return getToken(MusParser.BOOL, 0); }
-		public BoolLiteralContext(BoolContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).enterBoolLiteral(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).exitBoolLiteral(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitBoolLiteral(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class BoolParenthesisContext extends BoolContext {
-		public BoolContext bool() {
-			return getRuleContext(BoolContext.class,0);
-		}
-		public BoolParenthesisContext(BoolContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).enterBoolParenthesis(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).exitBoolParenthesis(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitBoolParenthesis(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class BoolDoubleCompareNumContext extends BoolContext {
-		public List<NumericContext> numeric() {
-			return getRuleContexts(NumericContext.class);
-		}
-		public NumericContext numeric(int i) {
-			return getRuleContext(NumericContext.class,i);
-		}
-		public List<TerminalNode> LOGICALOP() { return getTokens(MusParser.LOGICALOP); }
-		public TerminalNode LOGICALOP(int i) {
-			return getToken(MusParser.LOGICALOP, i);
-		}
-		public TerminalNode VAR() { return getToken(MusParser.VAR, 0); }
-		public BoolDoubleCompareNumContext(BoolContext ctx) { copyFrom(ctx); }
+		public BoolDoubleCompareNumContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
 			if ( listener instanceof MusListener ) ((MusListener)listener).enterBoolDoubleCompareNum(this);
@@ -925,280 +678,97 @@ public class MusParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class BoolVarContext extends BoolContext {
-		public TerminalNode VAR() { return getToken(MusParser.VAR, 0); }
-		public BoolVarContext(BoolContext ctx) { copyFrom(ctx); }
+	public static class ExprCallContext extends ExprContext {
+		public CallContext call() {
+			return getRuleContext(CallContext.class,0);
+		}
+		public ExprCallContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).enterBoolVar(this);
+			if ( listener instanceof MusListener ) ((MusListener)listener).enterExprCall(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).exitBoolVar(this);
+			if ( listener instanceof MusListener ) ((MusListener)listener).exitExprCall(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitBoolVar(this);
+			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitExprCall(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-
-	public final BoolContext bool() throws RecognitionException {
-		return bool(0);
-	}
-
-	private BoolContext bool(int _p) throws RecognitionException {
-		ParserRuleContext _parentctx = _ctx;
-		int _parentState = getState();
-		BoolContext _localctx = new BoolContext(_ctx, _parentState);
-		BoolContext _prevctx = _localctx;
-		int _startState = 10;
-		enterRecursionRule(_localctx, 10, RULE_bool, _p);
-		try {
-			int _alt;
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(120);
-			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,9,_ctx) ) {
-			case 1:
-				{
-				_localctx = new BoolParenthesisContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
-
-				setState(104);
-				match(T__8);
-				setState(105);
-				bool(0);
-				setState(106);
-				match(T__10);
-				}
-				break;
-			case 2:
-				{
-				_localctx = new BoolDoubleCompareNumContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
-				setState(108);
-				numeric(0);
-				setState(109);
-				match(LOGICALOP);
-				setState(110);
-				match(VAR);
-				setState(111);
-				match(LOGICALOP);
-				setState(112);
-				numeric(0);
-				}
-				break;
-			case 3:
-				{
-				_localctx = new BoolCompareNumContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
-				setState(114);
-				numeric(0);
-				setState(115);
-				match(LOGICALOP);
-				setState(116);
-				numeric(0);
-				}
-				break;
-			case 4:
-				{
-				_localctx = new BoolLiteralContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
-				setState(118);
-				match(BOOL);
-				}
-				break;
-			case 5:
-				{
-				_localctx = new BoolVarContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
-				setState(119);
-				match(VAR);
-				}
-				break;
-			}
-			_ctx.stop = _input.LT(-1);
-			setState(132);
-			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,11,_ctx);
-			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
-				if ( _alt==1 ) {
-					if ( _parseListeners!=null ) triggerExitRuleEvent();
-					_prevctx = _localctx;
-					{
-					setState(130);
-					_errHandler.sync(this);
-					switch ( getInterpreter().adaptivePredict(_input,10,_ctx) ) {
-					case 1:
-						{
-						_localctx = new BoolDoubleCompareContext(new BoolContext(_parentctx, _parentState));
-						pushNewRecursionContext(_localctx, _startState, RULE_bool);
-						setState(122);
-						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
-						setState(123);
-						match(LOGICALOP);
-						setState(124);
-						match(VAR);
-						setState(125);
-						match(LOGICALOP);
-						setState(126);
-						bool(5);
-						}
-						break;
-					case 2:
-						{
-						_localctx = new BoolCompareContext(new BoolContext(_parentctx, _parentState));
-						pushNewRecursionContext(_localctx, _startState, RULE_bool);
-						setState(127);
-						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-						setState(128);
-						match(LOGICALOP);
-						setState(129);
-						bool(4);
-						}
-						break;
-					}
-					} 
-				}
-				setState(134);
-				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,11,_ctx);
-			}
-			}
+	public static class BoolCompareNumContext extends ExprContext {
+		public LogicalopContext op;
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
 		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
 		}
-		finally {
-			unrollRecursionContexts(_parentctx);
+		public LogicalopContext logicalop() {
+			return getRuleContext(LogicalopContext.class,0);
 		}
-		return _localctx;
-	}
-
-	public static class NumericContext extends ParserRuleContext {
-		public NumericContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_numeric; }
-	 
-		public NumericContext() { }
-		public void copyFrom(NumericContext ctx) {
-			super.copyFrom(ctx);
-		}
-	}
-	public static class NumericVarContext extends NumericContext {
-		public TerminalNode VAR() { return getToken(MusParser.VAR, 0); }
-		public NumericVarContext(NumericContext ctx) { copyFrom(ctx); }
+		public BoolCompareNumContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).enterNumericVar(this);
+			if ( listener instanceof MusListener ) ((MusListener)listener).enterBoolCompareNum(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).exitNumericVar(this);
+			if ( listener instanceof MusListener ) ((MusListener)listener).exitBoolCompareNum(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitNumericVar(this);
+			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitBoolCompareNum(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class NumericAddSubContext extends NumericContext {
+	public static class BoolLiteralContext extends ExprContext {
+		public TerminalNode BOOL() { return getToken(MusParser.BOOL, 0); }
+		public BoolLiteralContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MusListener ) ((MusListener)listener).enterBoolLiteral(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MusListener ) ((MusListener)listener).exitBoolLiteral(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitBoolLiteral(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ExprEnumContext extends ExprContext {
+		public List<TerminalNode> TEXT() { return getTokens(MusParser.TEXT); }
+		public TerminalNode TEXT(int i) {
+			return getToken(MusParser.TEXT, i);
+		}
+		public ExprEnumContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MusListener ) ((MusListener)listener).enterExprEnum(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MusListener ) ((MusListener)listener).exitExprEnum(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitExprEnum(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class NumericMultDivModContext extends ExprContext {
 		public Token op;
-		public List<NumericContext> numeric() {
-			return getRuleContexts(NumericContext.class);
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
 		}
-		public NumericContext numeric(int i) {
-			return getRuleContext(NumericContext.class,i);
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
 		}
-		public NumericAddSubContext(NumericContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).enterNumericAddSub(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).exitNumericAddSub(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitNumericAddSub(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class NumericParenthesisContext extends NumericContext {
-		public NumericContext numeric() {
-			return getRuleContext(NumericContext.class,0);
-		}
-		public NumericParenthesisContext(NumericContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).enterNumericParenthesis(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).exitNumericParenthesis(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitNumericParenthesis(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class NumericNegativeContext extends NumericContext {
-		public NumericContext numeric() {
-			return getRuleContext(NumericContext.class,0);
-		}
-		public NumericNegativeContext(NumericContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).enterNumericNegative(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).exitNumericNegative(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitNumericNegative(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class NumericLiteralContext extends NumericContext {
-		public TerminalNode NUM() { return getToken(MusParser.NUM, 0); }
-		public NumericLiteralContext(NumericContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).enterNumericLiteral(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MusListener ) ((MusListener)listener).exitNumericLiteral(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitNumericLiteral(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class NumericMultDivModContext extends NumericContext {
-		public Token op;
-		public List<NumericContext> numeric() {
-			return getRuleContexts(NumericContext.class);
-		}
-		public NumericContext numeric(int i) {
-			return getRuleContext(NumericContext.class,i);
-		}
-		public NumericMultDivModContext(NumericContext ctx) { copyFrom(ctx); }
+		public NumericMultDivModContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
 			if ( listener instanceof MusListener ) ((MusListener)listener).enterNumericMultDivMod(this);
@@ -1213,94 +783,254 @@ public class MusParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-
-	public final NumericContext numeric() throws RecognitionException {
-		return numeric(0);
+	public static class TextLiteralContext extends ExprContext {
+		public TerminalNode TEXT() { return getToken(MusParser.TEXT, 0); }
+		public TextLiteralContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MusListener ) ((MusListener)listener).enterTextLiteral(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MusListener ) ((MusListener)listener).exitTextLiteral(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitTextLiteral(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
-	private NumericContext numeric(int _p) throws RecognitionException {
+	public final ExprContext expr() throws RecognitionException {
+		return expr(0);
+	}
+
+	private ExprContext expr(int _p) throws RecognitionException {
 		ParserRuleContext _parentctx = _ctx;
 		int _parentState = getState();
-		NumericContext _localctx = new NumericContext(_ctx, _parentState);
-		NumericContext _prevctx = _localctx;
-		int _startState = 12;
-		enterRecursionRule(_localctx, 12, RULE_numeric, _p);
+		ExprContext _localctx = new ExprContext(_ctx, _parentState);
+		ExprContext _prevctx = _localctx;
+		int _startState = 8;
+		enterRecursionRule(_localctx, 8, RULE_expr, _p);
 		int _la;
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(144);
+			setState(107);
 			_errHandler.sync(this);
-			switch (_input.LA(1)) {
-			case T__12:
+			switch ( getInterpreter().adaptivePredict(_input,8,_ctx) ) {
+			case 1:
+				{
+				_localctx = new ExprRobotContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+
+				setState(69);
+				match(T__8);
+				setState(70);
+				match(TEXT);
+				setState(71);
+				match(T__9);
+				setState(72);
+				match(NUM);
+				setState(73);
+				match(T__10);
+				}
+				break;
+			case 2:
+				{
+				_localctx = new ExprEnumContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(74);
+				match(TEXT);
+				setState(79);
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
+				while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
+					if ( _alt==1 ) {
+						{
+						{
+						setState(75);
+						match(T__11);
+						setState(76);
+						match(TEXT);
+						}
+						} 
+					}
+					setState(81);
+					_errHandler.sync(this);
+					_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
+				}
+				}
+				break;
+			case 3:
+				{
+				_localctx = new ExprEnumWithValuesContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(82);
+				match(TEXT);
+				setState(83);
+				match(T__9);
+				setState(84);
+				match(NUM);
+				setState(91);
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,7,_ctx);
+				while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
+					if ( _alt==1 ) {
+						{
+						{
+						setState(85);
+						match(T__11);
+						setState(86);
+						match(TEXT);
+						setState(87);
+						match(T__9);
+						setState(88);
+						match(NUM);
+						}
+						} 
+					}
+					setState(93);
+					_errHandler.sync(this);
+					_alt = getInterpreter().adaptivePredict(_input,7,_ctx);
+				}
+				}
+				break;
+			case 4:
+				{
+				_localctx = new ExprParenthesisContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(94);
+				match(T__8);
+				setState(95);
+				expr(0);
+				setState(96);
+				match(T__10);
+				}
+				break;
+			case 5:
+				{
+				_localctx = new BoolNegationContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(98);
+				match(T__12);
+				setState(99);
+				expr(11);
+				}
+				break;
+			case 6:
 				{
 				_localctx = new NumericNegativeContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-
-				setState(136);
-				match(T__12);
-				setState(137);
-				numeric(6);
+				setState(100);
+				match(T__13);
+				setState(101);
+				expr(8);
 				}
 				break;
-			case T__8:
+			case 7:
 				{
-				_localctx = new NumericParenthesisContext(_localctx);
+				_localctx = new ExprVarContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(138);
-				match(T__8);
-				setState(139);
-				numeric(0);
-				setState(140);
-				match(T__10);
+				setState(102);
+				match(VAR);
 				}
 				break;
-			case NUM:
+			case 8:
+				{
+				_localctx = new ExprCallContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(103);
+				call();
+				}
+				break;
+			case 9:
+				{
+				_localctx = new TextLiteralContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(104);
+				match(TEXT);
+				}
+				break;
+			case 10:
+				{
+				_localctx = new BoolLiteralContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(105);
+				match(BOOL);
+				}
+				break;
+			case 11:
 				{
 				_localctx = new NumericLiteralContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(142);
+				setState(106);
 				match(NUM);
 				}
 				break;
-			case VAR:
-				{
-				_localctx = new NumericVarContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
-				setState(143);
-				match(VAR);
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(154);
+			setState(127);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,14,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,10,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(152);
+					setState(125);
 					_errHandler.sync(this);
-					switch ( getInterpreter().adaptivePredict(_input,13,_ctx) ) {
+					switch ( getInterpreter().adaptivePredict(_input,9,_ctx) ) {
 					case 1:
 						{
-						_localctx = new NumericMultDivModContext(new NumericContext(_parentctx, _parentState));
-						pushNewRecursionContext(_localctx, _startState, RULE_numeric);
-						setState(146);
-						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
-						setState(147);
+						_localctx = new BoolDoubleCompareNumContext(new ExprContext(_parentctx, _parentState));
+						pushNewRecursionContext(_localctx, _startState, RULE_expr);
+						setState(109);
+						if (!(precpred(_ctx, 10))) throw new FailedPredicateException(this, "precpred(_ctx, 10)");
+						setState(110);
+						((BoolDoubleCompareNumContext)_localctx).op1 = logicalop();
+						setState(111);
+						match(VAR);
+						setState(112);
+						((BoolDoubleCompareNumContext)_localctx).op2 = logicalop();
+						setState(113);
+						expr(11);
+						}
+						break;
+					case 2:
+						{
+						_localctx = new BoolCompareNumContext(new ExprContext(_parentctx, _parentState));
+						pushNewRecursionContext(_localctx, _startState, RULE_expr);
+						setState(115);
+						if (!(precpred(_ctx, 9))) throw new FailedPredicateException(this, "precpred(_ctx, 9)");
+						setState(116);
+						((BoolCompareNumContext)_localctx).op = logicalop();
+						setState(117);
+						expr(10);
+						}
+						break;
+					case 3:
+						{
+						_localctx = new NumericMultDivModContext(new ExprContext(_parentctx, _parentState));
+						pushNewRecursionContext(_localctx, _startState, RULE_expr);
+						setState(119);
+						if (!(precpred(_ctx, 7))) throw new FailedPredicateException(this, "precpred(_ctx, 7)");
+						setState(120);
 						((NumericMultDivModContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__13) | (1L << T__14) | (1L << T__15))) != 0)) ) {
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__14) | (1L << T__15) | (1L << T__16))) != 0)) ) {
 							((NumericMultDivModContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
@@ -1308,20 +1038,20 @@ public class MusParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(148);
-						numeric(5);
+						setState(121);
+						expr(8);
 						}
 						break;
-					case 2:
+					case 4:
 						{
-						_localctx = new NumericAddSubContext(new NumericContext(_parentctx, _parentState));
-						pushNewRecursionContext(_localctx, _startState, RULE_numeric);
-						setState(149);
-						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-						setState(150);
+						_localctx = new NumericAddSubContext(new ExprContext(_parentctx, _parentState));
+						pushNewRecursionContext(_localctx, _startState, RULE_expr);
+						setState(122);
+						if (!(precpred(_ctx, 6))) throw new FailedPredicateException(this, "precpred(_ctx, 6)");
+						setState(123);
 						((NumericAddSubContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !(_la==T__12 || _la==T__16) ) {
+						if ( !(_la==T__13 || _la==T__17) ) {
 							((NumericAddSubContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
@@ -1329,16 +1059,16 @@ public class MusParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(151);
-						numeric(4);
+						setState(124);
+						expr(7);
 						}
 						break;
 					}
 					} 
 				}
-				setState(156);
+				setState(129);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,14,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,10,_ctx);
 			}
 			}
 		}
@@ -1385,66 +1115,90 @@ public class MusParser extends Parser {
 
 	public final CallContext call() throws RecognitionException {
 		CallContext _localctx = new CallContext(_ctx, getState());
-		enterRule(_localctx, 14, RULE_call);
+		enterRule(_localctx, 10, RULE_call);
+		try {
+			int _alt;
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(132);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,11,_ctx) ) {
+			case 1:
+				{
+				setState(130);
+				match(VAR);
+				setState(131);
+				match(T__18);
+				}
+				break;
+			}
+			setState(134);
+			match(VAR);
+			setState(138);
+			_errHandler.sync(this);
+			_alt = getInterpreter().adaptivePredict(_input,12,_ctx);
+			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
+				if ( _alt==1 ) {
+					{
+					{
+					setState(135);
+					expr(0);
+					}
+					} 
+				}
+				setState(140);
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,12,_ctx);
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class LogicalopContext extends ParserRuleContext {
+		public LogicalopContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_logicalop; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MusListener ) ((MusListener)listener).enterLogicalop(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MusListener ) ((MusListener)listener).exitLogicalop(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MusVisitor ) return ((MusVisitor<? extends T>)visitor).visitLogicalop(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final LogicalopContext logicalop() throws RecognitionException {
+		LogicalopContext _localctx = new LogicalopContext(_ctx, getState());
+		enterRule(_localctx, 12, RULE_logicalop);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(159);
-			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,15,_ctx) ) {
-			case 1:
-				{
-				setState(157);
-				match(VAR);
-				setState(158);
-				match(T__17);
-				}
-				break;
+			setState(141);
+			_la = _input.LA(1);
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__19) | (1L << T__20) | (1L << T__21) | (1L << T__22) | (1L << T__23) | (1L << T__24) | (1L << T__25) | (1L << T__26))) != 0)) ) {
+			_errHandler.recoverInline(this);
 			}
-			setState(161);
-			match(VAR);
-			setState(174);
-			_errHandler.sync(this);
-			switch (_input.LA(1)) {
-			case T__8:
-				{
-				{
-				setState(162);
-				match(T__8);
-				{
-				setState(163);
-				expr();
-				setState(168);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				while (_la==T__9) {
-					{
-					{
-					setState(164);
-					match(T__9);
-					setState(165);
-					expr();
-					}
-					}
-					setState(170);
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-				}
-				}
-				}
-				setState(171);
-				match(T__10);
-				}
-				break;
-			case T__18:
-				{
-				setState(173);
-				match(T__18);
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
 			}
 			}
 		}
@@ -1481,14 +1235,14 @@ public class MusParser extends Parser {
 
 	public final TypeContext type() throws RecognitionException {
 		TypeContext _localctx = new TypeContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_type);
+		enterRule(_localctx, 14, RULE_type);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(176);
+			setState(143);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__19) | (1L << T__20) | (1L << T__21) | (1L << T__22) | (1L << T__23))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__27) | (1L << T__28) | (1L << T__29) | (1L << T__30) | (1L << T__31))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -1511,88 +1265,67 @@ public class MusParser extends Parser {
 
 	public boolean sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
-		case 5:
-			return bool_sempred((BoolContext)_localctx, predIndex);
-		case 6:
-			return numeric_sempred((NumericContext)_localctx, predIndex);
+		case 4:
+			return expr_sempred((ExprContext)_localctx, predIndex);
 		}
 		return true;
 	}
-	private boolean bool_sempred(BoolContext _localctx, int predIndex) {
+	private boolean expr_sempred(ExprContext _localctx, int predIndex) {
 		switch (predIndex) {
 		case 0:
-			return precpred(_ctx, 4);
+			return precpred(_ctx, 10);
 		case 1:
-			return precpred(_ctx, 3);
-		}
-		return true;
-	}
-	private boolean numeric_sempred(NumericContext _localctx, int predIndex) {
-		switch (predIndex) {
+			return precpred(_ctx, 9);
 		case 2:
-			return precpred(_ctx, 4);
+			return precpred(_ctx, 7);
 		case 3:
-			return precpred(_ctx, 3);
+			return precpred(_ctx, 6);
 		}
 		return true;
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\"\u00b5\4\2\t\2\4"+
-		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\3\2\7\2"+
-		"\26\n\2\f\2\16\2\31\13\2\3\2\3\2\3\3\3\3\3\3\3\3\3\3\5\3\"\n\3\3\4\3\4"+
-		"\3\4\3\4\7\4(\n\4\f\4\16\4+\13\4\3\4\3\4\3\4\3\4\3\4\3\4\7\4\63\n\4\f"+
-		"\4\16\4\66\13\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\5\4@\n\4\3\5\5\5C\n\5"+
-		"\3\5\3\5\3\5\3\5\3\5\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\7\6R\n\6\f\6\16\6"+
-		"U\13\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\7\6^\n\6\f\6\16\6a\13\6\3\6\3\6\3\6"+
-		"\3\6\3\6\5\6h\n\6\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7"+
-		"\3\7\3\7\3\7\3\7\5\7{\n\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\7\7\u0085\n"+
-		"\7\f\7\16\7\u0088\13\7\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\5\b\u0093\n"+
-		"\b\3\b\3\b\3\b\3\b\3\b\3\b\7\b\u009b\n\b\f\b\16\b\u009e\13\b\3\t\3\t\5"+
-		"\t\u00a2\n\t\3\t\3\t\3\t\3\t\3\t\7\t\u00a9\n\t\f\t\16\t\u00ac\13\t\3\t"+
-		"\3\t\3\t\5\t\u00b1\n\t\3\n\3\n\3\n\2\4\f\16\13\2\4\6\b\n\f\16\20\22\2"+
-		"\5\3\2\20\22\4\2\17\17\23\23\3\2\26\32\2\u00ca\2\27\3\2\2\2\4!\3\2\2\2"+
-		"\6?\3\2\2\2\bB\3\2\2\2\ng\3\2\2\2\fz\3\2\2\2\16\u0092\3\2\2\2\20\u00a1"+
-		"\3\2\2\2\22\u00b2\3\2\2\2\24\26\5\4\3\2\25\24\3\2\2\2\26\31\3\2\2\2\27"+
-		"\25\3\2\2\2\27\30\3\2\2\2\30\32\3\2\2\2\31\27\3\2\2\2\32\33\7\2\2\3\33"+
-		"\3\3\2\2\2\34\"\5\6\4\2\35\"\5\b\5\2\36\37\5\20\t\2\37 \7\3\2\2 \"\3\2"+
-		"\2\2!\34\3\2\2\2!\35\3\2\2\2!\36\3\2\2\2\"\5\3\2\2\2#$\7\4\2\2$%\5\n\6"+
-		"\2%)\7\5\2\2&(\5\4\3\2\'&\3\2\2\2(+\3\2\2\2)\'\3\2\2\2)*\3\2\2\2*,\3\2"+
-		"\2\2+)\3\2\2\2,-\7\6\2\2-@\3\2\2\2./\7\7\2\2/\60\5\n\6\2\60\64\7\b\2\2"+
-		"\61\63\5\4\3\2\62\61\3\2\2\2\63\66\3\2\2\2\64\62\3\2\2\2\64\65\3\2\2\2"+
-		"\65\67\3\2\2\2\66\64\3\2\2\2\678\7\6\2\28@\3\2\2\29:\7\b\2\2:;\5\20\t"+
-		"\2;<\7\t\2\2<=\5\n\6\2=>\7\3\2\2>@\3\2\2\2?#\3\2\2\2?.\3\2\2\2?9\3\2\2"+
-		"\2@\7\3\2\2\2AC\5\22\n\2BA\3\2\2\2BC\3\2\2\2CD\3\2\2\2DE\7\36\2\2EF\7"+
-		"\n\2\2FG\5\n\6\2GH\7\3\2\2H\t\3\2\2\2IJ\7\13\2\2JK\7\35\2\2KL\7\f\2\2"+
-		"LM\7\33\2\2Mh\7\r\2\2NS\7\35\2\2OP\7\16\2\2PR\7\35\2\2QO\3\2\2\2RU\3\2"+
-		"\2\2SQ\3\2\2\2ST\3\2\2\2Th\3\2\2\2US\3\2\2\2VW\7\35\2\2WX\7\f\2\2X_\7"+
-		"\33\2\2YZ\7\16\2\2Z[\7\35\2\2[\\\7\f\2\2\\^\7\33\2\2]Y\3\2\2\2^a\3\2\2"+
-		"\2_]\3\2\2\2_`\3\2\2\2`h\3\2\2\2a_\3\2\2\2bh\5\f\7\2ch\5\16\b\2dh\7\36"+
-		"\2\2eh\7\35\2\2fh\5\20\t\2gI\3\2\2\2gN\3\2\2\2gV\3\2\2\2gb\3\2\2\2gc\3"+
-		"\2\2\2gd\3\2\2\2ge\3\2\2\2gf\3\2\2\2h\13\3\2\2\2ij\b\7\1\2jk\7\13\2\2"+
-		"kl\5\f\7\2lm\7\r\2\2m{\3\2\2\2no\5\16\b\2op\7\37\2\2pq\7\36\2\2qr\7\37"+
-		"\2\2rs\5\16\b\2s{\3\2\2\2tu\5\16\b\2uv\7\37\2\2vw\5\16\b\2w{\3\2\2\2x"+
-		"{\7\34\2\2y{\7\36\2\2zi\3\2\2\2zn\3\2\2\2zt\3\2\2\2zx\3\2\2\2zy\3\2\2"+
-		"\2{\u0086\3\2\2\2|}\f\6\2\2}~\7\37\2\2~\177\7\36\2\2\177\u0080\7\37\2"+
-		"\2\u0080\u0085\5\f\7\7\u0081\u0082\f\5\2\2\u0082\u0083\7\37\2\2\u0083"+
-		"\u0085\5\f\7\6\u0084|\3\2\2\2\u0084\u0081\3\2\2\2\u0085\u0088\3\2\2\2"+
-		"\u0086\u0084\3\2\2\2\u0086\u0087\3\2\2\2\u0087\r\3\2\2\2\u0088\u0086\3"+
-		"\2\2\2\u0089\u008a\b\b\1\2\u008a\u008b\7\17\2\2\u008b\u0093\5\16\b\b\u008c"+
-		"\u008d\7\13\2\2\u008d\u008e\5\16\b\2\u008e\u008f\7\r\2\2\u008f\u0093\3"+
-		"\2\2\2\u0090\u0093\7\33\2\2\u0091\u0093\7\36\2\2\u0092\u0089\3\2\2\2\u0092"+
-		"\u008c\3\2\2\2\u0092\u0090\3\2\2\2\u0092\u0091\3\2\2\2\u0093\u009c\3\2"+
-		"\2\2\u0094\u0095\f\6\2\2\u0095\u0096\t\2\2\2\u0096\u009b\5\16\b\7\u0097"+
-		"\u0098\f\5\2\2\u0098\u0099\t\3\2\2\u0099\u009b\5\16\b\6\u009a\u0094\3"+
-		"\2\2\2\u009a\u0097\3\2\2\2\u009b\u009e\3\2\2\2\u009c\u009a\3\2\2\2\u009c"+
-		"\u009d\3\2\2\2\u009d\17\3\2\2\2\u009e\u009c\3\2\2\2\u009f\u00a0\7\36\2"+
-		"\2\u00a0\u00a2\7\24\2\2\u00a1\u009f\3\2\2\2\u00a1\u00a2\3\2\2\2\u00a2"+
-		"\u00a3\3\2\2\2\u00a3\u00b0\7\36\2\2\u00a4\u00a5\7\13\2\2\u00a5\u00aa\5"+
-		"\n\6\2\u00a6\u00a7\7\f\2\2\u00a7\u00a9\5\n\6\2\u00a8\u00a6\3\2\2\2\u00a9"+
-		"\u00ac\3\2\2\2\u00aa\u00a8\3\2\2\2\u00aa\u00ab\3\2\2\2\u00ab\u00ad\3\2"+
-		"\2\2\u00ac\u00aa\3\2\2\2\u00ad\u00ae\7\r\2\2\u00ae\u00b1\3\2\2\2\u00af"+
-		"\u00b1\7\25\2\2\u00b0\u00a4\3\2\2\2\u00b0\u00af\3\2\2\2\u00b1\21\3\2\2"+
-		"\2\u00b2\u00b3\t\4\2\2\u00b3\23\3\2\2\2\24\27!)\64?BS_gz\u0084\u0086\u0092"+
-		"\u009a\u009c\u00a1\u00aa\u00b0";
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3)\u0094\4\2\t\2\4"+
+		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\3\2\7\2\24\n\2"+
+		"\f\2\16\2\27\13\2\3\2\3\2\3\3\3\3\3\3\3\3\3\3\5\3 \n\3\3\4\3\4\3\4\3\4"+
+		"\7\4&\n\4\f\4\16\4)\13\4\3\4\3\4\3\4\3\4\3\4\3\4\7\4\61\n\4\f\4\16\4\64"+
+		"\13\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\5\4=\n\4\3\5\5\5@\n\5\3\5\3\5\3\5\3"+
+		"\5\3\5\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\7\6P\n\6\f\6\16\6S\13\6\3\6"+
+		"\3\6\3\6\3\6\3\6\3\6\3\6\7\6\\\n\6\f\6\16\6_\13\6\3\6\3\6\3\6\3\6\3\6"+
+		"\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\5\6n\n\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6"+
+		"\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\7\6\u0080\n\6\f\6\16\6\u0083\13\6"+
+		"\3\7\3\7\5\7\u0087\n\7\3\7\3\7\7\7\u008b\n\7\f\7\16\7\u008e\13\7\3\b\3"+
+		"\b\3\t\3\t\3\t\2\3\n\n\2\4\6\b\n\f\16\20\2\6\3\2\21\23\4\2\20\20\24\24"+
+		"\3\2\26\35\3\2\36\"\2\u00a5\2\25\3\2\2\2\4\37\3\2\2\2\6<\3\2\2\2\b?\3"+
+		"\2\2\2\nm\3\2\2\2\f\u0086\3\2\2\2\16\u008f\3\2\2\2\20\u0091\3\2\2\2\22"+
+		"\24\5\4\3\2\23\22\3\2\2\2\24\27\3\2\2\2\25\23\3\2\2\2\25\26\3\2\2\2\26"+
+		"\30\3\2\2\2\27\25\3\2\2\2\30\31\7\2\2\3\31\3\3\2\2\2\32 \5\6\4\2\33 \5"+
+		"\b\5\2\34\35\5\f\7\2\35\36\7\3\2\2\36 \3\2\2\2\37\32\3\2\2\2\37\33\3\2"+
+		"\2\2\37\34\3\2\2\2 \5\3\2\2\2!\"\7\4\2\2\"#\5\n\6\2#\'\7\5\2\2$&\5\4\3"+
+		"\2%$\3\2\2\2&)\3\2\2\2\'%\3\2\2\2\'(\3\2\2\2(*\3\2\2\2)\'\3\2\2\2*+\7"+
+		"\6\2\2+=\3\2\2\2,-\7\7\2\2-.\5\n\6\2.\62\7\b\2\2/\61\5\4\3\2\60/\3\2\2"+
+		"\2\61\64\3\2\2\2\62\60\3\2\2\2\62\63\3\2\2\2\63\65\3\2\2\2\64\62\3\2\2"+
+		"\2\65\66\7\6\2\2\66=\3\2\2\2\678\5\f\7\289\7\t\2\29:\5\n\6\2:;\7\3\2\2"+
+		";=\3\2\2\2<!\3\2\2\2<,\3\2\2\2<\67\3\2\2\2=\7\3\2\2\2>@\5\20\t\2?>\3\2"+
+		"\2\2?@\3\2\2\2@A\3\2\2\2AB\7&\2\2BC\7\n\2\2CD\5\n\6\2DE\7\3\2\2E\t\3\2"+
+		"\2\2FG\b\6\1\2GH\7\13\2\2HI\7%\2\2IJ\7\f\2\2JK\7#\2\2Kn\7\r\2\2LQ\7%\2"+
+		"\2MN\7\16\2\2NP\7%\2\2OM\3\2\2\2PS\3\2\2\2QO\3\2\2\2QR\3\2\2\2Rn\3\2\2"+
+		"\2SQ\3\2\2\2TU\7%\2\2UV\7\f\2\2V]\7#\2\2WX\7\16\2\2XY\7%\2\2YZ\7\f\2\2"+
+		"Z\\\7#\2\2[W\3\2\2\2\\_\3\2\2\2][\3\2\2\2]^\3\2\2\2^n\3\2\2\2_]\3\2\2"+
+		"\2`a\7\13\2\2ab\5\n\6\2bc\7\r\2\2cn\3\2\2\2de\7\17\2\2en\5\n\6\rfg\7\20"+
+		"\2\2gn\5\n\6\nhn\7&\2\2in\5\f\7\2jn\7%\2\2kn\7$\2\2ln\7#\2\2mF\3\2\2\2"+
+		"mL\3\2\2\2mT\3\2\2\2m`\3\2\2\2md\3\2\2\2mf\3\2\2\2mh\3\2\2\2mi\3\2\2\2"+
+		"mj\3\2\2\2mk\3\2\2\2ml\3\2\2\2n\u0081\3\2\2\2op\f\f\2\2pq\5\16\b\2qr\7"+
+		"&\2\2rs\5\16\b\2st\5\n\6\rt\u0080\3\2\2\2uv\f\13\2\2vw\5\16\b\2wx\5\n"+
+		"\6\fx\u0080\3\2\2\2yz\f\t\2\2z{\t\2\2\2{\u0080\5\n\6\n|}\f\b\2\2}~\t\3"+
+		"\2\2~\u0080\5\n\6\t\177o\3\2\2\2\177u\3\2\2\2\177y\3\2\2\2\177|\3\2\2"+
+		"\2\u0080\u0083\3\2\2\2\u0081\177\3\2\2\2\u0081\u0082\3\2\2\2\u0082\13"+
+		"\3\2\2\2\u0083\u0081\3\2\2\2\u0084\u0085\7&\2\2\u0085\u0087\7\25\2\2\u0086"+
+		"\u0084\3\2\2\2\u0086\u0087\3\2\2\2\u0087\u0088\3\2\2\2\u0088\u008c\7&"+
+		"\2\2\u0089\u008b\5\n\6\2\u008a\u0089\3\2\2\2\u008b\u008e\3\2\2\2\u008c"+
+		"\u008a\3\2\2\2\u008c\u008d\3\2\2\2\u008d\r\3\2\2\2\u008e\u008c\3\2\2\2"+
+		"\u008f\u0090\t\4\2\2\u0090\17\3\2\2\2\u0091\u0092\t\5\2\2\u0092\21\3\2"+
+		"\2\2\17\25\37\'\62<?Q]m\177\u0081\u0086\u008c";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

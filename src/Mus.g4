@@ -7,10 +7,10 @@ program:
 stat:
     block | assignment | (call ';') ;
 
-block: 'if' expr /*SUBSTITUIR EXPR POR CONDITION */  'then' stat* 'end' #BlockIf
-        | 'while' expr /*SUBSTITUIR EXPR POR CONDITION */ 'do' stat* 'end' #BlockWhile
-        | 'do' call 'until' expr /*SUBSTITUIR EXPR POR CONDITION */  ';' #BlockUntil
-        /*TO DO FUNCTION DEFINITION */
+//o analisador semântico verificará se expr representa um valor booleano
+block: 'if' expr 'then' stat* 'end' #BlockIf
+        | 'while' expr 'do' stat* 'end' #BlockWhile
+        | call 'until' expr  ';' #BlockUntil
         ; 
 
 assignment:
@@ -20,42 +20,28 @@ expr:
     '(' TEXT ',' NUM ')' #ExprRobot
     | TEXT ('|' TEXT)* #ExprEnum
     | TEXT ',' NUM  ('|' TEXT ',' NUM)* #ExprEnumWithValues
-    | bool #ExprBool
-    | numeric #ExprNumeric
+    | '(' expr ')' #ExprParenthesis
+    | 'not' expr #BoolNegation
+    | expr op1=logicalop VAR op2=logicalop expr #BoolDoubleCompareNum     // -10 < beaconAngle < 10
+    | expr op=logicalop expr #BoolCompareNum
+    | '-' expr #NumericNegative
+    | expr op=('*'|'/'|'%') expr #NumericMultDivMod
+    | expr op=('+'|'-') expr #NumericAddSub
     | VAR #ExprVar
-    | TEXT #ExprText
-    | call #ExprCallFunc
-    ;
-
-bool:
-    '!' bool #BoolNegation
-    | '(' bool ')' #BoolParenthesis
-    | numeric LOGICALOP VAR LOGICALOP numeric #BoolDoubleCompareNum     // -10 < beaconAngle < 10
-    | numeric LOGICALOP numeric #BoolCompareNum                         // beaconAngle > 10
-    | bool LOGICALOP VAR LOGICALOP bool #BoolDoubleCompare              // -10 < beaconAngle < 10
-    | bool LOGICALOP bool #BoolCompare
+    | call #ExprCall
+    | TEXT #TextLiteral
     | BOOL #BoolLiteral
-    | VAR #BoolVar
-    ;
-
-numeric:
-    '-' numeric #NumericNegative
-    | '(' numeric ')' #NumericParenthesis
-    | numeric op=('*'|'/'|'%') numeric #NumericMultDivMod
-    | numeric op=('+'|'-') numeric #NumericAddSub
     | NUM #NumericLiteral
-    | VAR #NumericVar
     ;
 
-call: (VAR '.')? VAR ( ('('(expr (',' expr)*))')' | '()'); 
+call: (VAR '.')? VAR (expr)*; //chamada de uma função/variável
+logicalop: ('and'|'or'|'>'|'>='|'<'|'<='|'=='|'!=');
 type:  'NUM' | 'BOOL' | 'TEXT' | 'ENUM' | 'ROBOT';
 
-NUM: [0-9]+('.'[0-9]+)?;
+NUM: ('-')?[0-9]+('.'[0-9]+)?;
 BOOL: [tT]'rue' | [fF]'alse';
 TEXT: '"' (~["] | '""')* '"';
-//temos de garantir que não colide com outras keywords (podemos inicializar um hashmap com o valor de certas keywords)
 VAR: ([a-zA-Z_]+);
-LOGICALOP: 'and'|'or'|'>'|'>='|'<'|'<='|'=='|'!=';
 WS: [ \t\r\n]+ -> skip;
 COMMENT_INLINE: '#' .*? '\n' -> skip;
 COMMENT_MULTILINE: '/*' .*? '*/' -> skip;
