@@ -1,0 +1,49 @@
+typeMap ::= [ "NUM": "float", 
+                "BOOL": "bool", 
+                "TEXT": "string", 
+                "ENUM": "int", 
+                "ROBOT": "Robot", 
+                default: "void"
+]
+
+
+header(global, main) ::= <<
+#include teste1
+#include teste2
+#include teste3
+#include "string"
+
+using namespace std;
+
+<if(global)><global><endif>
+
+int main() {
+    <main>
+}
+>>
+
+
+assign(type, name, value) ::= <<<if(type)><typeMap.(type)><endif> <name> = <value>;
+
+>>
+
+
+blockIf(expr, stat) ::= <<if (<expr>) {
+    <stat>
+}
+
+>>
+
+blockWhile(expr, stat) ::= <<while (<expr>) {
+    <stat>
+}
+
+>>
+
+blockUntil(expr, call) ::= <<while (!<expr>) {
+    <call>;
+}
+
+>>
+
+
