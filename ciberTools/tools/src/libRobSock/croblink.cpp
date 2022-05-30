@@ -37,7 +37,7 @@ using namespace std;
 /*!
  * Composes register message and sends it to server.
  */
-void CRobLink::send_register_message(char *rob_name,int rob_id)
+void CRobLink::send_register_message(const char *rob_name, int rob_id)
 {
     // register in server
 	char xml[MSGMAXSIZE];
@@ -52,7 +52,7 @@ void CRobLink::send_register_message(char *rob_name,int rob_id)
     }
 }
 
-void CRobLink::send_register_message(char *rob_name,int rob_id, double irSensorAngles[])
+void CRobLink::send_register_message(const char *rob_name, int rob_id, double irSensorAngles[])
 {
     // register in server
 	char xml[MSGMAXSIZE];
@@ -78,7 +78,7 @@ void CRobLink::send_register_message(char *rob_name,int rob_id, double irSensorA
 /*!
  * Composes register message and sends it to server.
  */
-void CRobLink::send_robotbeacon_register_message(char *rob_name,int rob_id, double height)
+void CRobLink::send_robotbeacon_register_message(const char *rob_name,int rob_id, double height)
 {
     // register in server
 	char xml[MSGMAXSIZE];
@@ -133,7 +133,7 @@ void CRobLink::parse_server_reply(void)
     port.SetRemote(port.GetLastSender());
 }
 
-CRobLink::CRobLink(char *rob_name, int rob_id, char *host) : measures(0), port(6000,host,0)
+CRobLink::CRobLink(const char *rob_name, int rob_id, const char *host) : measures(0), port(6000,host,0)
 {
     Status = 0;
 
@@ -161,7 +161,7 @@ CRobLink::CRobLink(char *rob_name, int rob_id, char *host) : measures(0), port(6
     Status = 0;
 }
 
-CRobLink::CRobLink(char *rob_name, int rob_id, double irSensorAngles[], char *host) :  measures(0), port(6000,host,0)
+CRobLink::CRobLink(const char *rob_name, int rob_id, double irSensorAngles[], const char *host) :  measures(0), port(6000,host,0)
 {
     Status = 0;
 
@@ -189,7 +189,7 @@ CRobLink::CRobLink(char *rob_name, int rob_id, double irSensorAngles[], char *ho
     Status = 0;
 }
 
-CRobLink::CRobLink(char *rob_name, int rob_id, double height, char *host) : measures(0), port(6000,host,0) 
+CRobLink::CRobLink(const char *rob_name, int rob_id, double height, const char *host) : measures(0), port(6000,host,0) 
 {
     Status = 0;
 
@@ -236,7 +236,7 @@ int CRobLink::ReadSensors()
 	/* set parser handler */
     StructureParser handler(simParam.nBeacons);
 
-    //cerr << "ReadSensors: nBeacons=" << simParam.nBeacons << "\n";
+    //cerr << "ReadSensors: nBeacons: " << simParam.nBeacons << "\n";
 
 	/* parse xml document with handler */
     QXmlSimpleReader reader;
@@ -253,6 +253,13 @@ int CRobLink::ReadSensors()
 //           printf("ReadSensors: Message From %d: \"%s\"\n", i, measures.hearMessage[i].latin1());
 
     return n;
+}
+
+CMeasures* CRobLink::updateMeasures()
+{
+    //fprintf(stderr, "CRobLink::updateMeasures: &measures: %p\n", &measures);
+    
+    return (ReadSensors() == -1) ? NULL : &measures;
 }
 
 void CRobLink::requestGround()
@@ -357,3 +364,16 @@ void CRobLink::Finish(void)
     port.send_info(xml,n+1);
 }
 
+/*
+ * ACP: 
+ * Por algum motivo a classe CRobLink está a ter definições diferentes,
+ * o que faz com que os métodos definidos no .h tenham problemas:
+ * há um erro de posição relativa dos campos.
+ * Esta função está a ser usada como forma de contornar o problema
+ * até uma solução adequada ser encontrada.
+ * Nota: não pode ser definida no .h.
+ */
+CMeasures *CRobLink::getMeasuresPtr()
+{
+    return &measures;
+}

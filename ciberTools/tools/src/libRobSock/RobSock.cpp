@@ -104,7 +104,7 @@ bool IsBeaconReady(int id)
     return robLink->beaconReady(id);
 }
 
-struct beaconMeasure GetBeaconSensor(int id)
+struct beaconMeasure GetBeaconSensor(unsigned int id)
 {
     assert(robLink!=0);
     return (robLink->beacon(id));

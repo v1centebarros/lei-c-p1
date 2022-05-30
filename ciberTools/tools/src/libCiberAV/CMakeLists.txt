@@ -9,6 +9,7 @@ set(CiberAV_SRC
 add_library(${target} SHARED ${CiberAV_SRC})
 
 target_include_directories(${target} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(${target} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../libRobSock)
 #target_compile_definitions(${target} PRIVATE -DCIBERQTAPP)
 #target_link_libraries(${target} Qt5::Widgets Qt5::Xml)
 

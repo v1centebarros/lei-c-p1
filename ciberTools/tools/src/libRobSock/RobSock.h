@@ -50,7 +50,7 @@
 extern "C" 
 {
 #else
-typedef unsigned char bool;
+#include <stdbool.h>
 #endif
 
 /**
@@ -273,7 +273,7 @@ struct beaconMeasure {
  * \returns the last received measure of the given beacon sensor
  * \see IsBeaconReady, GetNumberOfBeacons, beaconMeasure
  */
-struct beaconMeasure GetBeaconSensor(int id);    
+struct beaconMeasure GetBeaconSensor(unsigned int id);
     
 /**
  * \brief Indicates if a new measure of the compass was received in the last synchronization step.
@@ -606,7 +606,7 @@ void ReadMap(char *filename, void *vmap);
 
 #include <qapplication.h>
 
-extern void *        Link(void);
+extern void *Link(void);
 
 #endif /* CIBERQTAPP */
 

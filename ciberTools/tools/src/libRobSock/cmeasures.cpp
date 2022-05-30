@@ -20,6 +20,8 @@
 #include "cmeasures.h"
 
 #include <iostream>
+#include <fstream>
+#include <cmath>
 
 CMeasures::CMeasures(int nBeacons) : beaconReady(nBeacons), beacon(nBeacons)
 {
@@ -56,14 +58,15 @@ CMeasures::CMeasures(int nBeacons) : beaconReady(nBeacons), beacon(nBeacons)
 
 void CMeasures::showValues()
 {
-/*	cout.form("<Measures Time=\"%u\">\n", time);
-	cout.form("\t<Sensors Compass=\"%g\" Beacon=\"%g\"\n", compass, beacon);
-	cout.form("\t\t\tCollision=\"%s\" Ground=\"%s\">\n", collision?"On":"Off", ground?"On":"Off");
-	cout.form("\t\t<IRSensors Left=\"%g\" Center=\"%g\" Right=\"%g\"/>\n",
-				IRSensor[1], IRSensor[0], IRSensor[2]);
-	cout.form("\t</Sensors>\n");
-	cout.form("\t<Buttons Start=\"%s\" Stop=\"%s\"/>\n", start?"On":"Off", stop?"On":"Off");
-	cout.form("\t<Leds EndLed=\"%s\"/>\n", endLed?"On":"Off");
-	cout.form("</Measures>\n");
-*/
+	fprintf(stderr, "Measures Time: %u\n{\n", time);
+    /* print compass */
+	fprintf(stderr, "  Compass: %g\n", (compassReady) ? compass : NAN);
+    /* print beacon sensors */
+	fprintf(stderr, "  Beacons: [%g", (beaconReady[0]) ? beacon[0].beaconDir : NAN);
+    for (unsigned int i = 1; i < beacon.size(); i++) 
+	    fprintf(stderr, ",%g", (beaconReady[i]) ? beacon[i].beaconDir : NAN);
+	fprintf(stderr, "]\n");
+    /* print buttons */
+	fprintf(stderr, "  Start/Stop buttons: %s/%s; \n", start ? "true" : "false", stop ? "true" : "false");
+	fprintf(stderr, "}\n");
 }

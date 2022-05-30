@@ -22,6 +22,7 @@
 
 #include "RobSock.h"
 #include <vector>
+#include <iostream>
 #include <QString>
 
 #define NUM_IR_SENSORS 4

@@ -46,14 +46,14 @@
 #define ROB_DEL    3
 
 class Port {
-	public: 
+public: 
 
-		Port() ;			
-		Port(int lPort) ;			
-		Port(int port,char *RemoteHost, int lPort=0) ;			
-		~Port() ;			
+		Port();
+		Port(int lPort);
+		Port(int port, const char *RemoteHost, int lPort=0);
+		~Port();
 		bool		init(bool blocking=1) ;	
-		bool		send_info(void *buf,int bufSize) ;
+		bool		send_info(void *buf, int bufSize) ;
 		int		recv_info(void *buf, int bufSize) ;
 		sockaddr_in     GetLastSender(void);
 		void            SetRemote(sockaddr_in rem_addr);

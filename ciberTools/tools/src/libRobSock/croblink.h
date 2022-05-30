@@ -36,21 +36,21 @@
 using std::cerr;
 
 /**
- * \defgroup CppRobSock C++ interface for RobSock library
+ * \defgroup cppRobLink C++ interface for RobSock library
  * \brief C++ interface for RobSock library
  * \details 
  *   Set of functions that represents the default C interaction with the simulator.
  *   These functions are wrappers of the corresponding C++ equivalents.
  *
  * \defgroup Cpp_registering C++ RobSock registering functions
- * \ingroup CppRobSock
+ * \ingroup cppRobLink
  * \brief Registering agent in simulator
  * \details
  *   An agent acts as a client in the simulation environment, being the simulator the server.<br/>
  *   So, it has to register into the simulator, before being able to control its robot.
  *
  * \defgroup Cpp_driving C++ RobSock driving functions
- * \ingroup CppRobSock
+ * \ingroup cppRobLink
  * \brief Sending actuating orders to wheels
  * \details
  *   A robot is equipped with two parallel wheels, driven by two independent motors.<br/>
@@ -62,7 +62,7 @@ using std::cerr;
  *   be different than the control values.
  *
  * \defgroup Cpp_synchronization C++ RobSock synchronization functions
- * \ingroup CppRobSock
+ * \ingroup cppRobLink
  * \brief Wait for next simulator's data record
  * \details
  *   The simulator makes the state of the world evolve at every cycle, 
@@ -75,7 +75,7 @@ using std::cerr;
  *   just retrieve values cached in the last synchronization step.
  *
  * \defgroup Cpp_sensing C++ RobSock sensing functions
- * \ingroup CppRobSock
+ * \ingroup cppRobLink
  * \brief Consulting sensor values
  * \details 
  *   After cycle synchronization (ReadSensors called), 
@@ -83,7 +83,7 @@ using std::cerr;
  *   The funcions in this group just retrieve values cached in the last synchronization step.
  *
  * \defgroup Cpp_leds C++ RobSock led manipulation functions
- * \ingroup CppRobSock
+ * \ingroup cppRobLink
  * \brief Setting and getting the state of robot leds
  * \details 
  *   The setting actions are sent immediately to the simulator, 
@@ -93,7 +93,7 @@ using std::cerr;
  *   So, the getting functions just retrieve values cached in the last synchronization step.
  *
  * \defgroup Cpp_buttons C++ RobSock button state functions
- * \ingroup CppRobSock
+ * \ingroup cppRobLink
  * \brief Get the state of the buttons
  * \details
  *   The robot body has 2 buttons that are manipulated only by the simulator.<br/>
@@ -105,7 +105,7 @@ using std::cerr;
  *   So, these getting functions just retrieve values cached in the last synchronization step.
  *
  * \defgroup Cpp_times C++ RobSock time funcions
- * \ingroup CppRobSock
+ * \ingroup cppRobLink
  * \brief Get time
  * \details
  *   In general, in a challenge 3 times are defined: <br/>
@@ -116,7 +116,7 @@ using std::cerr;
  *   At every \c ReadSensors, the agent receives the current simulation time,
  *
  * \defgroup Cpp_config C++ RobSock configuration parameters
- * \ingroup CppRobSock
+ * \ingroup cppRobLink
  * \brief Get parameters of current simulation
  * \details
  *   This parameters are received on registration and cached locally.
@@ -145,8 +145,8 @@ public:
      * \param [in] pos Position of robot in the starting grid (0 for first available)
      * \param [in] host IP address of simulator 
      */
+    CRobLink(const char *name, int pos, const char *host);
 
-    CRobLink(char *name, int pos, char *host);
     /** 
      * \brief Constructor that connects to simulator, setting obstacle sensors' positions, and initializes local caching of data
      * \ingroup Cpp_registering
@@ -158,8 +158,8 @@ public:
      * \param [in] IRSensorAngles Angular position for the obstacle sensors
      * \param [in] host IP address of simulator 
      */
-
-    CRobLink(char *name, int pos, double IRSensorAngles[], char *host);
+    CRobLink(const char *name, int pos, double IRSensorAngles[], const char *host);
+    
     /** 
      * \brief Constructor that initializes robot that also works as a beacon
      * \ingroup Cpp_registering
@@ -172,7 +172,7 @@ public:
      * \param [in] host IP address of simulator 
      * \returns 0 on success; -1 otherwise
      */
-    CRobLink(char *name, int pos, double height, char *host); // for RobotBeacon
+    CRobLink(const char *name, int pos, double height, const char *host); // for RobotBeacon
     
     virtual ~CRobLink();
 
@@ -250,42 +250,22 @@ public:
      * \ingroup Cpp_leds
      * \returns \c true if led is ON; \c false otherwise
      */
-	inline bool endLed() { return measures.endLed; }
+	inline bool endLed() { return getMeasuresPtr()->endLed; }
 
     /**
      * \brief Retrieves the last received state of the returning led
      * \ingroup Cpp_leds
      * \returns \c true if led is ON; \c false otherwise
      */
-	inline bool returningLed() { return measures.returningLed; }
+	inline bool returningLed() { return getMeasuresPtr()->returningLed; }
 
     /**
      * \brief Retrieves the last received state of the visiting led
      * \ingroup Cpp_leds
      * \returns \c true if led is ON; \c false otherwise
      */
-	inline bool visitingLed() { return measures.visitingLed; }
+	inline bool visitingLed() { return getMeasuresPtr()->visitingLed; }
 	
-/**************************************************************************/
-/************* synchronization ********************************************/
-/**************************************************************************/
-
-#ifdef CIBERQTAPP
-signals:
-    void NewMessage();
-public slots:
-#endif
-    /**
-     * \brief Blocks until next simulator's data record has been received
-     * \ingroup Cpp_synchronization
-     * \details 
-     *   This is a blocking call that waits until a new record with data has been received from the simulator.
-     *   It only blocks if the new record hasn't yet been received.
-     *   The received data record (XML message) is parsed and sensor data is cached locally.
-     * \returns 0 on success; -1 otherwise
-     */
-    int ReadSensors();
-
 /**************************************************************************/
 /************* Buttons ****************************************************/
 /**************************************************************************/
@@ -295,14 +275,14 @@ public slots:
      * \ingroup Cpp_buttons
      * \returns \c true if button was pressed; \c false otherwise
      */
-	inline bool start() { return measures.start; }
+	inline bool start() { return getMeasuresPtr()->start; }
 
     /**
      * \brief Retrieves the last received state of the stop button
      * \ingroup Cpp_buttons
      * \returns \c true if button was pressed; \c false otherwise
      */
-	inline bool stop() { return measures.stop; }
+	inline bool stop() { return getMeasuresPtr()->stop; }
 
 /**************************************************************************/
 /************* sensing ****************************************************/
@@ -317,7 +297,7 @@ public slots:
      * \returns \c true if a measure exists; \c false otherwise
      * \see IRSensor
      */
-	inline bool IRSensorReady(int id) { if(id>=0 && id < NUM_IR_SENSORS) return measures.IRSensorReady[id]; else return false;}
+	inline bool IRSensorReady(int id) { if(id>=0 && id < NUM_IR_SENSORS) return getMeasuresPtr()->IRSensorReady[id]; else return false;}
 
     /**
      * \brief Retrieves the last received measure of the given obstacle sensor 
@@ -329,7 +309,7 @@ public slots:
      * \returns the last received measure of the given obstacle sensor
      * \see IRSensorReady
      */
-	inline double IRSensor(int id) { return measures.IRSensor[id]; }
+	inline double IRSensor(int id) { return getMeasuresPtr()->IRSensor[id]; }
 
     /**
      * \brief Get the number of beacons in the maze
@@ -348,7 +328,7 @@ public slots:
      * \returns \c true if a measure exists; \c false otherwise
      * \see beacon, nBeacons, beaconMeasure
      */
-	inline bool beaconReady(unsigned int id) { if(id<simParam.nBeacons) return measures.beaconReady[id]; else return false;}
+	inline bool beaconReady(unsigned int id) { if(id<simParam.nBeacons) return getMeasuresPtr()->beaconReady[id]; else return false;}
 
     /**
      * \brief Retrieves the last received measure of the given beacon sensor 
@@ -360,7 +340,7 @@ public slots:
      * \returns the last received measure of the given beacon sensor
      * \see beaconReady, nBeacons, beaconMeasure
      */
-	inline struct beaconMeasure beacon(unsigned int id) { assert(id<simParam.nBeacons); return measures.beacon[id]; }
+	inline struct beaconMeasure beacon(unsigned int id) { assert(id<simParam.nBeacons); return getMeasuresPtr()->beacon[id]; }
 
     /**
      * \brief Indicates if a new measure of the compass was received in the last synchronization step.
@@ -370,7 +350,7 @@ public slots:
      * \returns \c true if a measure exists; \c false otherwise
      * \see compass
      */
-	inline bool compassReady() { return measures.compassReady; }
+	inline bool compassReady() { return getMeasuresPtr()->compassReady; }
 
     /**
      * \brief Retrieves the last received measure of the compass sensor 
@@ -381,7 +361,7 @@ public slots:
      *   which, in this simulation environment, corresponds to X axis.
      * \returns the last received measure of the compass sensor
      */
-	inline double compass() { return measures.compass; }
+	inline double compass() { return getMeasuresPtr()->compass; }
 
     /**
      * \brief Indicates if a new measure of the ground sensor was received in the last synchronization step.
@@ -391,7 +371,7 @@ public slots:
      * \returns \c true if a measure exists; \c false otherwise
      * \see ground
      */
-	inline bool groundReady() { return measures.groundReady; }
+	inline bool groundReady() { return getMeasuresPtr()->groundReady; }
 
     /**
      * \brief Retrieves the last received measure of the ground sensor 
@@ -403,7 +383,7 @@ public slots:
      * \returns the last received measure of the ground sensor
      * \see groundReady
      */
-	inline int ground() { return measures.ground; }
+	inline int ground() { return getMeasuresPtr()->ground; }
 
     /**
      * \brief Indicates if a new measure of the bumper sensor was received in the last synchronization step.
@@ -413,7 +393,7 @@ public slots:
      * \returns \c true if a measure exists; \c false otherwise
      * \see collision
      */
-	inline bool collisionReady() { return measures.collisionReady; }
+	inline bool collisionReady() { return getMeasuresPtr()->collisionReady; }
 
     /**
      * \brief Retrieves the last received measure of the bumper sensor 
@@ -426,7 +406,7 @@ public slots:
      * \returns the last received measure of the bumper sensor
      * \see collisionReady
      */
-    inline bool collision() { return measures.collision; }
+    inline bool collision() { return getMeasuresPtr()->collision; }
 
     /**
      * \brief Indicates if a new measure of the score sensor was received in the last synchronization step.
@@ -436,7 +416,7 @@ public slots:
      * \returns \c true if a measure exists; \c false otherwise
      * \see score
      */
-	inline bool scoreReady() { return measures.scoreReady; }
+	inline bool scoreReady() { return getMeasuresPtr()->scoreReady; }
 
     /**
      * \brief Retrieves the last received measure of the score sensor 
@@ -446,7 +426,7 @@ public slots:
      * \returns the last received measure of the score sensor
      * \see scoreReady
      */
-    inline int score() { return measures.score; }
+    inline int score() { return getMeasuresPtr()->score; }
 
     /**
      * \brief Indicates if a new measure of the GPS sensor was received in the last synchronization step.
@@ -456,7 +436,7 @@ public slots:
      * \returns \c true if a measure exists; \c false otherwise
      * \see gpsDirReady, posx, posyY, posdir
      */
-    inline bool gpsReady() { return measures.gpsReady; }
+    inline bool gpsReady() { return getMeasuresPtr()->gpsReady; }
 
     /**
      * \brief Indicates if a new measure of the GPS sensor related to direction was received in the last synchronization step.
@@ -466,7 +446,7 @@ public slots:
      * \returns \c true if a measure exists; \c false otherwise
      * \see gpsReady, posx, posyY, posdir
      */
-    inline bool gpsDirReady() { return measures.gpsDirReady; }
+    inline bool gpsDirReady() { return getMeasuresPtr()->gpsDirReady; }
 
     /**
      * \brief Retrieves the X component of the last received measure of the GPS sensor 
@@ -476,7 +456,7 @@ public slots:
      * \returns the X component of the last received measure of the GPS sensor
      * \see gpsReady, gpsDirReady, posy, posdir
      */
-	inline double posx() { return measures.x; }
+	inline double posx() { return getMeasuresPtr()->x; }
 
     /**
      * \brief Retrieves the Y component of the last received measure of the GPS sensor 
@@ -486,7 +466,7 @@ public slots:
      * \returns the Y component of the last received measure of the GPS sensor
      * \see gpsReady, gpsDirReady, posx, posdir
      */
-	inline double posy() { return measures.y; }
+	inline double posy() { return getMeasuresPtr()->y; }
 
     /**
      * \brief Retrieves the orientation component of the last received measure of the GPS sensor 
@@ -496,14 +476,14 @@ public slots:
      * \returns the Dir component of the last received measure of the GPS sensor
      * \see gpsReady, gpsDirReady, posx, posy
      */
-	inline double posdir() { return measures.dir; }
+	inline double posdir() { return getMeasuresPtr()->dir; }
 
 /**************************************************************************/
 /************* communication **********************************************/
 /**************************************************************************/
 
-	inline bool newMessage(int from) { return measures.hearMessage[from-1]!=QString(); }
-	inline QString message(int from) { return measures.hearMessage[from-1]; }
+	inline bool newMessage(int from) { return getMeasuresPtr()->hearMessage[from-1]!=QString(); }
+	inline QString message(int from) { return getMeasuresPtr()->hearMessage[from-1]; }
 
 /**************************************************************************/
 /************* requesting *************************************************/
@@ -535,7 +515,7 @@ public slots:
      * \ingroup Cpp_times
      * \return The last received current simulation time
      */
-	inline unsigned int time() { return measures.time; }
+	inline unsigned int time() { return getMeasuresPtr()->time; }
 
     /** 
      * \brief Retrieves the cycle time
@@ -586,19 +566,44 @@ public slots:
 /** \ingroup Cpp_config */
 	inline unsigned int nReqPerCycle() { return simParam.nReqPerCycle; }
 
+/**************************************************************************/
+/************* synchronization ********************************************/
+/**************************************************************************/
+
+#ifdef ROBSOCK_EXPORT
+signals:
+    void NewMessage();
+public slots:
+#endif
+    /**
+     * \brief Blocks until next simulator's data record has been received
+     * \ingroup Cpp_synchronization
+     * \details 
+     *   This is a blocking call that waits until a new record with data has been received from the simulator.
+     *   It only blocks if the new record hasn't yet been received.
+     *   The received data record (XML message) is parsed and sensor data is cached locally.
+     * \returns a positive value on success; -1 otherwise
+     */
+    int ReadSensors();
+
+public:
+    CMeasures* updateMeasures();
+
 protected:
-     void send_register_message(char *robot_name, int robId);
-     void send_register_message(char *robot_name, int robId, double IRSensorAngles[]);
-     void send_robotbeacon_register_message(char *rob_name,int rob_id, double height);
+     void send_register_message(const char *robot_name, int robId);
+     void send_register_message(const char *robot_name, int robId, double IRSensorAngles[]);
+     void send_robotbeacon_register_message(const char *rob_name,int rob_id, double height);
      void parse_server_reply(void);
 
-private:
+public:
 	CMeasures measures;	// measures sent by simulator
 	CSimParam simParam;	// simulation parameters sent after registration
     int Status;	
 
     Port port;			// communication port
   
+public:
+    CMeasures *getMeasuresPtr();
 };
 
 #endif

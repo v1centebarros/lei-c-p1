@@ -12,13 +12,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #include "RobSock.h"
 
 #include "robfunc.h"
-
-#define true 1
-#define false 0
 
 int main(int argc, char *argv[])
 {

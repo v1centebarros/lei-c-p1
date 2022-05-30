@@ -67,7 +67,7 @@ Port::Port(int lPort)
  * RemoteHost may be in the form host:hostport in which case
  * hostport takes predecence over port
  */
-Port::Port(int port, char *RemoteHost, int lPort)
+Port::Port(int port, const char *RemoteHost, int lPort)
 {
 	char hostaux[2048];
 	int porthost;
@@ -79,8 +79,8 @@ Port::Port(int port, char *RemoteHost, int lPort)
  
 	WSAStartup(wVersionRequested, &wsaData);
 #endif
-	if (sscanf(RemoteHost,"%2047[^:]:%d",hostaux,&porthost) == 2) {
-	    strncpy(host, hostaux, 255) ;
+	if (sscanf(RemoteHost,"%2047[^:]:%d", hostaux, &porthost) == 2) {
+	    strncpy(host, hostaux, 2048) ;
 	    host[255]='\0';
 	    portnum = porthost ;
 	    localport=lPort;
