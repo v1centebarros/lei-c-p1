@@ -3,3 +3,5 @@
 
 #todos os ficheiros terminados com .class
 *.class
+.*tokens
+.*interp

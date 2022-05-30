@@ -16,10 +16,10 @@ void gotoBeacon(int bn)
     printf("\n..Going to beacon\n");
     while (groundType() != bn)
     {
-        double linearPower = 80.0;
-        double angularPower = 1 * beaconAngle(bn);
+        double linearPower = 150.0;
+        double angularPower = 1.5 * beaconAngle(bn);
         motors(linearPower - angularPower, linearPower + angularPower);
-    	apply();
+    	apply(5);
     }
 
     /* stopping */
@@ -39,15 +39,15 @@ void gotoStart()
     /* go to start spot, adjusting orientation if necessary */
     while (startDistance() > 2)
     {
-        double linearPower = 80.0;
-        double angularPower = 1 * startAngle();
+        double linearPower = 150.0;
+        double angularPower = 1.5 * startAngle();
         motors(linearPower - angularPower, linearPower + angularPower);
     	apply(1);
     }
 
     /* stopping */
     motors(0, 0);
-    apply(5);
+    apply();
 }
 
 int main()
