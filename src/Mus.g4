@@ -17,27 +17,27 @@ assignment:
     TYPE? ID '=' expr ';';
 
 expr:
-    '(' TEXT ',' NUM ')'                             #ExprRobot
+    '(' TEXT ',' NUM ')'                             #ExprRobot  //done
     | TEXT ',' NUM  ('|' TEXT ',' NUM)*              #ExprEnumWithValues
-    | '(' expr ')'                                   #ExprParenthesis
-    | 'not' expr                                     #BoolNegation
-    | expr op1=logicalop expr op2=logicalop expr     #BoolDoubleCompare     // -10 < beaconAngle < 10
-    | expr op=logicalop expr                         #BoolCompare
-    | '-' expr                                       #NumericNegative
-    | expr op=('*'|'/'|'%') expr                     #NumericMultDivMod
-    | expr op=('+'|'-') expr                         #NumericAddSub
-    | ID                                             #ExprVar
-    | call                                           #ExprCall
-    | TEXT                                           #TextLiteral
+    | '(' expr ')'                                   #ExprParenthesis  //done
+    | 'not' expr                                     #BoolNegation  //done
+    | expr op1=Logicalop expr op2=Logicalop expr     #BoolDoubleCompare     // -10 < beaconAngle < 10      //done
+    | expr op=Logicalop expr                         #BoolCompare  //done
+    | '-' expr                                       #NumericNegative  //done
+    | expr op=('*'|'/'|'%') expr                     #NumericMultDivMod  //done
+    | expr op=('+'|'-') expr                         #NumericAddSub  //done
+    | ID                                             #ExprVar  //done
+    | call                                           #ExprCall  //done
+    | TEXT                                           #TextLiteral  //done
     | TEXT ('|' TEXT)*                               #ExprEnum
-    | BOOL                                           #BoolLiteral
-    | NUM                                            #NumericLiteral
+    | BOOL                                           #BoolLiteral  //done
+    | NUM                                            #NumericLiteral  //done
     ;
 
-call: (ID '.')? ID (expr)*; //chamada de uma função/variável
-logicalop: ('and'|'or'|'>'|'>='|'<'|'<='|'=='|'!=');
-TYPE:  'NUM' | 'BOOL' | 'TEXT' | 'ENUM' | 'ROBOT';
+call: (ID '.')? ID (expr)*; //chamada de uma função/variável    //done
 
+Logicalop: ('and'|'or'|'>'|'>='|'<'|'<='|'=='|'!=');       //nao me deu problemas, mas ver dps        
+TYPE:  'NUM' | 'BOOL' | 'TEXT' | 'ENUM' | 'ROBOT';
 NUM: ('-')?[0-9]+('.'[0-9]+)?;
 BOOL: [tT]'rue' | [fF]'alse';
 TEXT: '"' (~["] | '""')* '"';

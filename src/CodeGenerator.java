@@ -96,9 +96,7 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    }
 
    @Override public ST visitExprVar(MusParser.ExprVarContext ctx) {
-      ST res = null;
-      return visitChildren(ctx);
-      //return res;
+      return new ST(ctx.ID().getText());
    }
 
    @Override public ST visitExprEnumWithValues(MusParser.ExprEnumWithValuesContext ctx) {
@@ -112,39 +110,72 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    }
 
    @Override public ST visitNumericAddSub(MusParser.NumericAddSubContext ctx) {
-      ST res = null;
-      return visitChildren(ctx);
-      //return res;
-   }
+      ST res = new ST("<expr1> <op> <expr2>");
+      String op = ctx.op.getText();
 
-   @Override public ST visitNumericNegative(MusParser.NumericNegativeContext ctx) {
-      ST res = null;
-      return visitChildren(ctx);
-      //return res;
-   }
+      res.add("expr1", visit(ctx.expr(0)));
+      res.add("op", ctx.op.getText());
+      res.add("expr2", visit(ctx.expr(1)));
 
-   @Override public ST visitNumericLiteral(MusParser.NumericLiteralContext ctx) {
-      ST res = new ST("<value>");
-      res.add("value", ctx.NUM().getText());
       return res;
    }
 
+   @Override public ST visitNumericNegative(MusParser.NumericNegativeContext ctx) {
+      ST res = new ST("-<num>");
+      res.add("num", visit(ctx.expr()));
+      return res;
+   }
+
+   @Override public ST visitNumericLiteral(MusParser.NumericLiteralContext ctx) {
+      return new ST(ctx.NUM().getText());
+   }
+
    @Override public ST visitExprParenthesis(MusParser.ExprParenthesisContext ctx) {
-      ST res = null;
-      return visitChildren(ctx);
-      //return res;
+      ST res = new ST("(<expr>)");
+      res.add("expr", visit(ctx.expr()));
+      return res;
    }
 
    @Override public ST visitExprRobot(MusParser.ExprRobotContext ctx) {
-      ST res = null;
-      return visitChildren(ctx);
-      //return res;
+      ST res = new ST("(<robotName>, <pos>)");
+      res.add("robotName", ctx.TEXT().getText());
+      res.add("pos", ctx.NUM().getText());
+      return res;
    }
 
    @Override public ST visitBoolDoubleCompare(MusParser.BoolDoubleCompareContext ctx) {
-      ST res = null;
-      return visitChildren(ctx);
-      //return res;
+      ST res = new ST("<expr> <op1> <exprL> && <expr> <op2> <exprR>");
+      String op1 = ctx.op1.getText();
+      String op2 = ctx.op2.getText();
+
+      switch (op1) {
+         case "and":
+            res.add("op1", "&&");
+            break;
+         case "or":
+            res.add("op1", "||");
+            break;
+         default:
+            res.add("op1", op1);
+      }
+
+      switch (op2) {
+         case "and":
+            res.add("op2", "&&");
+            break;
+         case "or":
+            res.add("op2", "||");
+            break;
+         default:
+            res.add("op2", op2);
+      }
+
+      
+      res.add("expr", visit(ctx.expr(1)));
+      res.add("exprL", visit(ctx.expr(0)));
+      res.add("exprR", visit(ctx.expr(2)));
+
+      return res;
    }
 
    @Override public ST visitExprCall(MusParser.ExprCallContext ctx) {
@@ -160,11 +191,24 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    // }
 
    @Override public ST visitBoolCompare(MusParser.BoolCompareContext ctx) {
-      ST condicion = new ST("<op1> <operation> <op2>");
-      condicion.add("op1", visit(ctx.expr(0)));
-      condicion.add("op2", visit(ctx.expr(1)));
-      condicion.add("operation", ctx.op.getText());
-      return condicion;
+      ST condition = new ST("<op1> <operation> <op2>");
+      condition.add("op1", visit(ctx.expr(0)));
+      condition.add("op2", visit(ctx.expr(1)));
+
+      String op = ctx.op.getText();
+
+      switch (op) {
+         case "and":
+            condition.add("operation", "&&");
+            break;
+         case "or":
+            condition.add("operation", "||");
+            break;
+         default:
+            condition.add("operation", op);
+      }
+
+      return condition;
    }
 
    @Override public ST visitBoolLiteral(MusParser.BoolLiteralContext ctx) {
@@ -178,15 +222,18 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    }
 
    @Override public ST visitNumericMultDivMod(MusParser.NumericMultDivModContext ctx) {
-      ST res = null;
-      return visitChildren(ctx);
-      //return res;
+      ST res = new ST("<expr1> <op> <expr2>");
+      String op = ctx.op.getText();
+
+      res.add("expr1", visit(ctx.expr(0)));
+      res.add("op", ctx.op.getText());
+      res.add("expr2", visit(ctx.expr(1)));
+
+      return res;
    }
 
    @Override public ST visitTextLiteral(MusParser.TextLiteralContext ctx) {
-      ST res = new ST(ctx.TEXT().getText());
-      //res.add("value", ctx.TEXT().getText());
-      return res;
+      return new ST(ctx.TEXT().getText());
    }
 
    @Override public ST visitCall(MusParser.CallContext ctx) {
@@ -211,15 +258,17 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       return callST;
    }
 
-   @Override public ST visitLogicalop(MusParser.LogicalopContext ctx) {
-      ST res = null;
-      return visitChildren(ctx);
-      //return res;
+   /*@Override public ST visitLogicalop(MusParser.LogicalopContext ctx) {
+      ST res = new ST("<op>");
+      String op = ctx.getText();
+      System.out.println("LOGICAL OP: " + op);
+      return null;
+
    }
 
    // @Override public ST visitType(MusParser.TypeContext ctx) {
    //    ST res = null;
    //    return visitChildren(ctx);
    //    //return res;
-   // }
+   // }*/
 }
