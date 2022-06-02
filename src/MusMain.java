@@ -14,8 +14,8 @@ public class MusMain {
          // create a parser that feeds off the tokens buffer:
          MusParser parser = new MusParser(tokens);
          // replace error listener:
-         //parser.removeErrorListeners(); // remove ConsoleErrorListener
-         //parser.addErrorListener(new ErrorHandlingListener());
+         // parser.removeErrorListeners(); // remove ConsoleErrorListener
+         // parser.addErrorListener(new ParseErrorListener());
          // begin parsing at program rule:
          ParseTree tree = parser.program();
          if (parser.getNumberOfSyntaxErrors() == 0) {
