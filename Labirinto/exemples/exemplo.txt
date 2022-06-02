@@ -1,18 +1,22 @@
 #Denfinir posições de saida do robo
-POSITION (3.0,7.0) DIRECAO = 180;
-POSITION (3.0,8.3) DIRECAO = 180;
-POSITION (3.0,9.6) DIRECAO = 180;
+
+GRID{
+    POSITION (3.0,7.0) DIRECAO = 180;
+    POSITION (3.0,8.3) DIRECAO = 180;
+    POSITION (3.0,9.6) DIRECAO = 180;
+};
+
 
 /*Definir um labirinto*/
-LABIRINTO (NAME = lab01; WIDTH = 28; HEIGHT 14) { 
+LABIRINTO (NAME = lab01, WIDTH = 28, HEIGHT = 14) { 
 
 	/* Definir target */
 	TARGET = (2,1), Raio = 2;
 	TARGET = (2,1); #default o raio será 2 
 
 	/* DEfinir Beacon */
-	Beacon = (3,1), HEIGHT = 2; 
-	Beacon = (3,1); #default altura será 1
+	BEACON = (3,1), HEIGHT = 2; 
+	BEACON = (3,1); #default altura será 1
 
 	/* DEfinir Parede */
 	WALL HEIGHT = 2 {
