@@ -1,0 +1,10 @@
+TEXT name = input "Nome do robot: ";
+ROBOT robit = name, 1;
+
+NUM bc = beaconCount;
+
+while bc > 0 do
+
+    NUM speed = input "Diz a velocidade a que queres ir: ";
+    print "Going to beacon ", bc, "with speed ", speed, "\n"; 
+end
