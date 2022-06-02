@@ -14,8 +14,8 @@ public class MusMain {
          // create a parser that feeds off the tokens buffer:
          MusParser parser = new MusParser(tokens);
          // replace error listener:
-         // parser.removeErrorListeners(); // remove ConsoleErrorListener
-         // parser.addErrorListener(new ErrorHandlingListener());
+         //parser.removeErrorListeners(); // remove ConsoleErrorListener
+         //parser.addErrorListener(new ErrorHandlingListener());
          // begin parsing at program rule:
          ParseTree tree = parser.program();
          if (parser.getNumberOfSyntaxErrors() == 0) {
@@ -23,8 +23,6 @@ public class MusMain {
             // System.out.println(tree.toStringTree(parser));
             SemanticAnalyser semanticAnalyser = new SemanticAnalyser();
             semanticAnalyser.visit(tree);
-            //CodeGenerator codeGenerator = new CodeGenerator();
-            //codeGenerator.visit(tree);
          }
       }
       catch(IOException e) {

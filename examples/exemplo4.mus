@@ -14,9 +14,9 @@ while i > 0 do
         NUM linearPower = 80.0;
         NUM angularPower = 1 * beaconAngle bn ;
 
-        NUM fdist = obstacleDistance FRONTSENSOR;
-        NUM ldist = obstacleDistance LEFTSENSOR;
-        NUM rdist = obstacleDistance RIGHTSENSOR;
+        NUM fdist = obstacleDistance frontsensor;
+        NUM ldist = obstacleDistance leftsensor;
+        NUM rdist = obstacleDistance rightsensor;
 
         until collides do
             linearPower = 0.0;
@@ -39,7 +39,7 @@ while i > 0 do
             angularPower = 30.0;
         end
 
-        move linearPower - angularPower, linearPower + angularPower;
+        move linearPower-angularPower linearPower+angularPower;
     end
 
     stop;

@@ -1,2 +1,5 @@
 #não dar track da pasta vscode
 .vscode
+.class
+.interp
+.tokens

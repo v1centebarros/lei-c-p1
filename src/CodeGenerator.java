@@ -1,7 +1,6 @@
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
-
 import org.stringtemplate.v4.*;
 
 
@@ -49,15 +48,17 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    }
 
    @Override public ST visitStat(MusParser.StatContext ctx) {
-      ST res = null;
-      if(ctx.block() != null) {
-         res = visit(ctx.block());
-      } else if(ctx.assignment() != null) {
-         res = visit(ctx.assignment());
-      } else if(ctx.call() != null) {
-         res = visit(ctx.call());
-      }
-      return res;
+      // ST res = null;
+      // if(ctx.block() != null) {
+      //    res = visit(ctx.block());
+      // } else if(ctx.assignment() != null) {
+      //    res = visit(ctx.assignment());
+      // } else if(ctx.call() != null) {
+      //    res = visit(ctx.call());
+      // }
+      // return res;
+      //TO DO
+      return null;
    }
 
    @Override public ST visitBlockIf(MusParser.BlockIfContext ctx) {
@@ -138,8 +139,8 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
 
    @Override public ST visitExprRobot(MusParser.ExprRobotContext ctx) {
       ST res = new ST("(<robotName>, <pos>)");
-      res.add("robotName", ctx.TEXT().getText());
-      res.add("pos", ctx.NUM().getText());
+      res.add("robotName", visit(ctx.expr(0)));
+      res.add("pos", visit(ctx.expr(1)));
       return res;
    }
 
@@ -179,16 +180,14 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    }
 
    @Override public ST visitExprCall(MusParser.ExprCallContext ctx) {
+      return new ST(visit(ctx.call()));
+   }
+
+   /*@Override public ST visitBoolDoubleCompare(MusParser.BoolCompareContext ctx) {
       ST res = null;
       return visitChildren(ctx);
       //return res;
-   }
-
-   // @Override public ST visitBoolDoubleCompare(MusParser.BoolCompareContext ctx) {
-   //    ST res = null;
-   //    return visitChildren(ctx);
-   //    //return res;
-   // }
+   }*/
 
    @Override public ST visitBoolCompare(MusParser.BoolCompareContext ctx) {
       ST condition = new ST("<op1> <operation> <op2>");
@@ -237,11 +236,10 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    }
 
    @Override public ST visitCall(MusParser.CallContext ctx) {
-      ST callST = new ST("<ID1><ID2> <expr><virgula>");
+      ST callST = allTemplates.getInstanceOf("externalFunctions");
 
       if (ctx.ID().size() == 1) {
-         callST.add("ID1", ctx.ID(0).getText());
-         callST.add("ID2", "");
+         callST.add("ID2", ctx.ID(0).getText());
       }
       if (ctx.ID().size() == 2) {
          callST.add("ID1", ctx.ID(0).getText());
@@ -249,12 +247,28 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       }
 
       if (ctx.expr() != null) {
-         callST.add("expr", visit(ctx.expr(0)));
+         if (ctx.ID().size() == 1 && (ctx.ID(0).getText()).equals("rotate")) {
+            String value = visit(ctx.expr(0)).render();
+            callST.add("expr", value); 
+            callST.add("expr", "-" + value); 
+         }
+         else {
+            
+         }
+
+
+         if (ctx.expr().size() == 1) {
+            String value = visit(ctx.expr(0)).render();
+            callST.add("expr", value); 
+            callST.add("expr", "-" + value); 
+         }
+         else {
+            for (int i=0; i<ctx.expr().size(); i++) {
+               callST.add("expr", visit(ctx.expr(0))); 
+            }
+         }
       }
-      else {
-         callST.add("expr", "");
-         callST.add("virgula", ";");
-      }
+      
       return callST;
    }
 

@@ -16,10 +16,10 @@ print "\n..Going to beacon\n";
 while groundType != bn do
     NUM linearPower = 80.0;
     NUM angularPower = 1 * beaconAngle bn;
-    move linearPower - angularPower, linearPower + angularPower; # or MOVE AT ja faz o apply
-end;
+    move linearPower-angularPower linearPower+angularPower; # or MOVE AT ja faz o apply
+end
 
-stop; # move 0,0
+stop; # move 0 0
 
 pickUp;
 
@@ -30,8 +30,8 @@ rotate 80 until -10 < startAngle <10;
 while startDistance > 2 do
     NUM linearPower = 80.0;
     NUM angularPower = 1 * startAngle;
-    move linearPower - angularPower, linearPower + angularPower;
-end;
+    move linearPower-angularPower linearPower+angularPower;
+end
 
 stop;
 

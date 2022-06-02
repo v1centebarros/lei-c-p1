@@ -1,4 +1,4 @@
-// Generated from /home/mariana/UNIVERSIDADE/C/Projeto/comp2022-mus-p3g3/Labirinto/Lab.g4 by ANTLR 4.9.2
+// Generated from /home/rafael/Documentos/LEI/C/P/Projeto Final/comp2022-mus-p3g3/Labirinto/Lab.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;

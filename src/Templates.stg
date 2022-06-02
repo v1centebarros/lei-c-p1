@@ -1,17 +1,40 @@
-typeMap ::= [ "NUM": "float", 
-                "BOOL": "bool", 
-                "TEXT": "string", 
-                "ENUM": "int", 
-                "ROBOT": "Robot", 
-                default: "void"
+typeMap ::= [ 
+    "NUM": "float", 
+    "BOOL": "bool", 
+    "TEXT": "string", 
+    "ENUM": "int", 
+    "ROBOT": "Robot", 
+    default: "void"
+]
+
+externalFunctionsMap ::= [ 
+    "print": "cout << ",
+    "rotate": "motors",
+    "move": "motors",
+    "posX" : "posX",
+    "posY": "posY",
+    "pickUp": "pickUp",
+    "returning": "returning",
+    "finish": "finish",
+    "obstacleDistance": "obstacleDistance",
+    "beaconAngle": "beaconAngle",
+    "northAngle": "northAngle",
+    "groundType": "groundType",
+    "onTarget": "onTarget",
+    "beaconCount": "beaconCount",
+    "startAngle": "startAngle",
+    "startDistance": "startDistance",
+    "colides": "colides",
+    "setVisitingLed": "setVisitingLed",
+    "setReturningLed": "setReturningLed",
+    "getReturningLed": "getReturningLed",
+    "getVisitingLed": "getVisitingLed",
+    default: "unknow"
 ]
 
 
 header(global, main) ::= <<
-#include teste1
-#include teste2
-#include teste3
-#include "string"
+#include \<iostream>
 
 using namespace std;
 
@@ -19,6 +42,9 @@ using namespace std;
 
 int main() {
     <main>
+
+
+    return 0;
 }
 >>
 
@@ -40,10 +66,12 @@ blockWhile(expr, stat) ::= <<while (<expr>) {
 
 >>
 
-blockUntil(expr, call) ::= <<while (!<expr>) {
+blockUntil(expr, call) ::= <<while (!(<expr>)) {
     <call>;
 }
 
 >>
 
+externalFunctions(ID1, ID2, expr) ::= <<<if(ID1)><externalFunctionsMap.(ID1)><endif> <if(ID2)><externalFunctionsMap.(ID2)><endif>(<expr; separator=", ">);
 
+>>
