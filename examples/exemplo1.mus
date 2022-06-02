@@ -1,7 +1,7 @@
 #exemplo da tradução do a1.cpp para .mus
 
 NUM position= 0;
-ROBOT Grimmy = "Grimmy", position;
+ROBOT Grimmy = ("Grimmy", position);
 
 print "Going to beacon 1\n";
 

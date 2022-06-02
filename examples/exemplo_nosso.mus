@@ -1,5 +1,5 @@
 TEXT name = input "Nome do robot: ";
-ROBOT robit = name, 1;
+ROBOT robit = (name, 1);
 
 NUM bc = beaconCount;
 

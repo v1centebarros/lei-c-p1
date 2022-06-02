@@ -2,6 +2,7 @@ _________________________SINTAXE BASE_________________________
 
 /* DEFINE VARIABLES */
 NUM linearPower = 123
+ROBOT robo1 = (...)
 ROBOT robot_cpy = robo1
 
 
@@ -10,7 +11,7 @@ ROBOT robot_cpy = robo1
 
 /* CREATE ROBOT  */
 
-ROBOT name = "*int* ID", "*int* pos"
+ROBOT name = ("*int* ID", "*int* pos")
 
 
 

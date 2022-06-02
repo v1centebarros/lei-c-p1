@@ -1,7 +1,7 @@
 #exemplo da tradução do a4.cpp para .mus
 
 NUM position = 0;
-ROBOT Grimmy = "Grimmy", position;
+ROBOT Grimmy = ("Grimmy", position);
 USE Grimmy;
 NUM i = beaconCount;
 while i > 0 do
