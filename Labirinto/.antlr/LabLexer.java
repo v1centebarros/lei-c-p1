@@ -1,4 +1,4 @@
-// Generated from /home/emanuel/Desktop/C/projeto/comp2022-mus-p3g3/Labirinto/Lab.g4 by ANTLR 4.9.2
+// Generated from /home/mariana/UNIVERSIDADE/C/Projeto/comp2022-mus-p3g3/Labirinto/Lab.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;

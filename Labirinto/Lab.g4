@@ -19,7 +19,7 @@ labirinto: 'LABIRINTO' '(' 'NAME' '=' ID (',' 'WIDTH' '=' DOUBLE ',' 'HEIGHT' '=
             '}' 
     ;
 
-target:'TARGET' '=' COORDENADAS (',' 'Raio' '=' DOUBLE)? (';')?;
+target:'TARGET' '=' COORDENADAS (',' 'Raio' '=' DOUBLE)? (';')?; 
 beacon:'BEACON' '=' COORDENADAS (',' 'HEIGHT' '=' DOUBLE)? (';')?; 
 
 wall:

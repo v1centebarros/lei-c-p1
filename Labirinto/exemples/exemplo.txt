@@ -1,0 +1,35 @@
+#Denfinir posições de saida do robo
+POSITION (3.0,7.0) DIRECAO = 180;
+POSITION (3.0,8.3) DIRECAO = 180;
+POSITION (3.0,9.6) DIRECAO = 180;
+
+/*Definir um labirinto*/
+LABIRINTO (NAME = lab01; WIDTH = 28; HEIGHT 14) { 
+
+	/* Definir target */
+	TARGET = (2,1), Raio = 2;
+	TARGET = (2,1); #default o raio será 2 
+
+	/* DEfinir Beacon */
+	Beacon = (3,1), HEIGHT = 2; 
+	Beacon = (3,1); #default altura será 1
+
+	/* DEfinir Parede */
+	WALL HEIGHT = 2 {
+		CORNER (16,0);
+		CORNER (15,1.7);
+		CORNER (13,1.7);
+		CORNER (12,0);
+	};
+	
+	#outra forma - altura default 1
+	WALL {
+		CORNER (16,14);
+		CORNER (15,12.3);
+		CORNER (13,12.3);
+		CORNER (12,14);
+	};
+};
+
+#Outra forma de definir o labirinto, temos valores default para o labirinto a nivel de comprimento e altura
+#LABIRINTO (NAME = lab02){...}
