@@ -1,4 +1,4 @@
-#Denfinir posições de saida do robo
+#Definir posições de saida do robo
 
 GRID{
     POSITION (3.0,7.0) DIRECAO = 180;
@@ -19,20 +19,21 @@ LABIRINTO (NAME = lab01, WIDTH = 28, HEIGHT = 14) {
 	BEACON = (3,1); #default altura será 1
 
 	/* DEfinir Parede */
-	WALL HEIGHT = 2 {
-		CORNER (16,0);
-		CORNER (15,1.7);
-		CORNER (13,1.7);
-		CORNER (12,0);
-	};
+
+	/*ROW 12 PADRAO:"_________  |____________  |____________  ";
+	ROW 11 PADRAO:"_________  |____________  |____________  ";
+	ROW 10 PADRAO:"_________  |____________  |____________  ";
+	ROW 9 PADRAO:"_________  |____________  |____________  ";
+	ROW 8 PADRAO:"_________  |____________  |____________  ";
+	ROW 7 PADRAO:"_________  |____________  |____________  ";
+	ROW 6 PADRAO:"_________  |____________  |____________  ";
+	ROW 5 PADRAO:"_________  |____________  |____________  ";
+	ROW 4 PADRAO:"_________  |____________  |____________  ";
+	ROW 3 PADRAO:"_________  |____________  |____________  ";
+	ROW 2 PADRAO:"_________  |____________  |____________  ";
+	ROW 1 PADRAO:"_________  |____________  |____________  ";*/
+	ROW x=0 PADRAO:"_____|";
 	
-	#outra forma - altura default 1
-	WALL {
-		CORNER (16,14);
-		CORNER (15,12.3);
-		CORNER (13,12.3);
-		CORNER (12,14);
-	};
 };
 
 #Outra forma de definir o labirinto, temos valores default para o labirinto a nivel de comprimento e altura
