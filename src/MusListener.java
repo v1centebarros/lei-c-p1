@@ -63,6 +63,16 @@ public interface MusListener extends ParseTreeListener {
 	 */
 	void exitBlockUntil(MusParser.BlockUntilContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MusParser#blockElse}.
+	 * @param ctx the parse tree
+	 */
+	void enterBlockElse(MusParser.BlockElseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MusParser#blockElse}.
+	 * @param ctx the parse tree
+	 */
+	void exitBlockElse(MusParser.BlockElseContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MusParser#assignment}.
 	 * @param ctx the parse tree
 	 */

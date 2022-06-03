@@ -8,10 +8,14 @@ stat:
     block | assignment |  singleCall;
 
 //o analisador semântico verificará se expr representa um valor booleano
-block: 'if' expr 'do' stat* 'end'                   #BlockIf
+block: 'if' expr 'do' stat* blockElse? 'end'                   #BlockIf
         | 'while' expr 'do' stat* 'end'             #BlockWhile
         | call 'until' expr  ';'                    #BlockUntil
         ; 
+
+blockElse:
+    'else' stat*
+    ;
 
 assignment:
     TYPE? ID '=' expr ';';

@@ -77,11 +77,22 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          List<MusParser.StatContext> stats = ctx.stat();
          Iterator<MusParser.StatContext> it = stats.iterator();
          while(it.hasNext()) visit(it.next());
+         if (ctx.blockElse() != null) visit(ctx.blockElse());
          table = tables.pop();
          return null;
       }
       System.out.printf("[Line %d] TypeError: condition in block 'if' must be BOOL (not %s)\n", ctx.start.getLine(), expr);
       return "ERROR";
+   }
+
+   @Override public String visitBlockElse(MusParser.BlockElseContext ctx) {
+      tables.push(table);
+      table = new SymbolTable(table.getParent());
+      List<MusParser.StatContext> stats = ctx.stat();
+      Iterator<MusParser.StatContext> it = stats.iterator();
+      while(it.hasNext()) visit(it.next());
+      table = tables.pop();
+      return null;
    }
 
    @Override public String visitBlockWhile(MusParser.BlockWhileContext ctx) {

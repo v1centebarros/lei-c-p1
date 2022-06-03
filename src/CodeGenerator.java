@@ -92,6 +92,10 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       return ifST;
    }
 
+   @Override public ST visitBlockElse(MusParser.BlockElseContext ctx) {
+      return null;
+   }
+
    @Override public ST visitBlockWhile(MusParser.BlockWhileContext ctx) {
       ST whileST = allTemplates.getInstanceOf("blockWhile");
       whileST.add("expr", visit(ctx.expr()));
