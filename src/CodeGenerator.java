@@ -1,6 +1,9 @@
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.stringtemplate.v4.*;
 
 
@@ -9,11 +12,29 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
 
    // private ST stringTemplate;
    STGroup allTemplates;
+
+   //simple functions (without arguments)
+   private Map<String, String> simpleFunc = new HashMap<>();
    
 
    public CodeGenerator() {
       //stringTemplate = new ST();
       allTemplates = new STGroupFile("Templates.stg");
+
+      // add simple functions
+      simpleFunc.put("posX", "posX()");
+      simpleFunc.put("posY", "posY()");
+      simpleFunc.put("pickUp", "pickUp()");
+      simpleFunc.put("returning", "returning()");
+      simpleFunc.put("finish", "finish()");
+      simpleFunc.put("northAngle", "northAngle()");
+      simpleFunc.put("groundType", "groundType()");
+      simpleFunc.put("beaconCount", "beaconCount()");
+      simpleFunc.put("startAngle", "startAngle()");
+      simpleFunc.put("startDistance", "startDistance()");
+      simpleFunc.put("colides", "colides()");
+      simpleFunc.put("getReturningLed", "getReturningLed()");
+      simpleFunc.put("getVisitingLed", "getVisitingLed()");
    }
 
 
@@ -48,17 +69,18 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    }
 
    @Override public ST visitStat(MusParser.StatContext ctx) {
-      // ST res = null;
-      // if(ctx.block() != null) {
-      //    res = visit(ctx.block());
-      // } else if(ctx.assignment() != null) {
-      //    res = visit(ctx.assignment());
-      // } else if(ctx.call() != null) {
-      //    res = visit(ctx.call());
-      // }
-      // return res;
-      //TO DO
-      return null;
+      ST res = new ST("<stat><comma>");
+      if(ctx.block() != null) {
+         res.add("stat", visit(ctx.block()));
+         res.add("comma","\n");
+      } else if(ctx.assignment() != null) {
+         res.add("stat", visit(ctx.assignment()));
+         res.add("comma",";\n");
+      } else if(ctx.singleCall() != null) {
+         res.add("stat", visit(ctx.singleCall()));
+         res.add("comma",";\n");
+      }
+      return res;
    }
 
    @Override public ST visitBlockIf(MusParser.BlockIfContext ctx) {
@@ -87,16 +109,42 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    }
 
    @Override public ST visitAssignment(MusParser.AssignmentContext ctx) {
+      // ST assign = allTemplates.getInstanceOf("assign");
+      // if(ctx.TYPE() != null) {
+      //    assign.add("type", ctx.TYPE().getText());
+      // }
+      // assign.add("name", ctx.ID().getText());
+      // assign.add("value", visit(ctx.expr()));
+      // return assign;
+
+      ST initRobotST = new ST("init(<expr>)");
       ST assign = allTemplates.getInstanceOf("assign");
+
       if(ctx.TYPE() != null) {
-         assign.add("type", ctx.TYPE().getText());
+         String type = ctx.TYPE().getText();
+
+         if (type.equals("ROBOT")) {
+            initRobotST.add("expr", visit(ctx.expr()));
+            return initRobotST;
+         }
+         else {
+            assign.add("type", type);
+            assign.add("name", ctx.ID().getText());
+            assign.add("value", visit(ctx.expr()));
+            return assign;
+         }
       }
-      assign.add("name", ctx.ID().getText());
-      assign.add("value", visit(ctx.expr()));
-      return assign;
+
+      return null;
    }
 
    @Override public ST visitExprVar(MusParser.ExprVarContext ctx) {
+      String varName = ctx.ID().getText();
+      
+      //if the name is a func name -> return function()
+      if (simpleFunc.containsKey(varName)) {
+         return new ST(simpleFunc.get(varName));
+      }
       return new ST(ctx.ID().getText());
    }
 
@@ -138,10 +186,10 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    }
 
    @Override public ST visitExprRobot(MusParser.ExprRobotContext ctx) {
-      ST res = new ST("(<robotName>, <pos>)");
-      res.add("robotName", visit(ctx.expr(0)));
-      res.add("pos", visit(ctx.expr(1)));
-      return res;
+      ST callST = new ST("<robotName>, <pos>");
+      callST.add("robotName", visit(ctx.expr(0)));
+      callST.add("pos", visit(ctx.expr(1)));
+      return callST;
    }
 
    @Override public ST visitBoolDoubleCompare(MusParser.BoolDoubleCompareContext ctx) {
@@ -153,20 +201,57 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
          case "and":
             res.add("op1", "&&");
             break;
+
          case "or":
             res.add("op1", "||");
             break;
+
+         case "<":
+            res.add("op1", ">");
+            break; 
+
+         case "<=":
+            res.add("op1", ">=");
+            break;   
+            
+         case ">":
+            res.add("op1", "<");
+            break;   
+            
+         case ">=":
+            res.add("op1", "<=");
+            break;   
+
          default:
             res.add("op1", op1);
       }
+
 
       switch (op2) {
          case "and":
             res.add("op2", "&&");
             break;
+
          case "or":
             res.add("op2", "||");
             break;
+
+         case "<":
+            res.add("op2", "<");
+            break; 
+
+         case "<=":
+            res.add("op2", "<=");
+            break;   
+            
+         case ">":
+            res.add("op2", ">");
+            break;   
+            
+         case ">=":
+            res.add("op2", ">=");
+            break;   
+
          default:
             res.add("op2", op2);
       }
@@ -235,6 +320,10 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       return new ST(ctx.TEXT().getText());
    }
 
+   @Override public ST visitSingleCall(MusParser.SingleCallContext ctx) {
+      return visit(ctx.call());
+   }
+
    @Override public ST visitCall(MusParser.CallContext ctx) {
       ST callST = allTemplates.getInstanceOf("externalFunctions");
 
@@ -247,25 +336,25 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       }
 
       if (ctx.expr() != null) {
+
+         //rotate
          if (ctx.ID().size() == 1 && (ctx.ID(0).getText()).equals("rotate")) {
             String value = visit(ctx.expr(0)).render();
             callST.add("expr", value); 
             callST.add("expr", "-" + value); 
          }
-         else {
-            
+
+         //stop
+         else if (ctx.ID().size() == 1 && (ctx.ID(0).getText()).equals("stop")) {
+            callST.add("expr", "0"); 
+            callST.add("expr", "0"); 
          }
 
-
-         if (ctx.expr().size() == 1) {
-            String value = visit(ctx.expr(0)).render();
-            callST.add("expr", value); 
-            callST.add("expr", "-" + value); 
-         }
+         //default
          else {
             for (int i=0; i<ctx.expr().size(); i++) {
-               callST.add("expr", visit(ctx.expr(0))); 
-            }
+               callST.add("expr", visit(ctx.expr(i))); 
+            }            
          }
       }
       
