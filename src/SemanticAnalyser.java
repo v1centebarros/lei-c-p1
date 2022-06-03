@@ -168,9 +168,19 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    }
 
    @Override public String visitExprEnumWithValues(MusParser.ExprEnumWithValuesContext ctx) {
-      String res = null;
-      return visitChildren(ctx);
-      //return res;
+      List<MusParser.ExprContext> exprs = ctx.expr();
+      Iterator<MusParser.ExprContext> it = exprs.iterator();
+      String name = "";
+      String value = "";
+      while(it.hasNext()) {
+         name = visit(it.next());
+         value = visit(it.next());
+         if (!name.equals("TEXT") || !value.equals("NUM")) {
+            System.out.printf("[Line %d] TypeError: all ENUM pairs must be TEXT -> NUM\n", ctx.start.getLine());
+            return "ERROR";
+         }
+      }
+      return "ENUM";
    }
 
    @Override public String visitBoolNegation(MusParser.BoolNegationContext ctx) {
@@ -278,12 +288,13 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       List<MusParser.ExprContext> exprs = ctx.expr();
       Iterator<MusParser.ExprContext> it = exprs.iterator();
       String expr = "";
-      while(it.hasNext())
+      while(it.hasNext()) {
          expr = visit(it.next());
          if (!expr.equals("TEXT") && !expr.equals("ENUM")) {
             System.out.printf("[Line %d] TypeError: all ENUM elements must be TEXT\n", ctx.start.getLine());
             return "ERROR";
          }
+      }
       return "ENUM";
    }
 

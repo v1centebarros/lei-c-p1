@@ -25,7 +25,7 @@ singleCall:
 
 expr:
     '(' expr ',' expr ')'                            #ExprRobot  //'(' TEXT ',' NUM ')'
-    | expr ',' expr  ('|' expr ',' expr)+            #ExprEnumWithValues // TEXT ',' NUM  ('|' TEXT ',' NUM)*
+    | expr '->' expr  ('|' expr '->' expr)+          #ExprEnumWithValues // TEXT ',' NUM  ('|' TEXT ',' NUM)*
     | '(' expr ')'                                   #ExprParenthesis  //done
     | 'not' expr                                     #BoolNegation  //done
     | expr op1=LOGICALOP2 expr op2=LOGICALOP2 expr   #BoolDoubleCompare     // -10 < beaconAngle < 10      //done
