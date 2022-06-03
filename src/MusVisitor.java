@@ -43,6 +43,12 @@ public interface MusVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBlockUntil(MusParser.BlockUntilContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MusParser#blockElse}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBlockElse(MusParser.BlockElseContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MusParser#assignment}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

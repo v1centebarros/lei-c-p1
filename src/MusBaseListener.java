@@ -75,6 +75,18 @@ public class MusBaseListener implements MusListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterBlockElse(MusParser.BlockElseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBlockElse(MusParser.BlockElseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterAssignment(MusParser.AssignmentContext ctx) { }
 	/**
 	 * {@inheritDoc}

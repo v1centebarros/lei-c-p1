@@ -99,25 +99,25 @@ public class LabBaseListener implements LabListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterWall(LabParser.WallContext ctx) { }
+	@Override public void enterRow(LabParser.RowContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitWall(LabParser.WallContext ctx) { }
+	@Override public void exitRow(LabParser.RowContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCorner(LabParser.CornerContext ctx) { }
+	@Override public void enterPadrao(LabParser.PadraoContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCorner(LabParser.CornerContext ctx) { }
+	@Override public void exitPadrao(LabParser.PadraoContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

@@ -77,11 +77,22 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          List<MusParser.StatContext> stats = ctx.stat();
          Iterator<MusParser.StatContext> it = stats.iterator();
          while(it.hasNext()) visit(it.next());
+         if (ctx.blockElse() != null) visit(ctx.blockElse());
          table = tables.pop();
          return null;
       }
       System.out.printf("[Line %d] TypeError: condition in block 'if' must be BOOL (not %s)\n", ctx.start.getLine(), expr);
       return "ERROR";
+   }
+
+   @Override public String visitBlockElse(MusParser.BlockElseContext ctx) {
+      tables.push(table);
+      table = new SymbolTable(table.getParent());
+      List<MusParser.StatContext> stats = ctx.stat();
+      Iterator<MusParser.StatContext> it = stats.iterator();
+      while(it.hasNext()) visit(it.next());
+      table = tables.pop();
+      return null;
    }
 
    @Override public String visitBlockWhile(MusParser.BlockWhileContext ctx) {
@@ -157,9 +168,19 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    }
 
    @Override public String visitExprEnumWithValues(MusParser.ExprEnumWithValuesContext ctx) {
-      String res = null;
-      return visitChildren(ctx);
-      //return res;
+      List<MusParser.ExprContext> exprs = ctx.expr();
+      Iterator<MusParser.ExprContext> it = exprs.iterator();
+      String name = "";
+      String value = "";
+      while(it.hasNext()) {
+         name = visit(it.next());
+         value = visit(it.next());
+         if (!name.equals("TEXT") || !value.equals("NUM")) {
+            System.out.printf("[Line %d] TypeError: all ENUM pairs must be TEXT -> NUM\n", ctx.start.getLine());
+            return "ERROR";
+         }
+      }
+      return "ENUM";
    }
 
    @Override public String visitBoolNegation(MusParser.BoolNegationContext ctx) {
@@ -267,12 +288,13 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       List<MusParser.ExprContext> exprs = ctx.expr();
       Iterator<MusParser.ExprContext> it = exprs.iterator();
       String expr = "";
-      while(it.hasNext())
+      while(it.hasNext()) {
          expr = visit(it.next());
          if (!expr.equals("TEXT") && !expr.equals("ENUM")) {
             System.out.printf("[Line %d] TypeError: all ENUM elements must be TEXT\n", ctx.start.getLine());
             return "ERROR";
          }
+      }
       return "ENUM";
    }
 

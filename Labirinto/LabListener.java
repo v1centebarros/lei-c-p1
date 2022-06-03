@@ -77,23 +77,23 @@ public interface LabListener extends ParseTreeListener {
 	 */
 	void exitBeacon(LabParser.BeaconContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LabParser#wall}.
+	 * Enter a parse tree produced by {@link LabParser#row}.
 	 * @param ctx the parse tree
 	 */
-	void enterWall(LabParser.WallContext ctx);
+	void enterRow(LabParser.RowContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LabParser#wall}.
+	 * Exit a parse tree produced by {@link LabParser#row}.
 	 * @param ctx the parse tree
 	 */
-	void exitWall(LabParser.WallContext ctx);
+	void exitRow(LabParser.RowContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LabParser#corner}.
+	 * Enter a parse tree produced by {@link LabParser#padrao}.
 	 * @param ctx the parse tree
 	 */
-	void enterCorner(LabParser.CornerContext ctx);
+	void enterPadrao(LabParser.PadraoContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LabParser#corner}.
+	 * Exit a parse tree produced by {@link LabParser#padrao}.
 	 * @param ctx the parse tree
 	 */
-	void exitCorner(LabParser.CornerContext ctx);
+	void exitPadrao(LabParser.PadraoContext ctx);
 }

@@ -8,10 +8,14 @@ stat:
     block | assignment |  singleCall;
 
 //o analisador semântico verificará se expr representa um valor booleano
-block: 'if' expr 'do' stat* 'end'                   #BlockIf
+block: 'if' expr 'do' stat* blockElse? 'end'                   #BlockIf
         | 'while' expr 'do' stat* 'end'             #BlockWhile
         | call 'until' expr  ';'                    #BlockUntil
         ; 
+
+blockElse:
+    'else' stat*
+    ;
 
 assignment:
     TYPE? ID '=' expr ';';
@@ -21,7 +25,7 @@ singleCall:
 
 expr:
     '(' expr ',' expr ')'                            #ExprRobot  //'(' TEXT ',' NUM ')'
-    | expr ',' expr  ('|' expr ',' expr)+            #ExprEnumWithValues // TEXT ',' NUM  ('|' TEXT ',' NUM)*
+    | expr '->' expr  ('|' expr '->' expr)+          #ExprEnumWithValues // TEXT ',' NUM  ('|' TEXT ',' NUM)*
     | '(' expr ')'                                   #ExprParenthesis  //done
     | 'not' expr                                     #BoolNegation  //done
     | expr op1=LOGICALOP2 expr op2=LOGICALOP2 expr   #BoolDoubleCompare     // -10 < beaconAngle < 10      //done

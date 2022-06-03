@@ -15,6 +15,10 @@ public class SymbolTable {
         this.functions = functions;
         this.variables = variables;
     }
+
+    public SymbolTable getParent() {
+        return parent;
+    }
     
     public boolean containsFunction(String name) {
         if (functions.containsKey(name)) return true;

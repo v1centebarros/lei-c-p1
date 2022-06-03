@@ -18,15 +18,16 @@ public class LabParser extends Parser {
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
 		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
-		T__17=18, T__18=19, COORDENADAS=20, DOUBLE=21, ID=22, WS=23, LINE_COMMENT=24, 
-		MULTILINE_COMMENT=25;
+		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, T__23=24, 
+		T__24=25, T__25=26, COORDENADAS=27, DOUBLE=28, ID=29, WS=30, LINE_COMMENT=31, 
+		MULTILINE_COMMENT=32;
 	public static final int
 		RULE_program = 0, RULE_stat = 1, RULE_grid = 2, RULE_position = 3, RULE_labirinto = 4, 
-		RULE_target = 5, RULE_beacon = 6, RULE_wall = 7, RULE_corner = 8;
+		RULE_target = 5, RULE_beacon = 6, RULE_row = 7, RULE_padrao = 8;
 	private static String[] makeRuleNames() {
 		return new String[] {
 			"program", "stat", "grid", "position", "labirinto", "target", "beacon", 
-			"wall", "corner"
+			"row", "padrao"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -35,15 +36,17 @@ public class LabParser extends Parser {
 		return new String[] {
 			null, "';'", "'GRID'", "'{'", "'}'", "'POSITION'", "'DIRECAO'", "'='", 
 			"'LABIRINTO'", "'('", "'NAME'", "','", "'WIDTH'", "'HEIGHT'", "')'", 
-			"'TARGET'", "'Raio'", "'BEACON'", "'WALL'", "'CORNER'"
+			"'TARGET'", "'Raio'", "'BEACON'", "'ROW'", "'x'", "'PADRAO'", "':'", 
+			"'\"'", "'__.'", "'__|'", "'___'", "'--.'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, null, null, null, null, null, null, "COORDENADAS", "DOUBLE", 
-			"ID", "WS", "LINE_COMMENT", "MULTILINE_COMMENT"
+			null, null, null, null, null, null, null, null, null, null, null, null, 
+			null, null, null, "COORDENADAS", "DOUBLE", "ID", "WS", "LINE_COMMENT", 
+			"MULTILINE_COMMENT"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -358,11 +361,11 @@ public class LabParser extends Parser {
 		public BeaconContext beacon(int i) {
 			return getRuleContext(BeaconContext.class,i);
 		}
-		public List<WallContext> wall() {
-			return getRuleContexts(WallContext.class);
+		public List<RowContext> row() {
+			return getRuleContexts(RowContext.class);
 		}
-		public WallContext wall(int i) {
-			return getRuleContext(WallContext.class,i);
+		public RowContext row(int i) {
+			return getRuleContext(RowContext.class,i);
 		}
 		public LabirintoContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -423,7 +426,7 @@ public class LabParser extends Parser {
 			match(T__13);
 			setState(66);
 			match(T__2);
-			setState(70);
+			setState(72);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==T__14) {
@@ -431,41 +434,47 @@ public class LabParser extends Parser {
 				{
 				setState(67);
 				target();
+				setState(68);
+				match(T__0);
 				}
 				}
-				setState(72);
+				setState(74);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(76);
+			setState(80);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==T__16) {
 				{
 				{
-				setState(73);
+				setState(75);
 				beacon();
+				setState(76);
+				match(T__0);
 				}
 				}
-				setState(78);
+				setState(82);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(82);
+			setState(88);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==T__17) {
 				{
 				{
-				setState(79);
-				wall();
-				}
-				}
+				setState(83);
+				row();
 				setState(84);
+				match(T__0);
+				}
+				}
+				setState(90);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(85);
+			setState(91);
 			match(T__3);
 			}
 		}
@@ -504,35 +513,25 @@ public class LabParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(87);
+			setState(93);
 			match(T__14);
-			setState(88);
-			match(T__6);
-			setState(89);
-			match(COORDENADAS);
 			setState(94);
+			match(T__6);
+			setState(95);
+			match(COORDENADAS);
+			setState(100);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==T__10) {
 				{
-				setState(90);
-				match(T__10);
-				setState(91);
-				match(T__15);
-				setState(92);
-				match(T__6);
-				setState(93);
-				match(DOUBLE);
-				}
-			}
-
-			setState(97);
-			_errHandler.sync(this);
-			_la = _input.LA(1);
-			if (_la==T__0) {
-				{
 				setState(96);
-				match(T__0);
+				match(T__10);
+				setState(97);
+				match(T__15);
+				setState(98);
+				match(T__6);
+				setState(99);
+				match(DOUBLE);
 				}
 			}
 
@@ -573,35 +572,25 @@ public class LabParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(99);
+			setState(102);
 			match(T__16);
-			setState(100);
+			setState(103);
 			match(T__6);
-			setState(101);
+			setState(104);
 			match(COORDENADAS);
-			setState(106);
+			setState(109);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==T__10) {
 				{
-				setState(102);
-				match(T__10);
-				setState(103);
-				match(T__12);
-				setState(104);
-				match(T__6);
 				setState(105);
-				match(DOUBLE);
-				}
-			}
-
-			setState(109);
-			_errHandler.sync(this);
-			_la = _input.LA(1);
-			if (_la==T__0) {
-				{
+				match(T__10);
+				setState(106);
+				match(T__12);
+				setState(107);
+				match(T__6);
 				setState(108);
-				match(T__0);
+				match(DOUBLE);
 				}
 			}
 
@@ -618,79 +607,65 @@ public class LabParser extends Parser {
 		return _localctx;
 	}
 
-	public static class WallContext extends ParserRuleContext {
+	public static class RowContext extends ParserRuleContext {
 		public TerminalNode DOUBLE() { return getToken(LabParser.DOUBLE, 0); }
-		public List<CornerContext> corner() {
-			return getRuleContexts(CornerContext.class);
+		public List<PadraoContext> padrao() {
+			return getRuleContexts(PadraoContext.class);
 		}
-		public CornerContext corner(int i) {
-			return getRuleContext(CornerContext.class,i);
+		public PadraoContext padrao(int i) {
+			return getRuleContext(PadraoContext.class,i);
 		}
-		public WallContext(ParserRuleContext parent, int invokingState) {
+		public RowContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_wall; }
+		@Override public int getRuleIndex() { return RULE_row; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LabListener ) ((LabListener)listener).enterWall(this);
+			if ( listener instanceof LabListener ) ((LabListener)listener).enterRow(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LabListener ) ((LabListener)listener).exitWall(this);
+			if ( listener instanceof LabListener ) ((LabListener)listener).exitRow(this);
 		}
 	}
 
-	public final WallContext wall() throws RecognitionException {
-		WallContext _localctx = new WallContext(_ctx, getState());
-		enterRule(_localctx, 14, RULE_wall);
+	public final RowContext row() throws RecognitionException {
+		RowContext _localctx = new RowContext(_ctx, getState());
+		enterRule(_localctx, 14, RULE_row);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(111);
 			match(T__17);
+			setState(112);
+			match(T__18);
+			setState(113);
+			match(T__6);
+			setState(114);
+			match(DOUBLE);
 			setState(115);
-			_errHandler.sync(this);
-			_la = _input.LA(1);
-			if (_la==T__12) {
-				{
-				setState(112);
-				match(T__12);
-				setState(113);
-				match(T__6);
-				setState(114);
-				match(DOUBLE);
-				}
-			}
-
+			match(T__19);
+			setState(116);
+			match(T__20);
 			setState(117);
-			match(T__2);
-			setState(121);
+			match(T__21);
+			setState(119); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==T__18) {
+			do {
 				{
 				{
 				setState(118);
-				corner();
+				padrao();
 				}
 				}
-				setState(123);
+				setState(121); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			}
-			setState(124);
-			match(T__3);
-			setState(126);
-			_errHandler.sync(this);
-			_la = _input.LA(1);
-			if (_la==T__0) {
-				{
-				setState(125);
-				match(T__0);
-				}
-			}
-
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__22) | (1L << T__23) | (1L << T__24) | (1L << T__25))) != 0) );
+			setState(123);
+			match(T__21);
 			}
 		}
 		catch (RecognitionException re) {
@@ -704,43 +679,38 @@ public class LabParser extends Parser {
 		return _localctx;
 	}
 
-	public static class CornerContext extends ParserRuleContext {
-		public TerminalNode COORDENADAS() { return getToken(LabParser.COORDENADAS, 0); }
-		public CornerContext(ParserRuleContext parent, int invokingState) {
+	public static class PadraoContext extends ParserRuleContext {
+		public PadraoContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_corner; }
+		@Override public int getRuleIndex() { return RULE_padrao; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LabListener ) ((LabListener)listener).enterCorner(this);
+			if ( listener instanceof LabListener ) ((LabListener)listener).enterPadrao(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LabListener ) ((LabListener)listener).exitCorner(this);
+			if ( listener instanceof LabListener ) ((LabListener)listener).exitPadrao(this);
 		}
 	}
 
-	public final CornerContext corner() throws RecognitionException {
-		CornerContext _localctx = new CornerContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_corner);
+	public final PadraoContext padrao() throws RecognitionException {
+		PadraoContext _localctx = new PadraoContext(_ctx, getState());
+		enterRule(_localctx, 16, RULE_padrao);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(128);
-			match(T__18);
-			setState(129);
-			match(COORDENADAS);
-			setState(131);
-			_errHandler.sync(this);
+			setState(125);
 			_la = _input.LA(1);
-			if (_la==T__0) {
-				{
-				setState(130);
-				match(T__0);
-				}
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__22) | (1L << T__23) | (1L << T__24) | (1L << T__25))) != 0)) ) {
+			_errHandler.recoverInline(this);
 			}
-
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -755,41 +725,37 @@ public class LabParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\33\u0088\4\2\t\2"+
-		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\3\2\5"+
-		"\2\26\n\2\3\2\7\2\31\n\2\f\2\16\2\34\13\2\3\2\3\2\3\3\3\3\5\3\"\n\3\3"+
-		"\4\3\4\3\4\6\4\'\n\4\r\4\16\4(\3\4\3\4\3\5\3\5\3\5\3\5\3\5\3\5\5\5\63"+
-		"\n\5\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\5\6B\n\6\3\6"+
-		"\3\6\3\6\7\6G\n\6\f\6\16\6J\13\6\3\6\7\6M\n\6\f\6\16\6P\13\6\3\6\7\6S"+
-		"\n\6\f\6\16\6V\13\6\3\6\3\6\3\7\3\7\3\7\3\7\3\7\3\7\3\7\5\7a\n\7\3\7\5"+
-		"\7d\n\7\3\b\3\b\3\b\3\b\3\b\3\b\3\b\5\bm\n\b\3\b\5\bp\n\b\3\t\3\t\3\t"+
-		"\3\t\5\tv\n\t\3\t\3\t\7\tz\n\t\f\t\16\t}\13\t\3\t\3\t\5\t\u0081\n\t\3"+
-		"\n\3\n\3\n\5\n\u0086\n\n\3\n\2\2\13\2\4\6\b\n\f\16\20\22\2\2\2\u008f\2"+
-		"\32\3\2\2\2\4!\3\2\2\2\6#\3\2\2\2\b,\3\2\2\2\n\64\3\2\2\2\fY\3\2\2\2\16"+
-		"e\3\2\2\2\20q\3\2\2\2\22\u0082\3\2\2\2\24\26\5\4\3\2\25\24\3\2\2\2\25"+
-		"\26\3\2\2\2\26\27\3\2\2\2\27\31\7\3\2\2\30\25\3\2\2\2\31\34\3\2\2\2\32"+
-		"\30\3\2\2\2\32\33\3\2\2\2\33\35\3\2\2\2\34\32\3\2\2\2\35\36\7\2\2\3\36"+
-		"\3\3\2\2\2\37\"\5\6\4\2 \"\5\n\6\2!\37\3\2\2\2! \3\2\2\2\"\5\3\2\2\2#"+
-		"$\7\4\2\2$&\7\5\2\2%\'\5\b\5\2&%\3\2\2\2\'(\3\2\2\2(&\3\2\2\2()\3\2\2"+
-		"\2)*\3\2\2\2*+\7\6\2\2+\7\3\2\2\2,-\7\7\2\2-.\7\26\2\2./\7\b\2\2/\60\7"+
-		"\t\2\2\60\62\7\27\2\2\61\63\7\3\2\2\62\61\3\2\2\2\62\63\3\2\2\2\63\t\3"+
-		"\2\2\2\64\65\7\n\2\2\65\66\7\13\2\2\66\67\7\f\2\2\678\7\t\2\28A\7\30\2"+
-		"\29:\7\r\2\2:;\7\16\2\2;<\7\t\2\2<=\7\27\2\2=>\7\r\2\2>?\7\17\2\2?@\7"+
-		"\t\2\2@B\7\27\2\2A9\3\2\2\2AB\3\2\2\2BC\3\2\2\2CD\7\20\2\2DH\7\5\2\2E"+
-		"G\5\f\7\2FE\3\2\2\2GJ\3\2\2\2HF\3\2\2\2HI\3\2\2\2IN\3\2\2\2JH\3\2\2\2"+
-		"KM\5\16\b\2LK\3\2\2\2MP\3\2\2\2NL\3\2\2\2NO\3\2\2\2OT\3\2\2\2PN\3\2\2"+
-		"\2QS\5\20\t\2RQ\3\2\2\2SV\3\2\2\2TR\3\2\2\2TU\3\2\2\2UW\3\2\2\2VT\3\2"+
-		"\2\2WX\7\6\2\2X\13\3\2\2\2YZ\7\21\2\2Z[\7\t\2\2[`\7\26\2\2\\]\7\r\2\2"+
-		"]^\7\22\2\2^_\7\t\2\2_a\7\27\2\2`\\\3\2\2\2`a\3\2\2\2ac\3\2\2\2bd\7\3"+
-		"\2\2cb\3\2\2\2cd\3\2\2\2d\r\3\2\2\2ef\7\23\2\2fg\7\t\2\2gl\7\26\2\2hi"+
-		"\7\r\2\2ij\7\17\2\2jk\7\t\2\2km\7\27\2\2lh\3\2\2\2lm\3\2\2\2mo\3\2\2\2"+
-		"np\7\3\2\2on\3\2\2\2op\3\2\2\2p\17\3\2\2\2qu\7\24\2\2rs\7\17\2\2st\7\t"+
-		"\2\2tv\7\27\2\2ur\3\2\2\2uv\3\2\2\2vw\3\2\2\2w{\7\5\2\2xz\5\22\n\2yx\3"+
-		"\2\2\2z}\3\2\2\2{y\3\2\2\2{|\3\2\2\2|~\3\2\2\2}{\3\2\2\2~\u0080\7\6\2"+
-		"\2\177\u0081\7\3\2\2\u0080\177\3\2\2\2\u0080\u0081\3\2\2\2\u0081\21\3"+
-		"\2\2\2\u0082\u0083\7\25\2\2\u0083\u0085\7\26\2\2\u0084\u0086\7\3\2\2\u0085"+
-		"\u0084\3\2\2\2\u0085\u0086\3\2\2\2\u0086\23\3\2\2\2\23\25\32!(\62AHNT"+
-		"`clou{\u0080\u0085";
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\"\u0082\4\2\t\2\4"+
+		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\3\2\5\2"+
+		"\26\n\2\3\2\7\2\31\n\2\f\2\16\2\34\13\2\3\2\3\2\3\3\3\3\5\3\"\n\3\3\4"+
+		"\3\4\3\4\6\4\'\n\4\r\4\16\4(\3\4\3\4\3\5\3\5\3\5\3\5\3\5\3\5\5\5\63\n"+
+		"\5\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\5\6B\n\6\3\6\3"+
+		"\6\3\6\3\6\3\6\7\6I\n\6\f\6\16\6L\13\6\3\6\3\6\3\6\7\6Q\n\6\f\6\16\6T"+
+		"\13\6\3\6\3\6\3\6\7\6Y\n\6\f\6\16\6\\\13\6\3\6\3\6\3\7\3\7\3\7\3\7\3\7"+
+		"\3\7\3\7\5\7g\n\7\3\b\3\b\3\b\3\b\3\b\3\b\3\b\5\bp\n\b\3\t\3\t\3\t\3\t"+
+		"\3\t\3\t\3\t\3\t\6\tz\n\t\r\t\16\t{\3\t\3\t\3\n\3\n\3\n\2\2\13\2\4\6\b"+
+		"\n\f\16\20\22\2\3\3\2\31\34\2\u0084\2\32\3\2\2\2\4!\3\2\2\2\6#\3\2\2\2"+
+		"\b,\3\2\2\2\n\64\3\2\2\2\f_\3\2\2\2\16h\3\2\2\2\20q\3\2\2\2\22\177\3\2"+
+		"\2\2\24\26\5\4\3\2\25\24\3\2\2\2\25\26\3\2\2\2\26\27\3\2\2\2\27\31\7\3"+
+		"\2\2\30\25\3\2\2\2\31\34\3\2\2\2\32\30\3\2\2\2\32\33\3\2\2\2\33\35\3\2"+
+		"\2\2\34\32\3\2\2\2\35\36\7\2\2\3\36\3\3\2\2\2\37\"\5\6\4\2 \"\5\n\6\2"+
+		"!\37\3\2\2\2! \3\2\2\2\"\5\3\2\2\2#$\7\4\2\2$&\7\5\2\2%\'\5\b\5\2&%\3"+
+		"\2\2\2\'(\3\2\2\2(&\3\2\2\2()\3\2\2\2)*\3\2\2\2*+\7\6\2\2+\7\3\2\2\2,"+
+		"-\7\7\2\2-.\7\35\2\2./\7\b\2\2/\60\7\t\2\2\60\62\7\36\2\2\61\63\7\3\2"+
+		"\2\62\61\3\2\2\2\62\63\3\2\2\2\63\t\3\2\2\2\64\65\7\n\2\2\65\66\7\13\2"+
+		"\2\66\67\7\f\2\2\678\7\t\2\28A\7\37\2\29:\7\r\2\2:;\7\16\2\2;<\7\t\2\2"+
+		"<=\7\36\2\2=>\7\r\2\2>?\7\17\2\2?@\7\t\2\2@B\7\36\2\2A9\3\2\2\2AB\3\2"+
+		"\2\2BC\3\2\2\2CD\7\20\2\2DJ\7\5\2\2EF\5\f\7\2FG\7\3\2\2GI\3\2\2\2HE\3"+
+		"\2\2\2IL\3\2\2\2JH\3\2\2\2JK\3\2\2\2KR\3\2\2\2LJ\3\2\2\2MN\5\16\b\2NO"+
+		"\7\3\2\2OQ\3\2\2\2PM\3\2\2\2QT\3\2\2\2RP\3\2\2\2RS\3\2\2\2SZ\3\2\2\2T"+
+		"R\3\2\2\2UV\5\20\t\2VW\7\3\2\2WY\3\2\2\2XU\3\2\2\2Y\\\3\2\2\2ZX\3\2\2"+
+		"\2Z[\3\2\2\2[]\3\2\2\2\\Z\3\2\2\2]^\7\6\2\2^\13\3\2\2\2_`\7\21\2\2`a\7"+
+		"\t\2\2af\7\35\2\2bc\7\r\2\2cd\7\22\2\2de\7\t\2\2eg\7\36\2\2fb\3\2\2\2"+
+		"fg\3\2\2\2g\r\3\2\2\2hi\7\23\2\2ij\7\t\2\2jo\7\35\2\2kl\7\r\2\2lm\7\17"+
+		"\2\2mn\7\t\2\2np\7\36\2\2ok\3\2\2\2op\3\2\2\2p\17\3\2\2\2qr\7\24\2\2r"+
+		"s\7\25\2\2st\7\t\2\2tu\7\36\2\2uv\7\26\2\2vw\7\27\2\2wy\7\30\2\2xz\5\22"+
+		"\n\2yx\3\2\2\2z{\3\2\2\2{y\3\2\2\2{|\3\2\2\2|}\3\2\2\2}~\7\30\2\2~\21"+
+		"\3\2\2\2\177\u0080\t\2\2\2\u0080\23\3\2\2\2\16\25\32!(\62AJRZfo{";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
