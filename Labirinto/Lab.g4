@@ -5,30 +5,39 @@ program:
     ;
 
 stat:
-    grid
-    |labirinto
+    grid       
+    |labirinto  
     ;
 
 grid: 'GRID' '{' (position)+ '}';
-position: 'POSITION' COORDENADAS 'DIRECAO' '=' DOUBLE (';')?;
+position: 'POSITION' COORDENADAS 'DIRECAO' '=' DOUBLE (';')?; 
 
 labirinto: 'LABIRINTO' '(' 'NAME' '=' ID (',' 'WIDTH' '=' DOUBLE ',' 'HEIGHT' '=' DOUBLE)? ')' '{'
-                (target)*
-                (beacon)*
-                (wall)*
+                (target ';')*
+                (beacon ';')*
+                //(wall)*
+                (row ';')*
             '}' 
     ;
 
-target:'TARGET' '=' COORDENADAS (',' 'Raio' '=' DOUBLE)? (';')?; 
-beacon:'BEACON' '=' COORDENADAS (',' 'HEIGHT' '=' DOUBLE)? (';')?; 
+target:'TARGET' '=' COORDENADAS (',' 'Raio' '=' DOUBLE)?; 
+beacon:'BEACON' '=' COORDENADAS (',' 'HEIGHT' '=' DOUBLE)?; 
 
-wall:
+/*wall:
     'WALL' ('HEIGHT' '=' DOUBLE)? '{'
             (corner)*
         '}' (';')?
-    ;
+    ;*/
 
-corner:'CORNER' COORDENADAS (';')?;
+//corner:'CORNER' COORDENADAS (';')?;
+
+row :'ROW' 'x' '=' DOUBLE 'PADRAO' ':' '"'(padrao)+ '"';
+
+padrao: '__.'
+        |'__|' 
+        |'___' 
+        |'--.' 
+        ;
 
 COORDENADAS: '(' DOUBLE ',' DOUBLE ')' ;
 DOUBLE:[0-9]+ ('.' [0-9]+)?;
@@ -36,12 +45,3 @@ ID: [a-zA-Z_][a-zA-Z_0-9]*;
 WS: [ \t\r\n]+ -> skip;
 LINE_COMMENT: '#' .*? ('\n'|EOF) -> skip;
 MULTILINE_COMMENT: '/*' .*? '*/' -> skip;
-
-
-
-
-
-
-
-
-
