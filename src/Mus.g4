@@ -24,8 +24,8 @@ expr:
     | expr ',' expr  ('|' expr ',' expr)+            #ExprEnumWithValues // TEXT ',' NUM  ('|' TEXT ',' NUM)*
     | '(' expr ')'                                   #ExprParenthesis  //done
     | 'not' expr                                     #BoolNegation  //done
-    | expr op1=LOGICALOP expr op2=LOGICALOP expr     #BoolDoubleCompare     // -10 < beaconAngle < 10      //done
-    | expr op=LOGICALOP expr                         #BoolCompare  //done
+    | expr op1=LOGICALOP2 expr op2=LOGICALOP2 expr   #BoolDoubleCompare     // -10 < beaconAngle < 10      //done
+    | expr op=LOGICALOP1 expr                        #BoolCompare  //done
     | '-' expr                                       #NumericNegative  //done
     | expr op=('*'|'/'|'%') expr                     #NumericMultDivMod  //done
     | expr op=('+'|'-') expr                         #NumericAddSub  //done
@@ -39,7 +39,8 @@ expr:
 
 call: (ID '.')? ID (expr)*; //chamada de uma função/variável    //done
 
-LOGICALOP: ('and'|'or'|'>'|'>='|'<'|'<='|'=='|'!=');       //nao me deu problemas, mas ver dps        
+LOGICALOP2: ('and'|'or'|'>'|'>='|'<'|'<=');
+LOGICALOP1: ('and'|'or'|'>'|'>='|'<'|'<='|'=='|'!=');      
 TYPE:  'NUM' | 'BOOL' | 'TEXT' | 'ENUM' | 'ROBOT';
 NUM: ('-')?[0-9]+('.'[0-9]+)?;
 BOOL: [tT]'rue' | [fF]'alse';

@@ -18,8 +18,8 @@ public class MusParser extends Parser {
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
 		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
-		T__17=18, LOGICALOP=19, TYPE=20, NUM=21, BOOL=22, TEXT=23, ID=24, WS=25, 
-		COMMENT_INLINE=26, COMMENT_MULTILINE=27;
+		T__17=18, LOGICALOP2=19, LOGICALOP1=20, TYPE=21, NUM=22, BOOL=23, TEXT=24, 
+		ID=25, WS=26, COMMENT_INLINE=27, COMMENT_MULTILINE=28;
 	public static final int
 		RULE_program = 0, RULE_stat = 1, RULE_block = 2, RULE_assignment = 3, 
 		RULE_singleCall = 4, RULE_expr = 5, RULE_call = 6;
@@ -40,8 +40,8 @@ public class MusParser extends Parser {
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, null, null, null, null, null, "LOGICALOP", "TYPE", "NUM", 
-			"BOOL", "TEXT", "ID", "WS", "COMMENT_INLINE", "COMMENT_MULTILINE"
+			null, null, null, null, null, null, null, "LOGICALOP2", "LOGICALOP1", 
+			"TYPE", "NUM", "BOOL", "TEXT", "ID", "WS", "COMMENT_INLINE", "COMMENT_MULTILINE"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -570,9 +570,9 @@ public class MusParser extends Parser {
 		public ExprContext expr(int i) {
 			return getRuleContext(ExprContext.class,i);
 		}
-		public List<TerminalNode> LOGICALOP() { return getTokens(MusParser.LOGICALOP); }
-		public TerminalNode LOGICALOP(int i) {
-			return getToken(MusParser.LOGICALOP, i);
+		public List<TerminalNode> LOGICALOP2() { return getTokens(MusParser.LOGICALOP2); }
+		public TerminalNode LOGICALOP2(int i) {
+			return getToken(MusParser.LOGICALOP2, i);
 		}
 		public BoolDoubleCompareContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
@@ -619,7 +619,7 @@ public class MusParser extends Parser {
 		public ExprContext expr(int i) {
 			return getRuleContext(ExprContext.class,i);
 		}
-		public TerminalNode LOGICALOP() { return getToken(MusParser.LOGICALOP, 0); }
+		public TerminalNode LOGICALOP1() { return getToken(MusParser.LOGICALOP1, 0); }
 		public BoolCompareContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -971,11 +971,11 @@ public class MusParser extends Parser {
 						setState(89);
 						if (!(precpred(_ctx, 11))) throw new FailedPredicateException(this, "precpred(_ctx, 11)");
 						setState(90);
-						((BoolDoubleCompareContext)_localctx).op1 = match(LOGICALOP);
+						((BoolDoubleCompareContext)_localctx).op1 = match(LOGICALOP2);
 						setState(91);
 						expr(0);
 						setState(92);
-						((BoolDoubleCompareContext)_localctx).op2 = match(LOGICALOP);
+						((BoolDoubleCompareContext)_localctx).op2 = match(LOGICALOP2);
 						setState(93);
 						expr(12);
 						}
@@ -987,7 +987,7 @@ public class MusParser extends Parser {
 						setState(95);
 						if (!(precpred(_ctx, 10))) throw new FailedPredicateException(this, "precpred(_ctx, 10)");
 						setState(96);
-						((BoolCompareContext)_localctx).op = match(LOGICALOP);
+						((BoolCompareContext)_localctx).op = match(LOGICALOP1);
 						setState(97);
 						expr(11);
 						}
@@ -1228,7 +1228,7 @@ public class MusParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\35\u008e\4\2\t\2"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\36\u008e\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\3\2\7\2\22\n\2\f\2\16"+
 		"\2\25\13\2\3\2\3\2\3\3\3\3\3\3\5\3\34\n\3\3\4\3\4\3\4\3\4\7\4\"\n\4\f"+
 		"\4\16\4%\13\4\3\4\3\4\3\4\3\4\3\4\3\4\7\4-\n\4\f\4\16\4\60\13\4\3\4\3"+
@@ -1248,22 +1248,22 @@ public class MusParser extends Parser {
 		"\2\2()\7\6\2\2)*\5\f\7\2*.\7\4\2\2+-\5\4\3\2,+\3\2\2\2-\60\3\2\2\2.,\3"+
 		"\2\2\2./\3\2\2\2/\61\3\2\2\2\60.\3\2\2\2\61\62\7\5\2\2\629\3\2\2\2\63"+
 		"\64\5\16\b\2\64\65\7\7\2\2\65\66\5\f\7\2\66\67\7\b\2\2\679\3\2\2\28\35"+
-		"\3\2\2\28(\3\2\2\28\63\3\2\2\29\7\3\2\2\2:<\7\26\2\2;:\3\2\2\2;<\3\2\2"+
-		"\2<=\3\2\2\2=>\7\32\2\2>?\7\t\2\2?@\5\f\7\2@A\7\b\2\2A\t\3\2\2\2BC\5\16"+
+		"\3\2\2\28(\3\2\2\28\63\3\2\2\29\7\3\2\2\2:<\7\27\2\2;:\3\2\2\2;<\3\2\2"+
+		"\2<=\3\2\2\2=>\7\33\2\2>?\7\t\2\2?@\5\f\7\2@A\7\b\2\2A\t\3\2\2\2BC\5\16"+
 		"\b\2CD\7\b\2\2D\13\3\2\2\2EF\b\7\1\2FG\7\n\2\2GH\5\f\7\2HI\7\13\2\2IJ"+
 		"\5\f\7\2JK\7\f\2\2KZ\3\2\2\2LM\7\n\2\2MN\5\f\7\2NO\7\f\2\2OZ\3\2\2\2P"+
-		"Q\7\16\2\2QZ\5\f\7\16RS\7\17\2\2SZ\5\f\7\13TZ\7\32\2\2UZ\5\16\b\2VZ\7"+
-		"\31\2\2WZ\7\30\2\2XZ\7\27\2\2YE\3\2\2\2YL\3\2\2\2YP\3\2\2\2YR\3\2\2\2"+
+		"Q\7\16\2\2QZ\5\f\7\16RS\7\17\2\2SZ\5\f\7\13TZ\7\33\2\2UZ\5\16\b\2VZ\7"+
+		"\32\2\2WZ\7\31\2\2XZ\7\30\2\2YE\3\2\2\2YL\3\2\2\2YP\3\2\2\2YR\3\2\2\2"+
 		"YT\3\2\2\2YU\3\2\2\2YV\3\2\2\2YW\3\2\2\2YX\3\2\2\2Z\177\3\2\2\2[\\\f\r"+
 		"\2\2\\]\7\25\2\2]^\5\f\7\2^_\7\25\2\2_`\5\f\7\16`~\3\2\2\2ab\f\f\2\2b"+
-		"c\7\25\2\2c~\5\f\7\rde\f\n\2\2ef\t\2\2\2f~\5\f\7\13gh\f\t\2\2hi\t\3\2"+
+		"c\7\26\2\2c~\5\f\7\rde\f\n\2\2ef\t\2\2\2f~\5\f\7\13gh\f\t\2\2hi\t\3\2"+
 		"\2i~\5\f\7\njk\f\20\2\2kl\7\13\2\2lr\5\f\7\2mn\7\r\2\2no\5\f\7\2op\7\13"+
 		"\2\2pq\5\f\7\2qs\3\2\2\2rm\3\2\2\2st\3\2\2\2tr\3\2\2\2tu\3\2\2\2u~\3\2"+
 		"\2\2vy\f\5\2\2wx\7\r\2\2xz\5\f\7\2yw\3\2\2\2z{\3\2\2\2{y\3\2\2\2{|\3\2"+
 		"\2\2|~\3\2\2\2}[\3\2\2\2}a\3\2\2\2}d\3\2\2\2}g\3\2\2\2}j\3\2\2\2}v\3\2"+
 		"\2\2~\u0081\3\2\2\2\177}\3\2\2\2\177\u0080\3\2\2\2\u0080\r\3\2\2\2\u0081"+
-		"\177\3\2\2\2\u0082\u0083\7\32\2\2\u0083\u0085\7\24\2\2\u0084\u0082\3\2"+
-		"\2\2\u0084\u0085\3\2\2\2\u0085\u0086\3\2\2\2\u0086\u008a\7\32\2\2\u0087"+
+		"\177\3\2\2\2\u0082\u0083\7\33\2\2\u0083\u0085\7\24\2\2\u0084\u0082\3\2"+
+		"\2\2\u0084\u0085\3\2\2\2\u0085\u0086\3\2\2\2\u0086\u008a\7\33\2\2\u0087"+
 		"\u0089\5\f\7\2\u0088\u0087\3\2\2\2\u0089\u008c\3\2\2\2\u008a\u0088\3\2"+
 		"\2\2\u008a\u008b\3\2\2\2\u008b\17\3\2\2\2\u008c\u008a\3\2\2\2\17\23\33"+
 		"#.8;Yt{}\177\u0084\u008a";

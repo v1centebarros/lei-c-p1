@@ -2,11 +2,21 @@
 
 ## Mínimas
 
-- [X] Deve suportar nativamente o conceito de robô (robot)
+- [] Deve suportar nativamente o conceito de robô (robot)
+    – [] Pode existir mais do que um robô.
+    – [] Um robô é composto por propriedades (nome, estado, pose, velocidade, valores lidos pelos sensores, etc.).
+    – [] Há propriedades constantes desde a criação (nome) e outras que mudam ao longo do tempo (estado, pose, velocidade).
+    – [O] As propriedades podem ser do tipo numérico, booleano, textual, enumerado, etc.
 
-- [X] Deve suportar o conceito de ações protegidas (guarded actions) sobre robôs, ou seja, ações que apenas são realizadas se um determinado predicado for verdadeiro.
+- [] Deve suportar o conceito de ações protegidas (guarded actions) sobre robôs, ou seja, ações que apenas são realizadas se um determinado predicado for verdadeiro.
+    – [O] A aplicação de uma velocidade e o acendimento/apagamento de leds são exemplos de ações.
+    – [] O valor lido por um determinado sensor estar dentro de um dado intervalo é um
+    exemplo de predicado.
+    – [] As ações devem ser registadas localmente e apenas enviadas ao simulador sobre diretiva de um comando especial (apply) que as aplica.
 
 - [] Deve conter uma linguagem secundária de leitura de mapas (por exemplo, labirintos).
+    – [] Um mapa é definido por um conjunto de paredes, colocadas num recinto retangular.
+    – [] A linguagem principal deve ter instruções para importar (em runtime, através de um interpretador) um mapa, recorrendo a esta linguagem secundária.
 
 - [X] Deve permitir a definição e uso de variáveis (associadas a valores numericos, texto, pontos, poses, velocidades, robôs).
 
@@ -22,7 +32,6 @@
 
 - [X] Incluir a instrução repetitiva (operando sobre expressões booleanas).
 
-- [] Suportar nativamente, em 2D, os conceitos de ’ponto’ (point), ’pose’ (pose) e velocidade’ (twist), assim como algumas opera ̧c ̃oes sobre estes tipos de dados.
 
 ## Adicionais
 
