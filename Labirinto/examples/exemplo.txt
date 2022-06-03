@@ -32,8 +32,7 @@ LABIRINTO (NAME = lab01, WIDTH = 28, HEIGHT = 14) {
 	ROW 3 PADRAO:"_________  |____________  |____________  ";
 	ROW 2 PADRAO:"_________  |____________  |____________  ";
 	ROW 1 PADRAO:"_________  |____________  |____________  ";*/
-	ROW x=0 PADRAO:"_____|";
-	
+	ROW x=0 PADRAO:"     |   ";
 };
 
 #Outra forma de definir o labirinto, temos valores default para o labirinto a nivel de comprimento e altura
