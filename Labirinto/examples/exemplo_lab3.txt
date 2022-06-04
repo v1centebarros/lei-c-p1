@@ -1,0 +1,43 @@
+LABIRINTO (NAME = lab03 WIDTH =20  HEIGHT = 13) { 
+
+	/* DEfinir Beacon */
+	BEACON = (3.0,1.0); #default altura é 2
+
+	/* DEfinir mapa*/
+	ROW 12 : "           |              |              ";
+	ROW 11 : "--.--.--.--.  .--.--.--.  .  .  .  .  .  ";
+	ROW 10 : "              |        |  |              ";
+	ROW 9  : "  .--.--.--.--.  .--.--.  .--.  .  .  .  ";
+	ROW 8  : "     |           |     |     |           ";
+	ROW 7  : "--.  .  .  .  .--.  .  .--.  .--.  .  .  ";
+	ROW 6  : "  |  |        |     |  |  |     |        ";
+	ROW 5  : "--.  .--.--.--.  .--.  .--.--.  .  .  .  ";
+	ROW 4  : "     |           |  |  |        |        ";
+	ROW 3  : "  .  .  .--.--.--.  .  .  .--.--.  .  .  ";
+	ROW 2  : "  |  |  |           |     |              ";
+	ROW 1  : "  .--.  .  .  .  .  .--.--.  .  .  .  .  ";
+	ROW 0  : "        |                                ";
+};
+
+/*Neste exemplo o labirinto tem obtaculos e paredes. 
+    tem apenas um beacon sozinho, com valor default de altura.
+        
+--------XML---------
+<Lab Name="Lab 3" Width="20.0" Height="13.0">
+	<Beacon X="3.0" Y="3" Height="2"/>
+
+	<Row  Pos="12" Pattern="           |              |              "  />
+	<Row  Pos="11" Pattern="--+--+--+--+  +--+--+--+  +  +  +  +  +  "  />
+	<Row  Pos="10" Pattern="              |        |  |              "  />
+	<Row  Pos="9"  Pattern="  +--+--+--+--+  +--+--+  +--+  +  +  +  "  />
+	<Row  Pos="8"  Pattern="     |           |     |     |           "  />
+	<Row  Pos="7"  Pattern="--+  +  +  +  +--+  +  +--+  +--+  +  +  "  />
+	<Row  Pos="6"  Pattern="  |  |        |     |  |  |     |        "  />
+	<Row  Pos="5"  Pattern="--+  +--+--+--+  +--+  +--+--+  +  +  +  "  />
+	<Row  Pos="4"  Pattern="     |           |  |  |        |        "  />
+	<Row  Pos="3"  Pattern="  +  +  +--+--+--+  +  +  +--+--+  +  +  "  />
+	<Row  Pos="2"  Pattern="  |  |  |           |     |              "  />
+	<Row  Pos="1"  Pattern="  +--+  +  +  +  +  +--+--+  +  +  +  +  "  />
+	<Row  Pos="0"  Pattern="        |                                "  />
+</Lab>
+*/

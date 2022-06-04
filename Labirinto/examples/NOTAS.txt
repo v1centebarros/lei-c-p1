@@ -20,7 +20,8 @@ NOTA IMPORTANTE:
 
 
 DUVIDAS:
-    porque que quando o rato chega ao beacon nunca sai de la ?? 
+    porque que quando o rato chega ao beacon nunca sai de la ?
     existe nenhum sensor no beacon?
 
     (1)Falar com o professor para que a ordem nao importe
+    o labirinto é obrigado a ter um beacon ?
