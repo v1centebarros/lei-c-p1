@@ -14,7 +14,7 @@ position: 'POSITION' COORDENADAS ('DIRECTION' '=' INT)?;
 
 labirinto: 'LABIRINTO' '(' 'NAME' '=' ID ('WIDTH' '=' INT 'HEIGHT' '=' INT)? ')' '{'
                 (target ';')*
-                (beacon ';')*
+                (beacon ';')* //(beacon ';')+(nao caso de ser obrigado)
                 (spot ';')*
                 (row ';')*
             '}' 
