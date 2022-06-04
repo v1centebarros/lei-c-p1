@@ -66,7 +66,6 @@ blockIf(expr, stat, blockElse) ::= <<if (<expr>) {
 
 blockElse(stat) ::= <<else {
     <stat>
-    apply();
 }
 >>
 

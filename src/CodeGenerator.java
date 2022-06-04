@@ -15,11 +15,19 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
 
    //simple functions (without arguments)
    private Map<String, String> simpleFunc = new HashMap<>();
+
+   //type and values of the last assignment
+   private String lastType;
+   private String lastVar;
    
 
    public CodeGenerator() {
       //stringTemplate = new ST();
       allTemplates = new STGroupFile("Templates.stg");
+
+      //last assignment info
+      lastType = null;
+      lastVar = null;
 
       // add simple functions
       simpleFunc.put("posX", "posX()");
@@ -78,7 +86,7 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
          res.add("comma",";\n");
       } else if(ctx.singleCall() != null) {
          res.add("stat", visit(ctx.singleCall()));
-         res.add("comma",";\n");
+         res.add("comma",";\napply();\n");
       }
       return res;
    }
@@ -135,8 +143,10 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       ST initRobotST = new ST("init(<expr>)");
       ST assign = allTemplates.getInstanceOf("assign");
 
+      lastVar = "var_" + ctx.ID().getText();
       if(ctx.TYPE() != null) {
          String type = ctx.TYPE().getText();
+         lastType = type;
 
          if (type.equals("ROBOT")) {
             initRobotST.add("expr", visit(ctx.expr()));
@@ -164,6 +174,18 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       if (simpleFunc.containsKey(varName)) {
          return new ST(simpleFunc.get(varName));
       }
+      else if (varName.equals("input")) {
+         if (lastType.equals("NUM")){
+
+            return new ST("0;\ncin >> " + lastVar);
+
+         } else if (lastType.equals("TEXT")){
+
+            return new ST("\"\";\ngetline(cin, " + lastVar + ")" );
+
+         }
+      }
+      
       return new ST("var_" + ctx.ID().getText());
    }
 
@@ -354,7 +376,7 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
          callST.add("ID2", "." + ctx.ID(1).getText()); 
       }
 
-      if (ctx.expr() != null) {
+      if (ctx.expr() != null) {  
 
          //rotate
          if (ctx.ID().size() == 1 && (ctx.ID(0).getText()).equals("rotate")) {
