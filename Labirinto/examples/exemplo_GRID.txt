@@ -10,7 +10,7 @@ GRID{
 
 /*Neste exemplo temos uma grid a aceitar a posição de 5 robos num labirinto, 
     chamada de atenção para as direções que estão de forma variada, 
-    quando não é colocada por default assume-se 180 graus. */
+    quando não é colocada por default assume-se 180 graus.
     
 --------XML---------
 <Grid>

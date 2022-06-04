@@ -10,7 +10,7 @@ stat:
     ;
 
 grid: 'GRID' '{' (position ';')+ '}';
-position: 'POSITION' COORDENADAS 'DIRECTION' '=' INT; 
+position: 'POSITION' COORDENADAS ('DIRECTION' '=' INT)?; 
 
 labirinto: 'LABIRINTO' '(' 'NAME' '=' ID (',' 'WIDTH' '=' INT ',' 'HEIGHT' '=' INT)? ')' '{'
                 (target ';')*
