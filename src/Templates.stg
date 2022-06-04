@@ -53,7 +53,7 @@ int main() {
 >>
 
 
-assign(type, name, value) ::= <<<if(type)><typeMap.(type)> <endif><name> = <value>
+assign(type, name, value) ::= <<<if(type)><typeMap.(type)> <endif>var_<name> = <value>
 >>
 
 
