@@ -16,7 +16,7 @@ NOTA IMPORTANTE:
     A ordem de como as posições sao colocadas no ficheiro importa na ordem de como os robos sao colocados no labirinto
     Double tem de levar sempre (.x)
     spot a ordem de argumentos após as coordenadas importa (1)
-    no labirinto a ordem dos argumentos importa
+    no labirinto a ordem dos argumentos importa(1)
 
 
 DUVIDAS:
