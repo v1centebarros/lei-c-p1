@@ -74,9 +74,9 @@ blockWhile(expr, stat) ::= <<while (<expr>) {
 >>
 
 blockUntil(expr, call) ::= <<while (!(<expr>)) {
-    <call>;
+    <call>
 }
 >>
 
-externalFunctions(ID1, ID2, expr, apply) ::= <<<if(ID1)><externalFunctionsMap.(ID1)><endif><if(ID2)><externalFunctionsMap.(ID2)><endif>(<expr; separator=", ">)<if(apply)><apply><endif>
+externalFunctions(ID1, ID2, expr) ::= <<<if(ID1)><externalFunctionsMap.(ID1)><endif><if(ID2)><externalFunctionsMap.(ID2)><endif>(<expr; separator=", ">)
 >>

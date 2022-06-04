@@ -148,6 +148,16 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       ST untilST = allTemplates.getInstanceOf("blockUntil");
       untilST.add("expr", visit(ctx.expr()));
       untilST.add("call", visit(ctx.call()));
+
+
+      //insert apply(); if needed
+      if (!needApply)
+         untilST.add("call",";\n");
+      else {
+         untilST.add("call",";\napply();\n");
+         needApply = false;  //reset apply() var
+      }
+
       return untilST;
    }
 
