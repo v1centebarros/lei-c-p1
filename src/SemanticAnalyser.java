@@ -127,7 +127,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
             System.err.printf("[Line %d] NameError: name '%s' is not defined\n", ctx.start.getLine(), key);
             return "ERROR";
          }
-         String[] keyParts = key.split("_");
+         String[] keyParts = key.split(":");
          if (table.getVariable(keyParts[0]).equals("ENUM")) {
             System.err.printf("[Line %d] ImmutableTypeError: enum '%s' is already defined\n", ctx.start.getLine(), keyParts[0]);
             return "ERROR";
@@ -150,6 +150,10 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          return "ERROR";
       }
       String name = ctx.ID().getText();
+      if (name.contains(":")) {
+         System.err.printf("[Line %d] NameError: symbol ':' is reserved for object's attributes\n", ctx.start.getLine());
+         return "ERROR";
+      }
       if (keywords.contains(name)) {
          System.err.printf("[Line %d] NameError: name '%s' is a data type\n", ctx.start.getLine(), name);
          return "ERROR";
@@ -166,7 +170,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          Iterator<String> it = currentEnum.iterator();
          String str;
          while(it.hasNext()) {
-            str = name + "_" + it.next().replaceAll("\"", "");
+            str = name + ":" + it.next().replaceAll("\"", "");
             table.putVariable(str, "NUM");
          }
       }
@@ -332,11 +336,11 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       return "TEXT";
    }
 
-   @Override public String visitSingleCall(MusParser.SingleCallContext ctx) {
-      String res = null;
-      return visitChildren(ctx);
-      //return res;
-   }
+   // @Override public String visitSingleCall(MusParser.SingleCallContext ctx) {
+   //    String res = null;
+   //    return visitChildren(ctx);
+   //    //return res;
+   // }
 
    @Override public String visitCall(MusParser.CallContext ctx) {
       String func;

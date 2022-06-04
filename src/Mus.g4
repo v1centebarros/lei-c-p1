@@ -46,7 +46,7 @@ TYPE:  'NUM' | 'BOOL' | 'TEXT' | 'ENUM' | 'ROBOT';
 NUM: ('-')?[0-9]+('.'[0-9]+)?;
 BOOL: [tT]'rue' | [fF]'alse';
 TEXT: '"' (~["] | '""')* '"';
-ID: (([a-zA-Z_][0-9a-zA-Z_]*));
+ID: (([a-zA-Z_][0-9a-zA-Z_]*))(':'[0-9a-zA-Z_]*)?;
 WS: [ \t\r\n]+ -> skip;
 COMMENT_INLINE: '#' .*? '\n' -> skip;
 COMMENT_MULTILINE: '/*' .*? '*/' -> skip;
