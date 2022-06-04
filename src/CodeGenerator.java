@@ -32,7 +32,7 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       simpleFunc.put("beaconCount", "beaconCount()");
       simpleFunc.put("startAngle", "startAngle()");
       simpleFunc.put("startDistance", "startDistance()");
-      simpleFunc.put("colides", "colides()");
+      simpleFunc.put("collides", "collides()");
       simpleFunc.put("getReturningLed", "getReturningLed()");
       simpleFunc.put("getVisitingLed", "getVisitingLed()");
    }
@@ -89,11 +89,22 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       for(int i = 0; i < ctx.stat().size(); i++) {
          ifST.add("stat", visit(ctx.stat(i)));
       }
+
+      if (ctx.blockElse() != null) {
+         ifST.add("blockElse", visit(ctx.blockElse()));
+      }
+
       return ifST;
    }
 
    @Override public ST visitBlockElse(MusParser.BlockElseContext ctx) {
-      return null;
+      ST elseST = allTemplates.getInstanceOf("blockElse");
+
+      for(int i = 0; i < ctx.stat().size(); i++) {
+         elseST.add("stat", visit(ctx.stat(i)));
+      }
+  
+      return elseST;
    }
 
    @Override public ST visitBlockWhile(MusParser.BlockWhileContext ctx) {
@@ -138,8 +149,12 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
             return assign;
          }
       }
+      else {
+         assign.add("name", ctx.ID().getText());
+         assign.add("value", visit(ctx.expr()));
+         return assign;
+      }
 
-      return null;
    }
 
    @Override public ST visitExprVar(MusParser.ExprVarContext ctx) {
@@ -159,7 +174,7 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    }
 
    @Override public ST visitBoolNegation(MusParser.BoolNegationContext ctx) {
-      return new ST("! (" + visit(ctx.expr()) + ")");
+      return new ST("!(" + visit(ctx.expr()).render() + ")");
    }
 
    @Override public ST visitNumericAddSub(MusParser.NumericAddSubContext ctx) {
