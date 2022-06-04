@@ -3,15 +3,14 @@ GRID{
     POSITION (1.5,7.0) DIRECTION = 180;
     POSITION (3.0,2.0) DIRECTION = 90;
     POSITION (3.0,9.6) DIRECTION = 0;
-    POSITION (1.5,12.0) DIRECTION = 180;
-    POSITION (1.5,4.5) DIRECTION = 360;
+    POSITION (1.5,12.0);
+    POSITION (1.5,4.5) DIRECTION = 361;
 };
 
 
-/*Neste caso o labirinto não tem qualquer obstaculo ou parede. 
-    tem um target e um beacon separadamente 
-    e um beacon e um target conjuntos (spot), 
-Em nenhum caso estamos a assumir valores default.
+/*Neste exemplo temos uma grid a aceitar a posição de 5 robos num labirinto, 
+    chamada de atenção para as direções que estão de forma variada, 
+    quando não é colocada por default assume-se 180 graus. */
     
 --------XML---------
 <Grid>

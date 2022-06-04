@@ -6,10 +6,11 @@ LABIRINTO (NAME = lab01, WIDTH = 28, HEIGHT = 14) {
 };
 
 
-/*Neste caso o labirinto não tem qualquer obstaculo ou parede. 
+/*Neste exemplo o labirinto não tem qualquer obstaculo ou parede. 
     tem um target e um beacon separadamente 
-    e um beacon e um target conjuntos (spot), 
-Em nenhum caso estamos a assumir valores default.
+    e um beacon e um target conjuntos (spot).
+Em nenhum caso  não estamos a assumir valores default.
+    
     
 --------XML---------
 <Lab Name="Lab 1" Width="28.0" Height="14.0">
