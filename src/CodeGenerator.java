@@ -164,7 +164,7 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       if (simpleFunc.containsKey(varName)) {
          return new ST(simpleFunc.get(varName));
       }
-      return new ST(ctx.ID().getText());
+      return new ST("var_" + ctx.ID().getText());
    }
 
    @Override public ST visitExprEnumWithValues(MusParser.ExprEnumWithValuesContext ctx) {
