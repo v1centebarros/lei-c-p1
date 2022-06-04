@@ -2,26 +2,27 @@
 GRID{
     POSITION (3.0,7.0) DIRECTION = 180;
     POSITION (3.0,8.3) DIRECTION = 180;
-    POSITION (3.0,9.6) DIRECTION = 180;
+    POSITION (3.0,9.6); #default DIRECTION é 180
 };
 
 
 /*Definir um labirinto*/
-LABIRINTO (NAME = lab01, WIDTH = 28, HEIGHT = 14) { 
+LABIRINTO (NAME = lab01 WIDTH = 28 HEIGHT = 14) { 
 
 	/* Definir target */
 	TARGET = (2.0,1.0) RADIUS = 1.0;
-	TARGET = (2.0,1.0); #default o raio será 1 
+	TARGET = (2.0,1.0); #default o raio é 1 
 
 	/* DEfinir Beacon */
 	BEACON = (3.0,1.0) HEIGHT = 2; 
-	BEACON = (3.0,1.0); #default altura será 2
+	BEACON = (3.0,1.0); #default altura é 2
 
 	SPOT = (26.0,7.0) HEIGHT = 2 RADIUS = 1.0;
+	#SPOT = (26.0,7.0) RADIUS = 1.0 HEIGHT = 2; nao funciona ainda
 	SPOT = (20.0,1.0) HEIGHT = 2;
 	SPOT = (14.0,5.0) RADIUS = 1.0;
 
-	/* DEfinir Parede */
+	/* DEfinir mapa*/
 
 	ROW 12 : "           |              |              ";
 	ROW 11 : "--.--.--.--.  .--.--.--.  .  .  .  .  .  ";
