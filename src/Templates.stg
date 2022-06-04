@@ -59,7 +59,6 @@ assign(type, name, value) ::= <<<if(type)><typeMap.(type)> <endif>var_<name> = <
 
 blockIf(expr, stat, blockElse) ::= <<if (<expr>) {
     <stat>
-    apply();
 }
 <if(blockElse)><blockElse><endif>
 >>
@@ -71,15 +70,13 @@ blockElse(stat) ::= <<else {
 
 blockWhile(expr, stat) ::= <<while (<expr>) {
     <stat>
-    apply();
 }
 >>
 
 blockUntil(expr, call) ::= <<while (!(<expr>)) {
     <call>;
-    apply();
 }
 >>
 
-externalFunctions(ID1, ID2, expr) ::= <<<if(ID1)><externalFunctionsMap.(ID1)><endif><if(ID2)><externalFunctionsMap.(ID2)><endif>(<expr; separator=", ">)
+externalFunctions(ID1, ID2, expr, apply) ::= <<<if(ID1)><externalFunctionsMap.(ID1)><endif><if(ID2)><externalFunctionsMap.(ID2)><endif>(<expr; separator=", ">)<if(apply)><apply><endif>
 >>
