@@ -1,9 +1,8 @@
 #Definir posições de saida do robo
-
 GRID{
-    POSITION (3.0,7.0) DIRECAO = 180;
-    POSITION (3.0,8.3) DIRECAO = 180;
-    POSITION (3.0,9.6) DIRECAO = 180;
+    POSITION (3.0,7.0) DIRECTION = 180;
+    POSITION (3.0,8.3) DIRECTION = 180;
+    POSITION (3.0,9.6) DIRECTION = 180;
 };
 
 
@@ -11,28 +10,28 @@ GRID{
 LABIRINTO (NAME = lab01, WIDTH = 28, HEIGHT = 14) { 
 
 	/* Definir target */
-	TARGET = (2,1), Raio = 2;
-	TARGET = (2,1); #default o raio será 2 
+	TARGET = (2.0,1.0), RADIUS = 2.0;
+	TARGET = (2.0,1.0); #default o raio será 2 
 
 	/* DEfinir Beacon */
-	BEACON = (3,1), HEIGHT = 2; 
-	BEACON = (3,1); #default altura será 1
+	BEACON = (3.0,1.0), HEIGHT = 2; 
+	BEACON = (3.0,1.0); #default altura será 1
 
 	/* DEfinir Parede */
 
-	ROW 12 PADRAO : "           |              |              ";
-	ROW 11 PADRAO : "--.--.--.--.  .--.--.--.  .  .  .  .  .  ";
-	ROW 10 PADRAO : "              |        |  |              ";
-	ROW 9  PADRAO : "  .--.--.--.--.  .--.--.  .--.  .  .  .  ";
-	ROW 8  PADRAO : "     |           |     |     |           ";
-	ROW 7  PADRAO : "--.  .  .  .  .--.  .  .--.  .--.  .  .  ";
-	ROW 6  PADRAO : "  |  |        |     |  |  |     |        ";
-	ROW 5  PADRAO : "--.  .--.--.--.  .--.  .--.--.  .  .  .  ";
-	ROW 4  PADRAO : "     |           |  |  |        |        ";
-	ROW 3  PADRAO : "  .--.  .--.--.--.  .  .  .--.--.  .  .  ";
-	ROW 2  PADRAO : "  |  |  |           |     |              ";
-	ROW 1  PADRAO : "  .--.  .  .  .  .  .--.--.  .  .  .  .  ";
-	ROW 0  PADRAO : "        |                                ";
+	ROW 12 : "           |              |              ";
+	ROW 11 : "--.--.--.--.  .--.--.--.  .  .  .  .  .  ";
+	ROW 10 : "              |        |  |              ";
+	ROW 9  : "  .--.--.--.--.  .--.--.  .--.  .  .  .  ";
+	ROW 8  : "     |           |     |     |           ";
+	ROW 7  : "--.  .  .  .  .--.  .  .--.  .--.  .  .  ";
+	ROW 6  : "  |  |        |     |  |  |     |        ";
+	ROW 5  : "--.  .--.--.--.  .--.  .--.--.  .  .  .  ";
+	ROW 4  : "     |           |  |  |        |        ";
+	ROW 3  : "  .--.  .--.--.--.  .  .  .--.--.  .  .  ";
+	ROW 2  : "  |  |  |           |     |              ";
+	ROW 1  : "  .--.  .  .  .  .  .--.--.  .  .  .  .  ";
+	ROW 0  : "        |                                ";
 };
 
 #Outra forma de definir o labirinto, temos valores default para o labirinto a nivel de comprimento e altura

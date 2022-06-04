@@ -1,0 +1,5 @@
+comentarios multilinhas: /* */
+comentarios de uma so linha : #
+
+Cada instrução acaba com um ponto e virgula (;), na forma de quem escrever poder escrever tudo na mesma linha.
+O labirinto pode ter por default vamos para comprimento e altura, tal como o alvos podem ter para o raio e os beacons para a altura.
