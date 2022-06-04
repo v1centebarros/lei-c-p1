@@ -1,5 +1,6 @@
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,10 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    //type and values of the last assignment
    private String lastType;
    private String lastVar;
+
+   //functions that need an apply statement
+   List<String> needApplyFunc;
+   boolean needApply;
    
 
    public CodeGenerator() {
@@ -28,6 +33,13 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       //last assignment info
       lastType = null;
       lastVar = null;
+
+      //functions that need an apply statement
+      needApply = false;
+      needApplyFunc = new ArrayList<>();
+      needApplyFunc.add("move");
+      needApplyFunc.add("rotate");
+      needApplyFunc.add("stop");
 
       // add simple functions
       simpleFunc.put("posX", "posX()");
@@ -86,7 +98,15 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
          res.add("comma",";\n");
       } else if(ctx.singleCall() != null) {
          res.add("stat", visit(ctx.singleCall()));
-         res.add("comma",";\napply();\n");
+
+         //insert apply(); if needed
+         if (!needApply)
+            res.add("comma",";\n");
+         else {
+            res.add("comma",";\napply();\n");
+            needApply = false;  //reset apply() var
+         }
+
       }
       return res;
    }
@@ -172,7 +192,10 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       
       //if the name is a func name -> return function()
       if (simpleFunc.containsKey(varName)) {
-         return new ST(simpleFunc.get(varName));
+         if (simpleFunc.get(varName).equals("beaconCount()"))
+            return new ST("(int)beaconCount()");  //cast to int
+         else
+            return new ST(simpleFunc.get(varName));
       }
       else if (varName.equals("input")) {
          if (lastType.equals("NUM")){
@@ -366,14 +389,18 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    }
 
    @Override public ST visitCall(MusParser.CallContext ctx) {
+
       ST callST = allTemplates.getInstanceOf("externalFunctions");
+      String func = "";
 
       if (ctx.ID().size() == 1) {
          callST.add("ID2", ctx.ID(0).getText());
+         func = ctx.ID(0).getText();
       }
       if (ctx.ID().size() == 2) {
          callST.add("ID1", ctx.ID(0).getText());
-         callST.add("ID2", "." + ctx.ID(1).getText()); 
+         callST.add("ID2", "." + ctx.ID(1).getText());
+         func = ctx.ID(1).getText();
       }
 
       if (ctx.expr() != null) {  
@@ -399,6 +426,9 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
          }
       }
       
+      if (needApplyFunc.contains(func))  // the visitStat will insert an apply()
+         needApply = true;
+
       return callST;
    }
 
