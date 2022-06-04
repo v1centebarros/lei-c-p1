@@ -23,7 +23,7 @@ labirinto: 'LABIRINTO' '(' 'NAME' '=' ID (',' 'WIDTH' '=' INT ',' 'HEIGHT' '=' I
 target:'TARGET' '=' COORDENADAS ('RADIUS' '=' DOUBLE)?; 
 beacon:'BEACON' '=' COORDENADAS ('HEIGHT' '=' INT)?; 
 spot: 'SPOT' '=' COORDENADAS ('HEIGHT' '=' INT)? ('RADIUS' '=' DOUBLE)?;
-row :'ROW' INT ':' (PADRAO ';')*;
+row :'ROW' INT ':' (PADRAO)*;
 
 
 COORDENADAS: '(' DOUBLE ',' DOUBLE ')' ;

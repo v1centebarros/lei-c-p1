@@ -10,7 +10,7 @@ GRID{
 LABIRINTO (NAME = lab01, WIDTH = 28, HEIGHT = 14) { 
 
 	/* Definir target */
-	TARGET = (2.0,1.0), RADIUS = 1.0;
+	TARGET = (2.0,1.0) RADIUS = 1.0;
 	TARGET = (2.0,1.0); #default o raio será 1 
 
 	/* DEfinir Beacon */
