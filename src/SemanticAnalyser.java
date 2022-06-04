@@ -127,6 +127,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          }
          String type = table.getVariable(key);
          String exprType = visit(ctx.expr());
+         if (exprType.equals("ERROR")) return null; 
          if (!equalsType(type, exprType)) {
             System.out.printf("[Line %d] TypeError: cannot assign %s to %s\n", ctx.start.getLine(), exprType, type);
             return "ERROR";
@@ -136,6 +137,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       }
       String type = ctx.TYPE().getText();
       String exprType = visit(ctx.expr());
+      if (exprType.equals("ERROR")) return null;
       if (!equalsType(type, exprType)) {
          System.out.printf("[Line %d] TypeError: cannot assign %s to %s\n", ctx.start.getLine(), exprType, type);
          return "ERROR";

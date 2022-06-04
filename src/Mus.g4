@@ -5,7 +5,7 @@ program:
     ;
 
 stat:
-    block | assignment |  singleCall;
+    block | assignment | singleCall;
 
 //o analisador semântico verificará se expr representa um valor booleano
 block: 'if' expr 'do' stat* blockElse? 'end'                   #BlockIf
@@ -24,27 +24,24 @@ singleCall:
     call ';';
 
 expr:
-    '(' expr ',' expr ')'                            #ExprRobot  //'(' TEXT ',' NUM ')'
-    | expr '->' expr  ('|' expr '->' expr)+          #ExprEnumWithValues // TEXT ',' NUM  ('|' TEXT ',' NUM)*
-    | '(' expr ')'                                   #ExprParenthesis  //done
-    | 'not' expr                                     #BoolNegation  //done
-    | expr op1=LOGICALOP2 expr op2=LOGICALOP2 expr   #BoolDoubleCompare     // -10 < beaconAngle < 10      //done
-    | expr op=LOGICALOP1 expr                        #BoolCompare  //done
-    | '-' expr                                       #NumericNegative  //done
-    | expr op=('*'|'/'|'%') expr                     #NumericMultDivMod  //done
-    | expr op=('+'|'-') expr                         #NumericAddSub  //done
-    | ID                                             #ExprVar  //done
-    | call                                           #ExprCall  //pode ser comentado
-    | TEXT                                           #TextLiteral  //done
-    | expr ('|' expr)+                               #ExprEnum
-    | BOOL                                           #BoolLiteral  //done
-    | NUM                                            #NumericLiteral  //done
+    '(' expr ',' expr ')'                                                                   #ExprRobot  //'(' TEXT ',' NUM ')'
+    | expr '->' expr  ('|' expr '->' expr)+                                                 #ExprEnumWithValues // TEXT ',' NUM  ('|' TEXT ',' NUM)*
+    | '(' expr ')'                                                                          #ExprParenthesis
+    | 'not' expr                                                                            #BoolNegation
+    | expr op1=('and'|'or'|'>'|'>='|'<'|'<=') expr op2=('and'|'or'|'>'|'>='|'<'|'<=') expr  #BoolDoubleCompare // -10 < beaconAngle < 10    
+    | expr op=('and'|'or'|'>'|'>='|'<'|'<='|'=='|'!=') expr                                 #BoolCompare
+    | '-' expr                                                                              #NumericNegative
+    | expr op=('*'|'/'|'%') expr                                                            #NumericMultDivMod
+    | expr op=('+'|'-') expr                                                                #NumericAddSub
+    | ID                                                                                    #ExprVar
+    | call                                                                                  #ExprCall
+    | TEXT                                                                                  #TextLiteral
+    | expr ('|' expr)+                                                                      #ExprEnum
+    | BOOL                                                                                  #BoolLiteral
+    | NUM                                                                                   #NumericLiteral
     ;
 
-call: (ID '.')? ID (expr)*; //chamada de uma função/variável    //done
-
-LOGICALOP2: ('and'|'or'|'>'|'>='|'<'|'<=');
-LOGICALOP1: ('and'|'or'|'>'|'>='|'<'|'<='|'=='|'!=');      
+call: (ID '.')? ID (expr)*; //chamada de uma função/variável     
 TYPE:  'NUM' | 'BOOL' | 'TEXT' | 'ENUM' | 'ROBOT';
 NUM: ('-')?[0-9]+('.'[0-9]+)?;
 BOOL: [tT]'rue' | [fF]'alse';
