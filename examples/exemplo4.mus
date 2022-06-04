@@ -1,6 +1,7 @@
 #exemplo da tradução do a4.cpp para .mus
 
-NUM position = 1;
+print "Position: ";
+NUM position = input;
 NUM total_bn = beaconCount;
 
 
