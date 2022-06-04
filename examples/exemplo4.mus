@@ -1,95 +1,133 @@
 #exemplo da tradução do a4.cpp para .mus
 
-NUM position = 0;
-ROBOT Grimmy = ("Grimmy", position);
-USE Grimmy;
-NUM i = beaconCount;
-while i > 0 do
-    print "Going to beacon ", i, "\n";
+NUM position = 1;
+NUM total_bn = beaconCount;
+
+
+ROBOT nody = ("nody", position);
+
+NUM current_bn = 1;
+while current_bn <= total_bn 
+do
+    print "Going to beacon ";
+    print current_bn;
+    print "\n";
     
-    # gotoBeacon i ;
-    rotate 80 until -10 < beaconAngle bn < 10;
+    # rodar em direcao ao current_bn
+    rotate 80 until -10 < beaconAngle current_bn < 10;
 
-    while groundType != bn do
+    while groundType != current_bn 
+    do
         NUM linearPower = 80.0;
-        NUM angularPower = 1 * beaconAngle bn ;
+        NUM angularPower = 1 * beaconAngle current_bn ;
 
-        NUM fdist = obstacleDistance frontsensor;
-        NUM ldist = obstacleDistance leftsensor;
-        NUM rdist = obstacleDistance rightsensor;
+        NUM fdist = obstacleDistance 0;
+        NUM ldist = obstacleDistance 1;
+        NUM rdist = obstacleDistance 2;
 
-        until collides do
+
+        if collides do
             linearPower = 0.0;
             angularPower = -50.0;
-        end
-        else until fdist < 1.5 do
-            until ldist < 1.5 do
-                linearPower = 0.0;
-                angularPower = -50.0;
-            end
-            else do
-                linearPower = 0.0;
-                angularPower = 50.0;
-            end
-        end
-        else until ldist < 1.5 do
-            angularPower = -30.0;
-        end
-        else until rdist < 1.5 do
-            angularPower = 30.0;
-        end
+        else
+            if fdist < 1.5 do
+                
+                if ldist < 1.5 do
+                    linearPower = 0.0;
+                    angularPower = -50.0;
+                else
+                    linearPower = 0.0;
+                    angularPower = 50.0;
+                end
 
-        move linearPower-angularPower linearPower+angularPower;
+            else
+
+                if ldist < 1.5 do
+                    angularPower = -30.0;
+                else
+                    if rdist < 1.5 do
+                        angularPower = 30.0;
+                    end
+                end
+
+            end
+
+        end
+        
+        move linearPower - angularPower linearPower + angularPower;
+
     end
 
     stop;
-    
     pickUp;
-    i = i - 1;
+
+    current_bn = current_bn + 1;
+
 end
 
 returning;
 
-rotate 80 until -10 < startAngle <10;
+# gotostart
 
-while startDistance > 2 do
+print "..Rotating to start spot\n";
+
+rotate 80 until -10 < startAngle < 10;
+
+print "..Going to start spot, full speed\n";
+
+
+while startDistance > 2
+do
     NUM linearPower = 80.0;
     NUM angularPower = 1 * startAngle;
 
-    NUM fdist = obstacleDistance FRONTSENSOR;
-    NUM ldist = obstacleDistance LEFTSENSOR;
-    NUM rdist = obstacleDistance RIGHTSENSOR;
+    NUM fdist = obstacleDistance 0;
+    NUM ldist = obstacleDistance 1;
+    NUM rdist = obstacleDistance 2;
 
-    until collides do
+
+    if collides do
         linearPower = 0.0;
         angularPower = -50.0;
-    end
-    else until fdist < 1.5 do
-        until ldist < 1.5 do
-            linearPower = 0.0;
-            angularPower = -50.0;
-        end
-        else do
-            linearPower = 0.0;
-            angularPower = 50.0;
-        end
-    end
-    else until ldist < 1.5 do
-        angularPower = -30.0;
-    end
-    else until rdist < 1.5 do
-        angularPower = 30.0;
-    end
+    else
+        if fdist < 1.5 do
+            
+            if ldist < 1.5 do
+                linearPower = 0.0;
+                angularPower = -50.0;
+            else
+                linearPower = 0.0;
+                angularPower = 50.0;
+            end
 
-    move linearPower - angularPower, linearPower + angularPower;
+        else
+
+            if ldist < 1.5 do
+                angularPower = -30.0;
+            else
+                if rdist < 1.5 do
+                    angularPower = 30.0;
+                end
+            end
+
+        end
+
+    end
+    
+    move linearPower - angularPower linearPower + angularPower;
+
 end
 
-while startDistance > 0.3 do
+
+print "..Going to start spot, slowly\n";
+
+while startDistance > 0.3
+do
+
     NUM linearPower = 40.0;
     NUM angularPower = 1 * startAngle;
-    move linearPower - angularPower, linearPower + angularPower;
+    move linearPower - angularPower linearPower + angularPower; 
+
 end
 
 stop;
-
-finish;
