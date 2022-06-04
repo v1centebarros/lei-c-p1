@@ -10,23 +10,25 @@ stat:
     ;
 
 grid: 'GRID' '{' (position ';')+ '}';
-position: 'POSITION' COORDENADAS 'DIRECAO' '=' DOUBLE; 
+position: 'POSITION' COORDENADAS 'DIRECTION' '=' INT; 
 
-labirinto: 'LABIRINTO' '(' 'NAME' '=' ID (',' 'WIDTH' '=' DOUBLE ',' 'HEIGHT' '=' DOUBLE)? ')' '{'
+labirinto: 'LABIRINTO' '(' 'NAME' '=' ID (',' 'WIDTH' '=' INT ',' 'HEIGHT' '=' INT)? ')' '{'
                 (target ';')*
                 (beacon ';')*
+                (spot ';')*
                 (row ';')*
             '}' 
     ;
 
-target:'TARGET' '=' COORDENADAS (',' 'Raio' '=' DOUBLE)?; 
-beacon:'BEACON' '=' COORDENADAS (',' 'HEIGHT' '=' DOUBLE)?; 
+target:'TARGET' '=' COORDENADAS ('RADIUS' '=' DOUBLE)?; 
+beacon:'BEACON' '=' COORDENADAS ('HEIGHT' '=' INT)?; 
+spot: 'SPOT' '=' COORDENADAS ('HEIGHT' '=' INT)? ('RADIUS' '=' DOUBLE)?;
+row :'ROW' INT ':' (PADRAO ';')*;
 
-row :'ROW' INT 'PADRAO' ':' (PADRAO)*;
 
 COORDENADAS: '(' DOUBLE ',' DOUBLE ')' ;
-DOUBLE:[0-9]+ ('.' [0-9]+)?;
 INT:[0-9]+;
+DOUBLE:[0-9]+ '.' [0-9]*;
 ID: [a-zA-Z_][a-zA-Z_0-9]*;
 PADRAO: '"' (' ' |'|'|'.'|'--')* '"';
 WS: [ \t\r\n]+ -> skip;
