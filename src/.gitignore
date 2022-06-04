@@ -1,7 +1,12 @@
-#pasta gerada pelo antle
-.antlr
+# Ignore everything
+*
 
-#todos os ficheiros terminados com .class
-*.class
-*.tokens
-*.interp
+# But not these files...
+!.gitignore
+!CodeGenerator.java
+!Mus.g4
+!MusMain.java
+!MusMain2.java
+!SemanticAnalyser.java
+!SymbolTable.java
+!Templates.stg

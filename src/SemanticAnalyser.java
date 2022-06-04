@@ -50,6 +50,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    );
 
    private Stack<SymbolTable> tables = new Stack<>();
+   private String lastEnumDefined = "";
 
    private boolean equalsType(String input, String type) {
       return input.equals(type) || type.equals("ANY");
