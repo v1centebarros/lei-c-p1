@@ -27,7 +27,7 @@ LABIRINTO (NAME = lab02) {
     e um beacon e um target conjuntos (spot).
 Em nenhum caso estamos a assumir valores default
 no caso do beacon a sua altura é 2, no target o seu raio é 1, 
-no spot a sua altura é 2 e o raio 1.
+no spot a sua altura é 2 e o raio 1 e no tamanho do labirinto.*/
     
     
 --------XML---------

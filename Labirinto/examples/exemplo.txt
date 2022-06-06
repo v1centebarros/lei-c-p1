@@ -6,24 +6,24 @@ GRID{
 };
 
 
-/*Definir um labirinto*/
+#Definir um labirinto
 LABIRINTO (NAME = lab01 WIDTH = 28 HEIGHT = 14) { 
 
-	/* Definir target */
+	# Definir target
 	TARGET = (2.0,1.0) RADIUS = 1.0;
 	TARGET = (2.0,1.0); #default o raio é 1 
 
-	/* DEfinir Beacon */
+	#Definir Beacon
 	BEACON = (3.0,1.0) HEIGHT = 2; 
 	BEACON = (3.0,1.0); #default altura é 2
 
+	#Definir Beacon e Target no mesmo local
 	SPOT = (26.0,7.0) HEIGHT = 2 RADIUS = 1.0;
 	#SPOT = (26.0,7.0) RADIUS = 1.0 HEIGHT = 2; nao funciona ainda
-	SPOT = (20.0,1.0) HEIGHT = 2;
-	SPOT = (14.0,5.0) RADIUS = 1.0;
+	SPOT = (20.0,1.0) HEIGHT = 2; #default raio é 1
+	SPOT = (14.0,5.0) RADIUS = 1.0; #default altura é 2
 
 	/* DEfinir mapa*/
-
 	ROW 12 : "           |              |              ";
 	ROW 11 : "--.--.--.--.  .--.--.--.  .  .  .  .  .  ";
 	ROW 10 : "              |        |  |              ";
@@ -41,3 +41,10 @@ LABIRINTO (NAME = lab01 WIDTH = 28 HEIGHT = 14) {
 
 #Outra forma de definir o labirinto, temos valores default para o labirinto a nivel de comprimento e altura
 #LABIRINTO (NAME = lab02){...}
+
+/*TODO explicação(alterar valores do labirinto)
+Neste exemplo temos uma grid e um labirinto, em ambos os casos temos
+definidos valores default para os dados da posições inicais, 
+beacon, targets e spots
+--------XML---------
+*/
