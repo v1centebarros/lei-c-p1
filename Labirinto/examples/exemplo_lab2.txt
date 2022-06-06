@@ -1,8 +1,8 @@
 #Definir um labirinto
 LABIRINTO (NAME = lab02) { 
-	TARGET = (9.0,5.0); #Definir target 
-    BEACON = (3.0,3.0); #Definir beacon
-    SPOT = (26.0,7.0); #Definir beacon e target conjuntos
+	TARGET = (9,5); #Definir target 
+    BEACON = (3,3); #Definir beacon
+    SPOT = (26,7); #Definir beacon e target conjuntos
 
 
 	ROW 12 : "           |              |              ";
@@ -27,7 +27,7 @@ LABIRINTO (NAME = lab02) {
     e um beacon e um target conjuntos (spot).
 Em nenhum caso estamos a assumir valores default
 no caso do beacon a sua altura é 2, no target o seu raio é 1, 
-no spot a sua altura é 2 e o raio 1 e no tamanho do labirinto.*/
+no spot a sua altura é 2 e o raio 1 e no tamanho do labirinto.
     
     
 --------XML---------

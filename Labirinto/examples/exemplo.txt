@@ -1,27 +1,29 @@
 #Definir posições de saida do robo
 GRID{
-    POSITION (3.0,7.0) DIRECTION = 180;
-    POSITION (3.0,8.3) DIRECTION = 180;
-    POSITION (3.0,9.6); #default DIRECTION é 180
+    POSITION (3,7) DIRECTION = 180;
+    POSITION (3,8.3) DIRECTION = 180;
+    POSITION (3,9.6); #default DIRECTION é 180
 };
 
 
 #Definir um labirinto
 LABIRINTO (NAME = lab01 WIDTH = 28 HEIGHT = 14) { 
+	BEACON = (10,7); #Definir Beacon com valor default altura(2)
 
-	# Definir target
-	TARGET = (2.0,1.0) RADIUS = 1.0;
-	TARGET = (2.0,1.0); #default o raio é 1 
+	TARGET = (5,7) RADIUS = 1.5; 	# Definir target
+	SPOT = (14,5) RADIUS = 1.0; #default altura é 2
+	
+	TARGET = (13,4); # Definir target com valor default do raio (1) 
+
 
 	#Definir Beacon
-	BEACON = (3.0,1.0) HEIGHT = 2; 
-	BEACON = (3.0,1.0); #default altura é 2
+	BEACON = (4,2) HEIGHT = 3; 
 
 	#Definir Beacon e Target no mesmo local
-	SPOT = (26.0,7.0) HEIGHT = 2 RADIUS = 1.0;
-	#SPOT = (26.0,7.0) RADIUS = 1.0 HEIGHT = 2; nao funciona ainda
-	SPOT = (20.0,1.0) HEIGHT = 2; #default raio é 1
-	SPOT = (14.0,5.0) RADIUS = 1.0; #default altura é 2
+	SPOT = (26,7) HEIGHT = 2 RADIUS = 1.0;
+	#SPOT = (26,7) RADIUS = 1.0 HEIGHT = 2; nao funciona ainda
+	SPOT = (20,1) HEIGHT = 2; #default raio é 1
+	SPOT = (14,5) RADIUS = 1.0; #default altura é 2
 
 	/* DEfinir mapa*/
 	ROW 12 : "           |              |              ";
@@ -47,4 +49,12 @@ Neste exemplo temos uma grid e um labirinto, em ambos os casos temos
 definidos valores default para os dados da posições inicais, 
 beacon, targets e spots
 --------XML---------
+
+<Grid>
+	<Position X="3.0" Y="7.0" Dir="180"/>
+	<Position X="3.0" Y="8.3" Dir="180"/>
+	<Position X="3.0" Y="9.6" Dir="180"/>
+</Grid>
+
+
 */

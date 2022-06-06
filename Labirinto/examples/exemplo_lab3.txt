@@ -1,7 +1,7 @@
 LABIRINTO (NAME = lab03 WIDTH =20  HEIGHT = 13) { 
 
 	/* DEfinir Beacon */
-	BEACON = (3.0,1.0); #default altura é 2
+	BEACON = (3,1); #default altura é 2
 
 	/* DEfinir mapa*/
 	ROW 12 : "           |              |              ";
