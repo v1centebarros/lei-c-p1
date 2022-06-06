@@ -22,10 +22,10 @@ public class LabParser extends Parser {
 		WS=25, LINE_COMMENT=26, MULTILINE_COMMENT=27;
 	public static final int
 		RULE_program = 0, RULE_stat = 1, RULE_grid = 2, RULE_position = 3, RULE_labirinto = 4, 
-		RULE_dados = 5, RULE_beacon = 6, RULE_target = 7, RULE_spot = 8, RULE_row = 9;
+		RULE_dlab = 5, RULE_beacon = 6, RULE_target = 7, RULE_spot = 8, RULE_row = 9;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"program", "stat", "grid", "position", "labirinto", "dados", "beacon", 
+			"program", "stat", "grid", "position", "labirinto", "dlab", "beacon", 
 			"target", "spot", "row"
 		};
 	}
@@ -314,11 +314,11 @@ public class LabParser extends Parser {
 		public TerminalNode INT(int i) {
 			return getToken(LabParser.INT, i);
 		}
-		public List<DadosContext> dados() {
-			return getRuleContexts(DadosContext.class);
+		public List<DlabContext> dlab() {
+			return getRuleContexts(DlabContext.class);
 		}
-		public DadosContext dados(int i) {
-			return getRuleContext(DadosContext.class,i);
+		public DlabContext dlab(int i) {
+			return getRuleContext(DlabContext.class,i);
 		}
 		public LabirintoContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -374,7 +374,7 @@ public class LabParser extends Parser {
 				{
 				{
 				setState(68);
-				dados();
+				dlab();
 				setState(69);
 				match(T__0);
 				}
@@ -398,7 +398,7 @@ public class LabParser extends Parser {
 		return _localctx;
 	}
 
-	public static class DadosContext extends ParserRuleContext {
+	public static class DlabContext extends ParserRuleContext {
 		public TargetContext target() {
 			return getRuleContext(TargetContext.class,0);
 		}
@@ -411,15 +411,15 @@ public class LabParser extends Parser {
 		public RowContext row() {
 			return getRuleContext(RowContext.class,0);
 		}
-		public DadosContext(ParserRuleContext parent, int invokingState) {
+		public DlabContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_dados; }
+		@Override public int getRuleIndex() { return RULE_dlab; }
 	}
 
-	public final DadosContext dados() throws RecognitionException {
-		DadosContext _localctx = new DadosContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_dados);
+	public final DlabContext dlab() throws RecognitionException {
+		DlabContext _localctx = new DlabContext(_ctx, getState());
+		enterRule(_localctx, 10, RULE_dlab);
 		try {
 			setState(82);
 			_errHandler.sync(this);
@@ -519,6 +519,7 @@ public class LabParser extends Parser {
 	public static class TargetContext extends ParserRuleContext {
 		public TerminalNode COORDENADAS() { return getToken(LabParser.COORDENADAS, 0); }
 		public TerminalNode DOUBLE() { return getToken(LabParser.DOUBLE, 0); }
+		public TerminalNode INT() { return getToken(LabParser.INT, 0); }
 		public TargetContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -548,7 +549,15 @@ public class LabParser extends Parser {
 				setState(96);
 				match(T__6);
 				setState(97);
-				match(DOUBLE);
+				_la = _input.LA(1);
+				if ( !(_la==INT || _la==DOUBLE) ) {
+				_errHandler.recoverInline(this);
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
+					consume();
+				}
 				}
 			}
 
@@ -567,7 +576,10 @@ public class LabParser extends Parser {
 
 	public static class SpotContext extends ParserRuleContext {
 		public TerminalNode COORDENADAS() { return getToken(LabParser.COORDENADAS, 0); }
-		public TerminalNode INT() { return getToken(LabParser.INT, 0); }
+		public List<TerminalNode> INT() { return getTokens(LabParser.INT); }
+		public TerminalNode INT(int i) {
+			return getToken(LabParser.INT, i);
+		}
 		public TerminalNode DOUBLE() { return getToken(LabParser.DOUBLE, 0); }
 		public SpotContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -612,7 +624,15 @@ public class LabParser extends Parser {
 				setState(109);
 				match(T__6);
 				setState(110);
-				match(DOUBLE);
+				_la = _input.LA(1);
+				if ( !(_la==INT || _la==DOUBLE) ) {
+				_errHandler.recoverInline(this);
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
+					consume();
+				}
 				}
 			}
 
@@ -690,28 +710,28 @@ public class LabParser extends Parser {
 		"\3\6\3\6\3\6\7\6J\n\6\f\6\16\6M\13\6\3\6\3\6\3\7\3\7\3\7\3\7\5\7U\n\7"+
 		"\3\b\3\b\3\b\3\b\3\b\3\b\5\b]\n\b\3\t\3\t\3\t\3\t\3\t\3\t\5\te\n\t\3\n"+
 		"\3\n\3\n\3\n\3\n\3\n\5\nm\n\n\3\n\3\n\3\n\5\nr\n\n\3\13\3\13\3\13\3\13"+
-		"\7\13x\n\13\f\13\16\13{\13\13\3\13\2\2\f\2\4\6\b\n\f\16\20\22\24\2\2\2"+
-		"\u0081\2\34\3\2\2\2\4#\3\2\2\2\6%\3\2\2\2\b\60\3\2\2\2\n\67\3\2\2\2\f"+
-		"T\3\2\2\2\16V\3\2\2\2\20^\3\2\2\2\22f\3\2\2\2\24s\3\2\2\2\26\30\5\4\3"+
-		"\2\27\26\3\2\2\2\27\30\3\2\2\2\30\31\3\2\2\2\31\33\7\3\2\2\32\27\3\2\2"+
-		"\2\33\36\3\2\2\2\34\32\3\2\2\2\34\35\3\2\2\2\35\37\3\2\2\2\36\34\3\2\2"+
-		"\2\37 \7\2\2\3 \3\3\2\2\2!$\5\6\4\2\"$\5\n\6\2#!\3\2\2\2#\"\3\2\2\2$\5"+
-		"\3\2\2\2%&\7\4\2\2&*\7\5\2\2\'(\5\b\5\2()\7\3\2\2)+\3\2\2\2*\'\3\2\2\2"+
-		"+,\3\2\2\2,*\3\2\2\2,-\3\2\2\2-.\3\2\2\2./\7\6\2\2/\7\3\2\2\2\60\61\7"+
-		"\7\2\2\61\65\7\26\2\2\62\63\7\b\2\2\63\64\7\t\2\2\64\66\7\27\2\2\65\62"+
-		"\3\2\2\2\65\66\3\2\2\2\66\t\3\2\2\2\678\7\n\2\289\7\13\2\29:\7\f\2\2:"+
-		";\7\t\2\2;B\7\31\2\2<=\7\r\2\2=>\7\t\2\2>?\7\27\2\2?@\7\16\2\2@A\7\t\2"+
-		"\2AC\7\27\2\2B<\3\2\2\2BC\3\2\2\2CD\3\2\2\2DE\7\17\2\2EK\7\5\2\2FG\5\f"+
-		"\7\2GH\7\3\2\2HJ\3\2\2\2IF\3\2\2\2JM\3\2\2\2KI\3\2\2\2KL\3\2\2\2LN\3\2"+
-		"\2\2MK\3\2\2\2NO\7\6\2\2O\13\3\2\2\2PU\5\20\t\2QU\5\16\b\2RU\5\22\n\2"+
-		"SU\5\24\13\2TP\3\2\2\2TQ\3\2\2\2TR\3\2\2\2TS\3\2\2\2U\r\3\2\2\2VW\7\20"+
-		"\2\2WX\7\t\2\2X\\\7\26\2\2YZ\7\16\2\2Z[\7\t\2\2[]\7\27\2\2\\Y\3\2\2\2"+
-		"\\]\3\2\2\2]\17\3\2\2\2^_\7\21\2\2_`\7\t\2\2`d\7\26\2\2ab\7\22\2\2bc\7"+
-		"\t\2\2ce\7\30\2\2da\3\2\2\2de\3\2\2\2e\21\3\2\2\2fg\7\23\2\2gh\7\t\2\2"+
-		"hl\7\26\2\2ij\7\16\2\2jk\7\t\2\2km\7\27\2\2li\3\2\2\2lm\3\2\2\2mq\3\2"+
-		"\2\2no\7\22\2\2op\7\t\2\2pr\7\30\2\2qn\3\2\2\2qr\3\2\2\2r\23\3\2\2\2s"+
-		"t\7\24\2\2tu\7\27\2\2uy\7\25\2\2vx\7\32\2\2wv\3\2\2\2x{\3\2\2\2yw\3\2"+
-		"\2\2yz\3\2\2\2z\25\3\2\2\2{y\3\2\2\2\17\27\34#,\65BKT\\dlqy";
+		"\7\13x\n\13\f\13\16\13{\13\13\3\13\2\2\f\2\4\6\b\n\f\16\20\22\24\2\3\3"+
+		"\2\27\30\2\u0081\2\34\3\2\2\2\4#\3\2\2\2\6%\3\2\2\2\b\60\3\2\2\2\n\67"+
+		"\3\2\2\2\fT\3\2\2\2\16V\3\2\2\2\20^\3\2\2\2\22f\3\2\2\2\24s\3\2\2\2\26"+
+		"\30\5\4\3\2\27\26\3\2\2\2\27\30\3\2\2\2\30\31\3\2\2\2\31\33\7\3\2\2\32"+
+		"\27\3\2\2\2\33\36\3\2\2\2\34\32\3\2\2\2\34\35\3\2\2\2\35\37\3\2\2\2\36"+
+		"\34\3\2\2\2\37 \7\2\2\3 \3\3\2\2\2!$\5\6\4\2\"$\5\n\6\2#!\3\2\2\2#\"\3"+
+		"\2\2\2$\5\3\2\2\2%&\7\4\2\2&*\7\5\2\2\'(\5\b\5\2()\7\3\2\2)+\3\2\2\2*"+
+		"\'\3\2\2\2+,\3\2\2\2,*\3\2\2\2,-\3\2\2\2-.\3\2\2\2./\7\6\2\2/\7\3\2\2"+
+		"\2\60\61\7\7\2\2\61\65\7\26\2\2\62\63\7\b\2\2\63\64\7\t\2\2\64\66\7\27"+
+		"\2\2\65\62\3\2\2\2\65\66\3\2\2\2\66\t\3\2\2\2\678\7\n\2\289\7\13\2\29"+
+		":\7\f\2\2:;\7\t\2\2;B\7\31\2\2<=\7\r\2\2=>\7\t\2\2>?\7\27\2\2?@\7\16\2"+
+		"\2@A\7\t\2\2AC\7\27\2\2B<\3\2\2\2BC\3\2\2\2CD\3\2\2\2DE\7\17\2\2EK\7\5"+
+		"\2\2FG\5\f\7\2GH\7\3\2\2HJ\3\2\2\2IF\3\2\2\2JM\3\2\2\2KI\3\2\2\2KL\3\2"+
+		"\2\2LN\3\2\2\2MK\3\2\2\2NO\7\6\2\2O\13\3\2\2\2PU\5\20\t\2QU\5\16\b\2R"+
+		"U\5\22\n\2SU\5\24\13\2TP\3\2\2\2TQ\3\2\2\2TR\3\2\2\2TS\3\2\2\2U\r\3\2"+
+		"\2\2VW\7\20\2\2WX\7\t\2\2X\\\7\26\2\2YZ\7\16\2\2Z[\7\t\2\2[]\7\27\2\2"+
+		"\\Y\3\2\2\2\\]\3\2\2\2]\17\3\2\2\2^_\7\21\2\2_`\7\t\2\2`d\7\26\2\2ab\7"+
+		"\22\2\2bc\7\t\2\2ce\t\2\2\2da\3\2\2\2de\3\2\2\2e\21\3\2\2\2fg\7\23\2\2"+
+		"gh\7\t\2\2hl\7\26\2\2ij\7\16\2\2jk\7\t\2\2km\7\27\2\2li\3\2\2\2lm\3\2"+
+		"\2\2mq\3\2\2\2no\7\22\2\2op\7\t\2\2pr\t\2\2\2qn\3\2\2\2qr\3\2\2\2r\23"+
+		"\3\2\2\2st\7\24\2\2tu\7\27\2\2uy\7\25\2\2vx\7\32\2\2wv\3\2\2\2x{\3\2\2"+
+		"\2yw\3\2\2\2yz\3\2\2\2z\25\3\2\2\2{y\3\2\2\2\17\27\34#,\65BKT\\dlqy";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

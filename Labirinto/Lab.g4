@@ -13,20 +13,21 @@ grid: 'GRID' '{' (position ';')+ '}';
 position: 'POSITION' COORDENADAS ('DIRECTION' '=' INT)?; 
 
 labirinto: 'LABIRINTO' '(' 'NAME' '=' ID ('WIDTH' '=' INT 'HEIGHT' '=' INT)? ')' '{'
-                (dados ';')*
+                //beacon (no caso de ser obrigado)
+                (dlab ';')*
             '}' 
     ;
 
-dados: target
-        |beacon //(beacon ';')+(nao caso de ser obrigado)
-        |spot
-        |row
-        ;
+dlab: target
+    |beacon
+    |spot
+    |row
+    ;
 
 beacon:'BEACON' '=' COORDENADAS ('HEIGHT' '=' INT)?; 
-target:'TARGET' '=' COORDENADAS ('RADIUS' '=' DOUBLE)?;  //problema com o double
+target:'TARGET' '=' COORDENADAS ('RADIUS' '=' (DOUBLE|INT))?;  //problema com o double
 
-spot: 'SPOT' '=' COORDENADAS ('HEIGHT' '=' INT)? ('RADIUS' '=' DOUBLE)?;
+spot: 'SPOT' '=' COORDENADAS ('HEIGHT' '=' INT)? ('RADIUS' '=' (DOUBLE | INT))?;
 row :'ROW' INT ':' (PADRAO)*;
 
 

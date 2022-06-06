@@ -2,14 +2,17 @@ comentarios multilinhas: /* */
 comentarios de uma so linha : #
 
 Cada instrução acaba com um ponto e virgula (;), na forma de quem escrever poder escrever tudo na mesma linha.
-O labirinto pode ter por default vamos para comprimento e altura, tal como o alvos podem ter para o raio e os beacons para a altura.
-a colocação dos beacons, dos targets e dos spots pode ser aletoria.
+O labirinto pode ter por default valores para comprimento e altura, tal como este o TARGETS podem um valor de raio default (1)
+e os BEACONS para a sua altura (2).
+Na maneira de facilitar o programador criamos SPOT que correspondem a um target e um spot no mesmo local. 
+A colocação das linhas do labirinto, dos BEACONS, TARGETS e SPOTs pode ser aletoria no labirinto.
+
+A ordem dos argumentos do labirinto - name,width,height - é importante.
+A ordem dos argumentos do SPOT - name,height,Radius - é importante, no entanto pode ser omitido o Radius e a height.
 
 
 GRID -- consiste no conjunto de posições inicias de onde o robo pode partir num determinado labirinto;
 LABIRINTO -- consiste no mapa do labirinto, e os dados dos targets, beacons ou de ambos juntos(spot).
-
-
 
 
 NOTA IMPORTANTE: 
@@ -26,5 +29,3 @@ DUVIDAS:
 
     (1)Falar com o professor para que a ordem nao importe
     o labirinto é obrigado a ter um beacon ?
-
-    DOuble nao aceita 1 --- exemplo a dar erro exemplo_lab01
