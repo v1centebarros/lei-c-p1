@@ -8,23 +8,17 @@ GRID{
 
 #Definir um labirinto
 LABIRINTO (NAME = lab01 WIDTH = 28 HEIGHT = 14) { 
-	BEACON = (10,7); #Definir Beacon com valor default altura(2)
+	BEACON = (15,9); 						#Definir Beacon com valor default altura(2)
+	TARGET = (7,7.5) RADIUS = 1.5; 			#Definir target
+	SPOT = (13,4) RADIUS = 1.5; 			#Definir target e beacon com valor default da altura(2)
+	TARGET = (10,5); 						#Definir target com valor default do raio (1) 
+	BEACON = (5,2) HEIGHT = 3; 				#Definir Beacon
+	SPOT = (26,7) HEIGHT = 3 RADIUS = 1.5;	#Definir Beacon e Target conjunto
+	SPOT = (26,1) HEIGHT = 3; 				#Definir Beacon e Target conjunto com valor default raio (1)
+	SPOT = (20,7); 							#Definir Beacon e Target conjunto com valor default de raio (1) e altura (2)
 
-	TARGET = (5,7) RADIUS = 1.5; 	# Definir target
-	SPOT = (14,5) RADIUS = 1.0; #default altura é 2
+	#SPOT = (26,7) RADIUS = 14 HEIGHT = 2; nao funciona ainda
 	
-	TARGET = (13,4); # Definir target com valor default do raio (1) 
-
-
-	#Definir Beacon
-	BEACON = (4,2) HEIGHT = 3; 
-
-	#Definir Beacon e Target no mesmo local
-	SPOT = (26,7) HEIGHT = 2 RADIUS = 1.0;
-	#SPOT = (26,7) RADIUS = 1.0 HEIGHT = 2; nao funciona ainda
-	SPOT = (20,1) HEIGHT = 2; #default raio é 1
-	SPOT = (14,5) RADIUS = 1.0; #default altura é 2
-
 	/* DEfinir mapa*/
 	ROW 12 : "           |              |              ";
 	ROW 11 : "--.--.--.--.  .--.--.--.  .  .  .  .  .  ";
@@ -41,11 +35,8 @@ LABIRINTO (NAME = lab01 WIDTH = 28 HEIGHT = 14) {
 	ROW 0  : "        |                                ";
 };
 
-#Outra forma de definir o labirinto, temos valores default para o labirinto a nivel de comprimento e altura
-#LABIRINTO (NAME = lab02){...}
 
-/*TODO explicação(alterar valores do labirinto)
-Neste exemplo temos uma grid e um labirinto, em ambos os casos temos
+/*Neste exemplo temos uma grid e um labirinto, em ambos os casos temos
 definidos valores default para os dados da posições inicais, 
 beacon, targets e spots
 --------XML---------
@@ -56,5 +47,43 @@ beacon, targets e spots
 	<Position X="3.0" Y="9.6" Dir="180"/>
 </Grid>
 
+<Lab Name="Lab 1" Width="28.0" Height="14.0">
 
+	<Beacon X="15.0" Y="9" Height="2"/>
+	
+	<Target X="7.0" Y="7.5" Radius="1.5"/>
+
+	<Beacon X="13.0" Y="4" Height="2"/>
+	<Target X="13.0" Y="4" Radius="1.5"/>
+
+	<Target X="10.0" Y="5" Radius="1"/>
+
+	<Beacon X="5" Y="2" Height="3"/>
+		
+	<Beacon X="26.0" Y="7" Height="3"/>
+	<Target X="26.0" Y="7" Radius="1.5"/>
+
+	<Beacon X="26.0" Y="1" Height="3"/>
+	<Target X="26.0" Y="1" Radius="1"/>
+
+		
+	<Beacon X="20.0" Y="7" Height="2"/>
+	<Target X="20.0" Y="7" Radius="1"/>
+
+
+	<Row  Pos="12" Pattern="           |                             "  />
+	<Row  Pos="11" Pattern="--+--+--+--+  +--+--+--+  +  +  +  +  +  "  />
+	<Row  Pos="10" Pattern="              |        |  |              "  />
+	<Row  Pos="9"  Pattern="  +--+--+--+--+  +--+--+  +--+  +  +  +  "  />
+	<Row  Pos="8"  Pattern="     |           |     |     |           "  />
+	<Row  Pos="7"  Pattern="  +  +  +  +  +--+  +  +--+  +--+  +  +  "  />
+	<Row  Pos="6"  Pattern="  |  |        |     |  |  |     |        "  />
+	<Row  Pos="5"  Pattern="--+  +--+--+--+  +--+  +--+--+  +  +  +  "  />
+	<Row  Pos="4"  Pattern="     |           |  |  |        |        "  />
+	<Row  Pos="3"  Pattern="  +  +  +--+--+--+  +  +  +--+--+  +  +  "  />
+	<Row  Pos="2"  Pattern="  |  |  |           |     |              "  />
+	<Row  Pos="1"  Pattern="  +--+  +  +  +  +  +--+--+  +  +  +  +  "  />
+	<Row  Pos="0"  Pattern="        |                                "  />
+
+</Lab>
 */
