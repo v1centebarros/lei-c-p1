@@ -1,6 +1,7 @@
 import java.util.List;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 import static java.util.Map.entry;
@@ -9,10 +10,11 @@ import java.lang.ProcessBuilder.Redirect.Type;
 
 public class SemanticAnalyser extends MusBaseVisitor<String> {
 
-   private List<String> keywords = List.of("NUM", "BOOL", "TEXT", "ENUM", "ROBOT",
+   private List<String> keywords = List.of("NUM", "BOOL", "TEXT", "ENUM", "ROBOT", "POINT", "TWIST", "POSE",
    "while", "until",
    "not", "and", "or",
-   "true", "false", "True", "False");
+   "true", "false", "True", "False",
+   "function", "with");
 
    private SymbolTable table = new SymbolTable(null,
       new HashMap<>(Map.ofEntries(
@@ -22,7 +24,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          entry("posX", new String[]{"VOID", "NUM"}),
          entry("posY", new String[]{"VOID", "NUM"}),
          entry("rotate", new String[]{"NUM", "VOID"}),
-         entry("move", new String[]{"NUM;NUM", "VOID"}),
+         entry("move", new String[]{"POINT", "VOID"}),
          entry("pickUp", new String[]{"VOID", "VOID"}),
          entry("returning", new String[]{"VOID", "VOID"}),
          entry("finish", new String[]{"VOID", "VOID"}),
@@ -39,7 +41,8 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          entry("setVisitingLed", new String[]{"BOOL", "VOID"}),
          entry("setReturningLed", new String[]{"BOOL", "VOID"}),
          entry("getVisitingLed", new String[]{"VOID", "BOOL"}),
-         entry("getReturningLed", new String[]{"VOID", "BOOL"})
+         entry("getReturningLed", new String[]{"VOID", "BOOL"}),
+         entry("distance", new String[]{"POINT;POINT", "NUM"})
       )),
       new HashMap<>(Map.ofEntries(
          entry("frontsensor", "NUM"), //macro
@@ -49,11 +52,13 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       ))
    );
 
+   private SymbolTable originalTable = table.clone();
+
    private Stack<SymbolTable> tables = new Stack<>();
-   private String lastEnumDefined = "";
+   private List<String> currentEnum;
 
    private boolean equalsType(String input, String type) {
-      return input.equals(type) || type.equals("ANY");
+      return type.contains(input) || type.equals("ANY");
    }
 
    // @Override public String visitProgram(MusParser.ProgramContext ctx) {
@@ -70,6 +75,12 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    }
    */
 
+  @Override public String visitDefFunction(MusParser.DefFunctionContext ctx) {
+      private Stack<SymbolTable> tablesFunction = new Stack<>();
+      //TODO
+
+   }
+
    @Override public String visitBlockIf(MusParser.BlockIfContext ctx) {
       tables.push(table);
       table = new SymbolTable(table);
@@ -82,7 +93,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          table = tables.pop();
          return null;
       }
-      System.out.printf("[Line %d] TypeError: condition in block 'if' must be BOOL (not %s)\n", ctx.start.getLine(), expr);
+      System.err.printf("[Line %d] TypeError: condition in block 'if' must be BOOL (not %s)\n", ctx.start.getLine(), expr);
       return "ERROR";
    }
 
@@ -107,7 +118,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          table = tables.pop();
          return null;
       }
-      System.out.printf("[Line %d] TypeError: condition in block 'while' must be BOOL (not %s)\n", ctx.start.getLine(), expr);
+      System.err.printf("[Line %d] TypeError: condition in block 'while' must be BOOL (not %s)\n", ctx.start.getLine(), expr);
       return "ERROR";
    }
 
@@ -115,7 +126,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       String expr = visit(ctx.expr());
       if (expr.equals("BOOL"))
          return visit(ctx.call());
-      System.out.printf("[Line %d] TypeError: condition in block 'until' must be BOOL (not %s)\n", ctx.start.getLine(), expr);
+      System.err.printf("[Line %d] TypeError: condition in block 'until' must be BOOL (not %s)\n", ctx.start.getLine(), expr);
       return "ERROR";
    }
 
@@ -123,14 +134,19 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       if (ctx.TYPE() == null) {
          String key = ctx.ID().getText();
          if (!table.containsVariable(key)) {
-            System.out.printf("[Line %d] NameError: name '%s' is not defined\n", ctx.start.getLine(), key);
+            System.err.printf("[Line %d] NameError: name '%s' is not defined\n", ctx.start.getLine(), key);
+            return "ERROR";
+         }
+         String[] keyParts = key.split(":");
+         if (table.getVariable(keyParts[0]).equals("ENUM")) {
+            System.err.printf("[Line %d] ImmutableTypeError: enum '%s' is already defined\n", ctx.start.getLine(), keyParts[0]);
             return "ERROR";
          }
          String type = table.getVariable(key);
          String exprType = visit(ctx.expr());
          if (exprType.equals("ERROR")) return null; 
          if (!equalsType(type, exprType)) {
-            System.out.printf("[Line %d] TypeError: cannot assign %s to %s\n", ctx.start.getLine(), exprType, type);
+            System.err.printf("[Line %d] TypeError: cannot assign %s to %s\n", ctx.start.getLine(), exprType, type);
             return "ERROR";
          }
          table.putVariable(key, exprType);
@@ -140,21 +156,33 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       String exprType = visit(ctx.expr());
       if (exprType.equals("ERROR")) return null;
       if (!equalsType(type, exprType)) {
-         System.out.printf("[Line %d] TypeError: cannot assign %s to %s\n", ctx.start.getLine(), exprType, type);
+         System.err.printf("[Line %d] TypeError: cannot assign %s to %s\n", ctx.start.getLine(), exprType, type);
          return "ERROR";
       }
       String name = ctx.ID().getText();
+      if (name.contains(":")) {
+         System.err.printf("[Line %d] NameError: symbol ':' is reserved for object's attributes\n", ctx.start.getLine());
+         return "ERROR";
+      }
       if (keywords.contains(name)) {
-         System.out.printf("[Line %d] NameError: name '%s' is a data type\n", ctx.start.getLine(), name);
+         System.err.printf("[Line %d] NameError: name '%s' is a data type\n", ctx.start.getLine(), name);
          return "ERROR";
       }
       if (table.containsFunction(name)) {
-         System.out.printf("[Line %d] NameError: name '%s' is a function\n", ctx.start.getLine(), name);
+         System.err.printf("[Line %d] NameError: name '%s' is a function\n", ctx.start.getLine(), name);
          return "ERROR";
       }
       if (table.containsVariable(name)) {
-         System.out.printf("[Line %d] NameError: name '%s' is already defined\n", ctx.start.getLine(), name);
+         System.err.printf("[Line %d] NameError: name '%s' is already defined\n", ctx.start.getLine(), name);
          return "ERROR";
+      }
+      if (exprType.equals("ENUM")) {
+         Iterator<String> it = currentEnum.iterator();
+         String str;
+         while(it.hasNext()) {
+            str = name + ":" + it.next().replaceAll("\"", "");
+            table.putVariable(str, "NUM");
+         }
       }
       table.putVariable(name, exprType);
       return null;
@@ -165,23 +193,28 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       if (table.containsVariable(key)) return table.getVariable(key);
       else if (table.containsFunction(key)) return table.getFunction(key)[1];
       else {
-         System.out.printf("[Line %d] NameError: name '%s' is not defined\n", ctx.start.getLine(), key);
+         System.err.printf("[Line %d] NameError: name '%s' is not defined\n", ctx.start.getLine(), key);
          return "ERROR";
       }
    }
 
    @Override public String visitExprEnumWithValues(MusParser.ExprEnumWithValuesContext ctx) {
-      List<MusParser.ExprContext> exprs = ctx.expr();
-      Iterator<MusParser.ExprContext> it = exprs.iterator();
-      String name = "";
-      String value = "";
-      while(it.hasNext()) {
-         name = visit(it.next());
-         value = visit(it.next());
-         if (!name.equals("TEXT") || !value.equals("NUM")) {
-            System.out.printf("[Line %d] TypeError: all ENUM pairs must be TEXT -> NUM\n", ctx.start.getLine());
-            return "ERROR";
+      currentEnum = new ArrayList<>();
+      String element;
+      for (int i = 0; i < ctx.TEXT().size(); i++) {
+         element = ctx.TEXT(i).getText();
+         if (currentEnum.contains(element)) {
+            System.err.println("DuplicatedElementsError: enum has duplicated elements");
          }
+         currentEnum.add(element);
+      }
+      List<String> values = new ArrayList<>();
+      for (int i = 0; i < ctx.NUM().size(); i++) {
+         element = ctx.NUM(i).getText();
+         if (values.contains(element)) {
+            System.err.println("DuplicatedValuesError: enum has duplicated values");
+         }
+         values.add(element);
       }
       return "ENUM";
    }
@@ -190,16 +223,18 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       String expr = visit(ctx.expr());
       if (expr.equals("BOOL"))
          return "BOOL";
-         System.out.printf("[Line %d] TypeError: unsupported operand type for 'not': %s\n", ctx.start.getLine(), expr);
+         System.err.printf("[Line %d] TypeError: unsupported operand type for 'not': %s\n", ctx.start.getLine(), expr);
       return "ERROR";
    }
 
    @Override public String visitNumericAddSub(MusParser.NumericAddSubContext ctx) {
       String expr0 = visit(ctx.expr(0));
       String expr1 = visit(ctx.expr(1));
-      if (expr0.equals("NUM") && expr1.equals("NUM")) 
+      if (equalsType(expr0, "NUM") && equalsType(expr1, "NUM")) 
          return "NUM";
-      System.out.printf("[Line %d] TypeError: unsupported operand type(s) for '%s': %s and %s\n", ctx.start.getLine(), ctx.op.getText(), expr0, expr1);
+      if ("POINT|TWIST".contains(expr0) && "POINT|TWIST".contains(expr1))
+         return "POINT|TWIST";
+      System.err.printf("[Line %d] TypeError: unsupported operand type(s) for '%s': %s and %s\n", ctx.start.getLine(), ctx.op.getText(), expr0, expr1);
       return "ERROR";
    }
 
@@ -207,7 +242,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       String expr = visit(ctx.expr());
       if (expr.equals("NUM"))
          return "NUM";
-      System.out.printf("[Line %d] TypeError: unsupported operand type for unary operator '-': %s\n", ctx.start.getLine(), expr);
+      System.err.printf("[Line %d] TypeError: unsupported operand type for unary operator '-': %s\n", ctx.start.getLine(), expr);
       return "ERROR";
    }
 
@@ -219,12 +254,16 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       return visit(ctx.expr());
    }
 
-   @Override public String visitExprRobot(MusParser.ExprRobotContext ctx) {
+   @Override public String visitExprTuple(MusParser.ExprTupleContext ctx) {
       String expr0 = visit(ctx.expr(0));
       String expr1 = visit(ctx.expr(1));
-      if (expr0.equals("TEXT") && expr1.equals("NUM")) 
+      if (equalsType(expr0, "TEXT") && equalsType(expr1, "NUM")) 
          return "ROBOT";
-      System.out.printf("[Line %d] TypeError: robot must be declared with (TEXT, NUM)\n", ctx.start.getLine());
+      if (equalsType(expr0, "NUM") && equalsType(expr1, "NUM"))
+         return "POINT|TWIST";
+      if (equalsType(expr0, "POINT|TWIST") && equalsType(expr1, "NUM"))
+         return "POSE";
+      System.err.printf("[Line %d] TypeError: tuple must be ROBOT, POINT or POSE\n", ctx.start.getLine());
       return "ERROR";
    }
 
@@ -236,21 +275,21 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       String expr2 = visit(ctx.expr(2));
       
       if (op1.equals("and") || op1.equals("or")) {
-         if (expr0.equals("BOOL") && expr1.equals("BOOL")) return "BOOL";
-         System.out.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op1, expr0, expr1);
+         if (equalsType(expr0, "BOOL") && equalsType(expr1, "BOOL")) return "BOOL";
+         System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op1, expr0, expr1);
          return "ERROR";
       }
       if (op2.equals("and") || op2.equals("or")) {
-         if (expr1.equals("BOOL") && expr2.equals("BOOL")) return "BOOL";
-         System.out.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op2, expr1, expr2);
+         if (equalsType(expr1, "BOOL") && expr2.equals("BOOL")) return "BOOL";
+         System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op2, expr1, expr2);
          return "ERROR";
       }
-      if (!expr0.equals("NUM") || !expr1.equals("NUM")) {
-         System.out.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op1, expr0, expr1);
+      if (!equalsType(expr0, "NUM") || !equalsType(expr1, "NUM")) {
+         System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op1, expr0, expr1);
          return "ERROR";
       }
-      if (!expr1.equals("NUM") || !expr2.equals("NUM")) {
-         System.out.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op2, expr1, expr2);
+      if (!equalsType(expr1, "NUM") || !expr2.equals("NUM")) {
+         System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op2, expr1, expr2);
          return "ERROR";
       }
       return "BOOL";
@@ -267,17 +306,17 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       String op = ctx.op.getText();
       String expr1 = visit(ctx.expr(1));
       if (op.equals("and") || op.equals("or")) {
-         if (expr0.equals("BOOL") && expr1.equals("BOOL")) return "BOOL";
-         System.out.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op, expr0, expr1);
+         if (equalsType(expr0, "BOOL") && equalsType(expr1, "BOOL")) return "BOOL";
+         System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op, expr0, expr1);
          return "ERROR";
       }
       if (!op.equals("==") && !op.equals("!=")) {
-         if (expr0.equals("NUM") && expr1.equals("NUM")) return "BOOL";
-         System.out.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op, expr0, expr1);
+         if (equalsType(expr0, "NUM") && equalsType(expr1, "NUM")) return "BOOL";
+         System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op, expr0, expr1);
          return "ERROR";
       }
-      if (!expr0.equals(expr1)) {
-         System.out.printf("[Line %d] TypeError: cannot compare %s with %s\n", ctx.start.getLine(), expr0, expr1);
+      if (!equalsType(expr0, expr1)) {
+         System.err.printf("[Line %d] TypeError: cannot compare %s with %s\n", ctx.start.getLine(), expr0, expr1);
          return "ERROR";
       }
       return "BOOL";
@@ -288,15 +327,14 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    }
 
    @Override public String visitExprEnum(MusParser.ExprEnumContext ctx) {
-      List<MusParser.ExprContext> exprs = ctx.expr();
-      Iterator<MusParser.ExprContext> it = exprs.iterator();
-      String expr = "";
-      while(it.hasNext()) {
-         expr = visit(it.next());
-         if (!expr.equals("TEXT") && !expr.equals("ENUM")) {
-            System.out.printf("[Line %d] TypeError: all ENUM elements must be TEXT\n", ctx.start.getLine());
-            return "ERROR";
+      currentEnum = new ArrayList<>();
+      String element;
+      for (int i = 0; i < ctx.TEXT().size(); i++) {
+         element = ctx.TEXT(i).getText();
+         if (currentEnum.contains(element)) {
+            System.err.println("DuplicatedElementsError: enum has duplicated elements");
          }
+         currentEnum.add(element);
       }
       return "ENUM";
    }
@@ -304,9 +342,13 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    @Override public String visitNumericMultDivMod(MusParser.NumericMultDivModContext ctx) { 
       String expr0 = visit(ctx.expr(0));
       String expr1 = visit(ctx.expr(1));
-      if (expr0.equals("NUM") && expr1.equals("NUM")) 
+      if (equalsType(expr0, "NUM") && equalsType(expr1, "NUM")) 
          return "NUM";
-      System.out.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), ctx.op.getText(), expr0, expr1);
+      //multiplicação de uma velocidade por um escalar
+      if (("POINT|TWIST".contains(expr0) && equalsType(expr1, "NUM"))
+      ||("POINT|TWIST".contains(expr1) && equalsType(expr0, "NUM")))
+         return "TWIST";
+      System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), ctx.op.getText(), expr0, expr1);
       return "ERROR";
    }
 
@@ -314,11 +356,11 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       return "TEXT";
    }
 
-   @Override public String visitSingleCall(MusParser.SingleCallContext ctx) {
-      String res = null;
-      return visitChildren(ctx);
-      //return res;
-   }
+   // @Override public String visitSingleCall(MusParser.SingleCallContext ctx) {
+   //    String res = null;
+   //    return visitChildren(ctx);
+   //    //return res;
+   // }
 
    @Override public String visitCall(MusParser.CallContext ctx) {
       String func;
@@ -326,7 +368,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       else func = ctx.ID(1).getText();
 
       if (!table.containsFunction(func)) {
-         System.out.printf("[Line %d] NameError: name '%s' is not defined\n", ctx.start.getLine(), func);
+         System.err.printf("[Line %d] NameError: name '%s' is not defined\n", ctx.start.getLine(), func);
          return "ERROR";
       }
       String[] info = table.getFunction(func);
@@ -338,17 +380,17 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          arg = expectedArgs[pos];
          if (arg.equals("")) break;
          if (!it.hasNext()) {
-            System.out.printf("[Line %d] ArgError: argument of type %s is missing\n", ctx.start.getLine(), arg);
+            System.err.printf("[Line %d] ArgError: argument of type %s is missing\n", ctx.start.getLine(), arg);
             return "ERROR";
          }
          type = visit(it.next());
-         if (!equalsType(type, arg)) {
-            System.out.printf("[Line %d] ArgError: received %s but expected %s at position %d\n", ctx.start.getLine(), type, arg, pos);
+         if (!equalsType(arg, type)) {
+            System.err.printf("[Line %d] ArgError: received %s but expected %s at position %d\n", ctx.start.getLine(), type, arg, pos);
             return "ERROR";
          }
       }
       if (it.hasNext()) {
-         System.out.printf("[Line %d] ArgError: expected only %d argument(s)\n", ctx.start.getLine(), expectedArgs.length);
+         System.err.printf("[Line %d] ArgError: expected only %d argument(s)\n", ctx.start.getLine(), expectedArgs.length);
          return "ERROR";
       }
       return info[1];

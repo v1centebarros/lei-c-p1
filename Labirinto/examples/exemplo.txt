@@ -1,8 +1,8 @@
 #Definir posições de saida do robo
 GRID{
-    POSITION (3,7) DIRECTION = 180;
-    POSITION (3,8.3) DIRECTION = 180;
-    POSITION (3,9.6); #default DIRECTION é 180
+    POS (3,7) DIRECTION = 180;
+    POS (3,8.3) DIRECTION = 180;
+    POS (3,9.6); #default DIRECTION é 180
 };
 
 
