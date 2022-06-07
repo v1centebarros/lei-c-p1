@@ -1,10 +1,10 @@
 #Definir posições de saida do robo
 GRID{
-    POSITION (1.5,7) DIRECTION = 180;
-    POSITION (3,2) DIRECTION = 90;
-    POSITION (3,9.6) DIRECTION = 0;
-    POSITION (1.5,12);
-    POSITION (1.5,4.5) DIRECTION = 361;
+    POS (1.5,7) DIRECTION = 180;
+    POS (3,2) DIRECTION = 90;
+    POS (3,9.6) DIRECTION = 0;
+    POS (1.5,12);
+    POS (1.5,4.5) DIRECTION = 361;
 };
 
 
@@ -15,8 +15,8 @@ GRID{
 --------XML---------
 <Grid>
 	<Position X="1.5" Y="7" Dir="180"/>
-	<Position X="3.0" Y="2" Dir="90"/>
-	<Position X="3.0" Y="9.6" Dir="0"/>
+	<Position X="3" Y="2" Dir="90"/>
+	<Position X="3" Y="9.6" Dir="0"/>
 	<Position X="1.5" Y="12" Dir="180"/>
 	<Position X="1.5" Y="4.5" Dir="360"/>
 </Grid>

@@ -1,1 +1,6 @@
-.antlr/
+
+!lab.g4
+!examples/
+!Execute.*
+!LabMain.cpp
+!Makefile
