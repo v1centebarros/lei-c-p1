@@ -1,4 +1,33 @@
 ola
 <Grid>
-<Position X="8.500000" Y=9.300000>
+	<Position X="3.000000" Y="7.000000" DIR="180">
+	<Position X="3.000000" Y="8.300000" DIR="180">
+	<Position X="3.000000" Y="9.600000" DIR="180">
 </Grid>
+<Lab Name="lab01" Width="28.000000" Height="14.000000">
+	<Beacon X="15.000000" Y="9.000000" Height="2"/>
+	<Target X="7.000000" Y="7.500000" Radius="1.500000"/>
+	<Beacon X="13.000000" Y="4.000000" Height="2"/>
+	<Target X="13.000000" Y="4.000000" Radius="1.500000"/>
+	<Target X="10.000000" Y="5.000000" Radius="1"/>
+	<Beacon X="5.000000" Y="2.000000" Height="3"/>
+	<Beacon X="26.000000" Y="7.000000" Height="3"/>
+	<Target X="26.000000" Y="7.000000" Radius="1.500000"/>
+	<Beacon X="26.000000" Y="1.000000" Height="3"/>
+	<Target X="26.000000" Y="1.000000" Radius="1"/>
+	<Beacon X="20.000000" Y="7.000000" Height="2"/>
+	<Target X="20.000000" Y="7.000000" Radius="1"/>
+	<Row Pos="12" Pattern="           |              |              "/>
+	<Row Pos="11" Pattern="--+--+--+--+  +--+--+--+  +  +  +  +  +  "/>
+	<Row Pos="10" Pattern="              |        |  |              "/>
+	<Row Pos="9" Pattern="  +--+--+--+--+  +--+--+  +--+  +  +  +  "/>
+	<Row Pos="8" Pattern="     |           |     |     |           "/>
+	<Row Pos="7" Pattern="--+  +  +  +  +--+  +  +--+  +--+  +  +  "/>
+	<Row Pos="6" Pattern="  |  |        |     |  |  |     |        "/>
+	<Row Pos="5" Pattern="--+  +--+--+--+  +--+  +--+--+  +  +  +  "/>
+	<Row Pos="4" Pattern="     |           |  |  |        |        "/>
+	<Row Pos="3" Pattern="  +--+  +--+--+--+  +  +  +--+--+  +  +  "/>
+	<Row Pos="2" Pattern="  |  |  |           |     |              "/>
+	<Row Pos="1" Pattern="  +--+  +  +  +  +  +--+--+  +  +  +  +  "/>
+	<Row Pos="0" Pattern="        |                                "/>
+</Lab>

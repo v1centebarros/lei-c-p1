@@ -16,7 +16,7 @@ LABIRINTO -- consiste no mapa do labirinto, e os dados dos targets, beacons ou d
 
 Construção do labirinto:
     '|'  - parede vertical
-    '.'  - pontos que unem paredes horizontais ou verticais
+    '+'  - pontos que unem paredes horizontais ou verticais
     '--' - parede horizontal
     ' '  - por onde o robo pode circular
 

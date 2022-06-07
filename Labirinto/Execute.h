@@ -37,4 +37,6 @@ public:
    virtual antlrcpp::Any visitRow(LabParser::RowContext *ctx) override;
 
    virtual antlrcpp::Any visitCoordenadas(LabParser::CoordenadasContext *ctx) override;
+
+   virtual antlrcpp::Any visitNum(LabParser::NumContext *ctx) override;
 };

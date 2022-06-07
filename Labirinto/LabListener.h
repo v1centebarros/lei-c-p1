@@ -47,6 +47,9 @@ public:
   virtual void enterCoordenadas(LabParser::CoordenadasContext *ctx) = 0;
   virtual void exitCoordenadas(LabParser::CoordenadasContext *ctx) = 0;
 
+  virtual void enterNum(LabParser::NumContext *ctx) = 0;
+  virtual void exitNum(LabParser::NumContext *ctx) = 0;
+
 
 };
 

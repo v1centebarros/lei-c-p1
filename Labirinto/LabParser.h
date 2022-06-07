@@ -22,7 +22,7 @@ public:
   enum {
     RuleProgram = 0, RuleStat = 1, RuleGrid = 2, RulePosition = 3, RuleLabirinto = 4, 
     RuleDlab = 5, RuleBeacon = 6, RuleTarget = 7, RuleSpot = 8, RuleRow = 9, 
-    RuleCoordenadas = 10
+    RuleCoordenadas = 10, RuleNum = 11
   };
 
   explicit LabParser(antlr4::TokenStream *input);
@@ -45,7 +45,8 @@ public:
   class TargetContext;
   class SpotContext;
   class RowContext;
-  class CoordenadasContext; 
+  class CoordenadasContext;
+  class NumContext; 
 
   class  ProgramContext : public antlr4::ParserRuleContext {
   public:
@@ -117,8 +118,8 @@ public:
     LabirintoContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *ID();
-    std::vector<antlr4::tree::TerminalNode *> INT();
-    antlr4::tree::TerminalNode* INT(size_t i);
+    std::vector<NumContext *> num();
+    NumContext* num(size_t i);
     std::vector<DlabContext *> dlab();
     DlabContext* dlab(size_t i);
 
@@ -170,8 +171,7 @@ public:
     TargetContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     CoordenadasContext *coordenadas();
-    antlr4::tree::TerminalNode *DOUBLE();
-    antlr4::tree::TerminalNode *INT();
+    NumContext *num();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -187,9 +187,8 @@ public:
     SpotContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     CoordenadasContext *coordenadas();
-    std::vector<antlr4::tree::TerminalNode *> INT();
-    antlr4::tree::TerminalNode* INT(size_t i);
-    antlr4::tree::TerminalNode *DOUBLE();
+    antlr4::tree::TerminalNode *INT();
+    NumContext *num();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -205,8 +204,7 @@ public:
     RowContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *INT();
-    std::vector<antlr4::tree::TerminalNode *> PADRAO();
-    antlr4::tree::TerminalNode* PADRAO(size_t i);
+    antlr4::tree::TerminalNode *PADRAO();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -221,8 +219,8 @@ public:
   public:
     CoordenadasContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    std::vector<antlr4::tree::TerminalNode *> DOUBLE();
-    antlr4::tree::TerminalNode* DOUBLE(size_t i);
+    std::vector<NumContext *> num();
+    NumContext* num(size_t i);
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -232,6 +230,22 @@ public:
   };
 
   CoordenadasContext* coordenadas();
+
+  class  NumContext : public antlr4::ParserRuleContext {
+  public:
+    NumContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *DOUBLE();
+    antlr4::tree::TerminalNode *INT();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  NumContext* num();
 
 
 private:

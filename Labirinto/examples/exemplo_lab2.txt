@@ -1,37 +1,37 @@
 #Definir um labirinto
-LABIRINTO (NAME = lab02) { 
+LABIRINTO (NAME = lab02 WIDTH = 17.5 HEIGHT = 14) { 
 	TARGET = (9,5); #Definir target 
     BEACON = (3,3); #Definir beacon
     SPOT = (26,7); #Definir beacon e target conjuntos
 
 
 	ROW 12 : "           |              |              ";
-	ROW 11 : "--.--.--.--.  .--.--.--.  .  .  .  .  .  ";
+	ROW 11 : "--+--+--+--+  +--+--+--+  +  +  +  +  +  ";
 	ROW 10 : "              |        |  |              ";
-	ROW 9  : "  .--.--.--.--.  .--.--.  .--.  .  .  .  ";
+	ROW 9  : "  +--+--+--+--+  +--+--+  +--+  +  +  +  ";
 	ROW 8  : "     |           |     |     |           ";
-	ROW 7  : "--.  .  .  .  .--.  .  .--.  .--.  .  .  ";
+	ROW 7  : "--+  +  +  +  +--+  +  +--+  +--+  +  +  ";
 	ROW 6  : "  |  |        |     |  |  |     |        ";
-	ROW 5  : "--.  .--.--.--.  .--.  .--.--.  .  .  .  ";
+	ROW 5  : "--+  +--+--+--+  +--+  +--+--+  +  +  +  ";
 	ROW 4  : "     |           |  |  |        |        ";
-	ROW 3  : "  .  .  .--.--.--.  .  .  .--.--.  .  .  ";
+	ROW 3  : "  +  +  +--+--+--+  +  +  +--+--+  +  +  ";
 	ROW 2  : "  |  |  |           |     |              ";
-	ROW 1  : "  .--.  .  .  .  .  .--.--.  .  .  .  .  ";
+	ROW 1  : "  +--+  +  +  +  +  +--+--+  +  +  +  +  ";
 	ROW 0  : "        |                                ";
 
 };
 
 
-/*Neste exemplo o labirinto tem obtaculos e paredes. 
+/*Neste exemplo o labirinto tem obtaculos e paredes+ 
     tem um target e um beacon separadamente 
     e um beacon e um target conjuntos (spot).
 Em nenhum caso estamos a assumir valores default
 no caso do beacon a sua altura é 2, no target o seu raio é 1, 
-no spot a sua altura é 2 e o raio 1 e no tamanho do labirinto.
+no spot a sua altura é 2 e o raio 1.
     
     
 --------XML---------
-<Lab Name="Lab 2" Width="28.0" Height="14.0">
+<Lab Name="lab02" Width="17.5" Height="14.0">
 	<Target X="9.0" Y="5" Radius="1"/>
 
 	<Beacon X="3.0" Y="3" Height="2"/>
@@ -41,7 +41,7 @@ no spot a sua altura é 2 e o raio 1 e no tamanho do labirinto.
 
 	<Row  Pos="12" Pattern="           |              |              "  />
 	<Row  Pos="11" Pattern="--+--+--+--+  +--+--+--+  +  +  +  +  +  "  />
-	<Row  Pos="10" Pattern="   HH         |        |  |              "  />
+	<Row  Pos="10" Pattern="              |        |  |              "  />
 	<Row  Pos="9"  Pattern="  +--+--+--+--+  +--+--+  +--+  +  +  +  "  />
 	<Row  Pos="8"  Pattern="     |           |     |     |           "  />
 	<Row  Pos="7"  Pattern="--+  +  +  +  +--+  +  +--+  +--+  +  +  "  />
@@ -49,7 +49,7 @@ no spot a sua altura é 2 e o raio 1 e no tamanho do labirinto.
 	<Row  Pos="5"  Pattern="--+  +--+--+--+  +--+  +--+--+  +  +  +  "  />
 	<Row  Pos="4"  Pattern="     |           |  |  |        |        "  />
 	<Row  Pos="3"  Pattern="  +  +  +--+--+--+  +  +  +--+--+  +  +  "  />
-	<Row  Pos="2"  Pattern="  |  |  |           |     |      TT      "  />
+	<Row  Pos="2"  Pattern="  |  |  |           |     |              "  />
 	<Row  Pos="1"  Pattern="  +--+  +  +  +  +  +--+--+  +  +  +  +  "  />
 	<Row  Pos="0"  Pattern="        |                                "  />
 </Lab>

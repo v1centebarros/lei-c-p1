@@ -21,24 +21,24 @@ LABIRINTO (NAME = lab01 WIDTH = 28 HEIGHT = 14) {
 	
 	/* DEfinir mapa*/
 	ROW 12 : "           |              |              ";
-	ROW 11 : "--.--.--.--.  .--.--.--.  .  .  .  .  .  ";
+	ROW 11 : "--+--+--+--+  +--+--+--+  +  +  +  +  +  ";
 	ROW 10 : "              |        |  |              ";
-	ROW 9  : "  .--.--.--.--.  .--.--.  .--.  .  .  .  ";
+	ROW 9  : "  +--+--+--+--+  +--+--+  +--+  +  +  +  ";
 	ROW 8  : "     |           |     |     |           ";
-	ROW 7  : "--.  .  .  .  .--.  .  .--.  .--.  .  .  ";
+	ROW 7  : "--+  +  +  +  +--+  +  +--+  +--+  +  +  ";
 	ROW 6  : "  |  |        |     |  |  |     |        ";
-	ROW 5  : "--.  .--.--.--.  .--.  .--.--.  .  .  .  ";
+	ROW 5  : "--+  +--+--+--+  +--+  +--+--+  +  +  +  ";
 	ROW 4  : "     |           |  |  |        |        ";
-	ROW 3  : "  .--.  .--.--.--.  .  .  .--.--.  .  .  ";
+	ROW 3  : "  +--+  +--+--+--+  +  +  +--+--+  +  +  ";
 	ROW 2  : "  |  |  |           |     |              ";
-	ROW 1  : "  .--.  .  .  .  .  .--.--.  .  .  .  .  ";
+	ROW 1  : "  +--+  +  +  +  +  +--+--+  +  +  +  +  ";
 	ROW 0  : "        |                                ";
 };
 
 
 /*Neste exemplo temos uma grid e um labirinto, em ambos os casos temos
 definidos valores default para os dados da posições inicais, 
-beacon, targets e spots
+beacon, targets e spots.
 --------XML---------
 
 <Grid>

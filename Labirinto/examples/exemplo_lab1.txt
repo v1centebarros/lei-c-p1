@@ -13,7 +13,7 @@ Em nenhum caso  não estamos a assumir valores default.
     
     
 --------XML---------
-<Lab Name="Lab 1" Width="28.0" Height="14.0">
+<Lab Name="lab01" Width="28.0" Height="14.0">
 	<Target X="10.0" Y="7" Radius="1.5"/>
 
 	<Beacon X="3.0" Y="1" Height="3"/>

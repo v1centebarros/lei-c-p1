@@ -41,6 +41,8 @@ public:
 
     virtual antlrcpp::Any visitCoordenadas(LabParser::CoordenadasContext *context) = 0;
 
+    virtual antlrcpp::Any visitNum(LabParser::NumContext *context) = 0;
+
 
 };
 

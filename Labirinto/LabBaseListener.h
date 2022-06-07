@@ -49,6 +49,9 @@ public:
   virtual void enterCoordenadas(LabParser::CoordenadasContext * /*ctx*/) override { }
   virtual void exitCoordenadas(LabParser::CoordenadasContext * /*ctx*/) override { }
 
+  virtual void enterNum(LabParser::NumContext * /*ctx*/) override { }
+  virtual void exitNum(LabParser::NumContext * /*ctx*/) override { }
+
 
   virtual void enterEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }
   virtual void exitEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }

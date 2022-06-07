@@ -59,6 +59,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitNum(LabParser::NumContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
 
 };
 
