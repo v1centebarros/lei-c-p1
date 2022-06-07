@@ -17,10 +17,14 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    //all ST -> main & robot processes functions
    private ST mainST;
    private HashMap<String, ST> robotFunc;
+   private HashMap<String, ST> userFunc;   // st hashmap with {funcName: ST}
 
 
-   //simple functions (without arguments)
+   //simple functions (without arguments) inculind UDFs
    private Map<String, String> simpleFunc = new HashMap<>();
+
+   //UDFs with arguments
+   private Map<String, String> UDF = new HashMap<>();
 
 
    //type and values of the last assignment
@@ -33,6 +37,7 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
 
    //current robot (for robot functions)
    private String currentRobot;
+   private String currentFunc;
 
 
    //functions that need an apply statement
@@ -42,7 +47,11 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    //aux vars
    private boolean useActive;  //true -> the statement is a 'use' keyword
    private boolean isInit;   // true -> if the stat is the init (for ';')
+   private boolean isUDF;
    private int robotCounter;
+
+   //data types
+   private HashMap<String, String> dataTypes;
    
 
    public CodeGenerator() {
@@ -50,8 +59,9 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       allTemplates = new STGroupFile("Templates.stg");
 
       //all ST -> main & robot process function
-      mainST = new ST("<main>");
+      mainST = new ST("<main_f>");
       robotFunc = new HashMap<>();
+      userFunc = new HashMap<>();
 
       //last assignment info
       lastType = null;
@@ -62,6 +72,7 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
 
       useActive = false;  //use keyword activate
       isInit = false;     //is init robot
+      isUDF = false;      //is UDF
       robotCounter = 0;
 
       //functions that need an apply statement
@@ -85,6 +96,16 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       simpleFunc.put("collides", "collides()");
       simpleFunc.put("getReturningLed", "getReturningLed()");
       simpleFunc.put("getVisitingLed", "getVisitingLed()");
+
+      //UDF
+      UDF = new HashMap<>();
+
+      //Data types (for function declaration)
+      dataTypes = new HashMap<>();
+      dataTypes.put("NUM", "float");
+      dataTypes.put("BOOL", "bool");
+      dataTypes.put("TEXT", "string");
+      dataTypes.put("ENUM", "int");
    }
 
 
@@ -111,11 +132,18 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
 
       programaTodo.add("global", "");  //see later
 
+      //UDFs  (need to be first!!!)
+      for(int i = 0; i < ctx.defFunction().size(); i++) {
+         ST funcST = visit(ctx.defFunction(i));
+      }
+
+
+      //main and robot_process_func
       for(int i = 0; i < ctx.stat().size(); i++) {
          ST statST = visit(ctx.stat(i));
 
          if (currentRobot == null)
-            mainST.add("main", statST);
+            mainST.add("main_f", statST);
          else{
             robotFunc.get(currentRobot).add("stats", statST);
          }
@@ -123,17 +151,76 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       }
 
       //add main ST
+      mainST.add("main_f", "\n//end of main function");  //importante if the main is empty
       programaTodo.add("main", mainST);
+
 
       //add robotFunc ST
       for (String func : robotFunc.keySet()) {
          programaTodo.add("processBlock", robotFunc.get(func));
       }
 
+      //add  UDF ST
+      for (String func : userFunc.keySet()) {
+         programaTodo.add("funcBlock", userFunc.get(func));
+      }      
+
 
       //print target code into file
       printToFile(programaTodo);
       return programaTodo;
+   }
+
+   @Override public ST visitDefFunction(MusParser.DefFunctionContext ctx) {
+
+      ST funcST = allTemplates.getInstanceOf("funcBlock");
+      
+      String func_type = "";
+      String func_name = "";
+      currentFunc = func_name;
+
+      //If #id == #type --> not void,   #id > #type  -->  void
+      boolean isVoid = ctx.ID().size() > ctx.TYPE().size() || ctx.ID().size()==0 && ctx.TYPE().size()==0;
+
+
+      //get func type
+      if (ctx.TYPE() != null) {
+         if (isVoid)
+            func_type = "void";
+         else
+            func_type = dataTypes.get(ctx.TYPE(0).getText());
+      }
+
+      //get func name
+      if (ctx.ID(0) != null) 
+         func_name = ctx.ID(0).getText();
+
+      
+      //get args and its type
+      String arg = "";
+      String arg_type = "";
+
+      if (isVoid) {
+         for (int i=1; i<ctx.ID().size(); i++)
+            funcST.add("funcArgs", dataTypes.get(ctx.TYPE(i-1).getText()) + " var_" + ctx.ID(i).getText());         
+      }
+      else {
+         for (int i=1; i<ctx.ID().size(); i++)
+            funcST.add("funcArgs", dataTypes.get(ctx.TYPE(i).getText()) + " var_" + ctx.ID(i).getText());            
+      }
+
+
+      for (int i=0; i<ctx.stat().size(); i++)
+         funcST.add("funcStat", visit(ctx.stat(i)));
+
+      
+
+      funcST.add("funcType", func_type);
+      funcST.add("funcName", func_name);
+
+      userFunc.put(func_name, funcST);
+      return userFunc.get(func_name);
+
    }
 
    @Override public ST visitStat(MusParser.StatContext ctx) {
@@ -248,7 +335,7 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
             //create process function
             fork.add("counter", robotCounter + "");
             fork.add("func", "robot_process_" + varName);
-            mainST.add("main", fork);
+            mainST.add("main_f", fork);
             robotCounter++;
 
             //register string template
@@ -341,12 +428,12 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       return res;
    }
 
-   // @Override public ST visitExprRobot(MusParser.ExprRobotContext ctx) {
-   //    ST callST = new ST("<robotName>, <pos>");
-   //    callST.add("robotName", visit(ctx.expr(0)));
-   //    callST.add("pos", visit(ctx.expr(1)));
-   //    return callST;
-   // }
+   @Override public ST visitExprTuple(MusParser.ExprTupleContext ctx) {
+      ST callST = new ST("<robotName>, <pos>");
+      callST.add("robotName", visit(ctx.expr(0)));
+      callST.add("pos", visit(ctx.expr(1)));
+      return callST;
+   }
 
    @Override public ST visitBoolDoubleCompare(MusParser.BoolDoubleCompareContext ctx) {
       ST res = new ST("<expr> <op1> <exprL> && <expr> <op2> <exprR>");
@@ -494,7 +581,15 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
             return new ST("");            
          }
 
-         callST.add("ID2", ctx.ID(0).getText());
+         if (func.equals("return")) {
+            return new ST("return " + visit(ctx.expr(0)).render());
+         }
+
+         // check if is UDF or external functions
+         if (userFunc.containsKey(func)) 
+            callST.add("user_func", func);
+         else 
+            callST.add("ID2", ctx.ID(0).getText());
 
       }
       if (ctx.ID().size() == 2) {
@@ -530,19 +625,6 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
          needApply = true;
 
       return callST;
-   }
+   } 
 
-   /*@Override public ST visitLogicalop(MusParser.LogicalopContext ctx) {
-      ST res = new ST("<op>");
-      String op = ctx.getText();
-      System.out.println("LOGICAL OP: " + op);
-      return null;
-
-   }
-
-   // @Override public ST visitType(MusParser.TypeContext ctx) {
-   //    ST res = null;
-   //    return visitChildren(ctx);
-   //    //return res;
-   // }*/
 }
