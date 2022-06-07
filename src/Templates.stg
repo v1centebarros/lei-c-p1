@@ -35,9 +35,13 @@ externalFunctionsMap ::= [
 ]
 
 
-header(global, main) ::= <<
+program(global, processBlock, main, threadJoin) ::= <<
 #include "CiberAV.h"
 #include "RobSock.h"
+#include \<unistd.h>
+#include \<sys/wait.h>
+#include \<sys/types.h>
+#include \<stdlib.h>
 #include \<stdio.h>
 #include \<iostream>
 
@@ -45,11 +49,30 @@ using namespace std;
 
 <if(global)><global><endif>
 
+<if(processBlock)><processBlock><endif>
+
+
 int main() {
     <main>
 
     return 0;
 }
+>>
+
+processBlock(process_name, stats) ::= <<void <process_name>(){
+    <stats>
+}
+
+
+>>
+
+forkBlock(func, counter) ::= <<pid_t pid<counter> = fork();
+if (pid<counter> == 0)
+{
+    <func>();
+}
+
+
 >>
 
 
