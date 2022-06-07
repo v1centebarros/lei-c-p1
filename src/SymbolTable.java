@@ -46,4 +46,13 @@ public class SymbolTable {
     public void putVariable(String name, String type) {
         variables.put(name, type);
     }
+
+    public SymbolTable clone() {
+        SymbolTable copy = new SymbolTable(
+            this.parent,
+            this.functions,
+            this.variables
+        );
+        return copy;
+    }
 }

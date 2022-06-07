@@ -10,10 +10,11 @@ import java.lang.ProcessBuilder.Redirect.Type;
 
 public class SemanticAnalyser extends MusBaseVisitor<String> {
 
-   private List<String> keywords = List.of("NUM", "BOOL", "TEXT", "ENUM", "ROBOT",
+   private List<String> keywords = List.of("NUM", "BOOL", "TEXT", "ENUM", "ROBOT", "POINT", "TWIST", "POSE",
    "while", "until",
    "not", "and", "or",
-   "true", "false", "True", "False");
+   "true", "false", "True", "False",
+   "function", "with");
 
    private SymbolTable table = new SymbolTable(null,
       new HashMap<>(Map.ofEntries(
@@ -23,7 +24,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          entry("posX", new String[]{"VOID", "NUM"}),
          entry("posY", new String[]{"VOID", "NUM"}),
          entry("rotate", new String[]{"NUM", "VOID"}),
-         entry("move", new String[]{"NUM;NUM", "VOID"}),
+         entry("move", new String[]{"POINT", "VOID"}),
          entry("pickUp", new String[]{"VOID", "VOID"}),
          entry("returning", new String[]{"VOID", "VOID"}),
          entry("finish", new String[]{"VOID", "VOID"}),
@@ -40,7 +41,8 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          entry("setVisitingLed", new String[]{"BOOL", "VOID"}),
          entry("setReturningLed", new String[]{"BOOL", "VOID"}),
          entry("getVisitingLed", new String[]{"VOID", "BOOL"}),
-         entry("getReturningLed", new String[]{"VOID", "BOOL"})
+         entry("getReturningLed", new String[]{"VOID", "BOOL"}),
+         entry("distance", new String[]{"POINT;POINT", "NUM"})
       )),
       new HashMap<>(Map.ofEntries(
          entry("frontsensor", "NUM"), //macro
@@ -50,11 +52,13 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       ))
    );
 
+   private SymbolTable originalTable = table.clone();
+
    private Stack<SymbolTable> tables = new Stack<>();
    private List<String> currentEnum;
 
    private boolean equalsType(String input, String type) {
-      return input.equals(type) || type.equals("ANY");
+      return type.contains(input) || type.equals("ANY");
    }
 
    // @Override public String visitProgram(MusParser.ProgramContext ctx) {
@@ -70,6 +74,12 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       //return res;
    }
    */
+
+  @Override public String visitDefFunction(MusParser.DefFunctionContext ctx) {
+      private Stack<SymbolTable> tablesFunction = new Stack<>();
+      //TODO
+
+   }
 
    @Override public String visitBlockIf(MusParser.BlockIfContext ctx) {
       tables.push(table);
@@ -220,8 +230,10 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    @Override public String visitNumericAddSub(MusParser.NumericAddSubContext ctx) {
       String expr0 = visit(ctx.expr(0));
       String expr1 = visit(ctx.expr(1));
-      if (expr0.equals("NUM") && expr1.equals("NUM")) 
+      if (equalsType(expr0, "NUM") && equalsType(expr1, "NUM")) 
          return "NUM";
+      if ("POINT|TWIST".contains(expr0) && "POINT|TWIST".contains(expr1))
+         return "POINT|TWIST";
       System.err.printf("[Line %d] TypeError: unsupported operand type(s) for '%s': %s and %s\n", ctx.start.getLine(), ctx.op.getText(), expr0, expr1);
       return "ERROR";
    }
@@ -242,12 +254,16 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       return visit(ctx.expr());
    }
 
-   @Override public String visitExprRobot(MusParser.ExprRobotContext ctx) {
+   @Override public String visitExprTuple(MusParser.ExprTupleContext ctx) {
       String expr0 = visit(ctx.expr(0));
       String expr1 = visit(ctx.expr(1));
-      if (expr0.equals("TEXT") && expr1.equals("NUM")) 
+      if (equalsType(expr0, "TEXT") && equalsType(expr1, "NUM")) 
          return "ROBOT";
-      System.err.printf("[Line %d] TypeError: robot must be declared with (TEXT, NUM)\n", ctx.start.getLine());
+      if (equalsType(expr0, "NUM") && equalsType(expr1, "NUM"))
+         return "POINT|TWIST";
+      if (equalsType(expr0, "POINT|TWIST") && equalsType(expr1, "NUM"))
+         return "POSE";
+      System.err.printf("[Line %d] TypeError: tuple must be ROBOT, POINT or POSE\n", ctx.start.getLine());
       return "ERROR";
    }
 
@@ -259,20 +275,20 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       String expr2 = visit(ctx.expr(2));
       
       if (op1.equals("and") || op1.equals("or")) {
-         if (expr0.equals("BOOL") && expr1.equals("BOOL")) return "BOOL";
+         if (equalsType(expr0, "BOOL") && equalsType(expr1, "BOOL")) return "BOOL";
          System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op1, expr0, expr1);
          return "ERROR";
       }
       if (op2.equals("and") || op2.equals("or")) {
-         if (expr1.equals("BOOL") && expr2.equals("BOOL")) return "BOOL";
+         if (equalsType(expr1, "BOOL") && expr2.equals("BOOL")) return "BOOL";
          System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op2, expr1, expr2);
          return "ERROR";
       }
-      if (!expr0.equals("NUM") || !expr1.equals("NUM")) {
+      if (!equalsType(expr0, "NUM") || !equalsType(expr1, "NUM")) {
          System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op1, expr0, expr1);
          return "ERROR";
       }
-      if (!expr1.equals("NUM") || !expr2.equals("NUM")) {
+      if (!equalsType(expr1, "NUM") || !expr2.equals("NUM")) {
          System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op2, expr1, expr2);
          return "ERROR";
       }
@@ -290,16 +306,16 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       String op = ctx.op.getText();
       String expr1 = visit(ctx.expr(1));
       if (op.equals("and") || op.equals("or")) {
-         if (expr0.equals("BOOL") && expr1.equals("BOOL")) return "BOOL";
+         if (equalsType(expr0, "BOOL") && equalsType(expr1, "BOOL")) return "BOOL";
          System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op, expr0, expr1);
          return "ERROR";
       }
       if (!op.equals("==") && !op.equals("!=")) {
-         if (expr0.equals("NUM") && expr1.equals("NUM")) return "BOOL";
+         if (equalsType(expr0, "NUM") && equalsType(expr1, "NUM")) return "BOOL";
          System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op, expr0, expr1);
          return "ERROR";
       }
-      if (!expr0.equals(expr1)) {
+      if (!equalsType(expr0, expr1)) {
          System.err.printf("[Line %d] TypeError: cannot compare %s with %s\n", ctx.start.getLine(), expr0, expr1);
          return "ERROR";
       }
@@ -326,8 +342,12 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    @Override public String visitNumericMultDivMod(MusParser.NumericMultDivModContext ctx) { 
       String expr0 = visit(ctx.expr(0));
       String expr1 = visit(ctx.expr(1));
-      if (expr0.equals("NUM") && expr1.equals("NUM")) 
+      if (equalsType(expr0, "NUM") && equalsType(expr1, "NUM")) 
          return "NUM";
+      //multiplicação de uma velocidade por um escalar
+      if (("POINT|TWIST".contains(expr0) && equalsType(expr1, "NUM"))
+      ||("POINT|TWIST".contains(expr1) && equalsType(expr0, "NUM")))
+         return "TWIST";
       System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), ctx.op.getText(), expr0, expr1);
       return "ERROR";
    }
@@ -364,7 +384,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
             return "ERROR";
          }
          type = visit(it.next());
-         if (!equalsType(type, arg)) {
+         if (!equalsType(arg, type)) {
             System.err.printf("[Line %d] ArgError: received %s but expected %s at position %d\n", ctx.start.getLine(), type, arg, pos);
             return "ERROR";
          }

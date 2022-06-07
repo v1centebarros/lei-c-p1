@@ -32,13 +32,21 @@
 
 - [X] Incluir a instrução repetitiva (operando sobre expressões booleanas).
 
+- [] Suportar nativamente, em 2D, os conceitos de ’ponto’ (point), ’pose’ (pose) e ’velo-
+cidade’ (twist), assim como algumas operações sobre estes tipos de dados.
+    – O ponto deve ser representado pelas suas componentes X e Y.
+    – A pose deve ser representada por um ponto e uma orientação.
+    – A velocidade deve ser representada pelas suas componentes linear e angular.
+    – Operações como distância entre dois pontos, distância entre pose e ponto, posição
+    angular de um ponto em relação a uma pose, multiplicação de uma velocidade por um
+    escalar, adição e subtração de velocidades, etc., devem ser contempladas. 
 
 ## Adicionais
 
-- [] Fazer com que a linguagem contenha um sistema de tipos. Devem existir os seguintes tipos de dados: robô ponto, pose, velocidade, número real, número inteiro, texto, booleano.
+- [] Fazer com que a linguagem contenha um sistema de tipos. Devem existir os seguintes tipos de dados: robô ponto, pose, velocidade, número real, número inteiro, texto booleano.
 
 - [] Implementar funções e variáveis locais às mesmas.
 
 - [] Permitir a definição de listas.
 
-- [] Possuir um mecanismo de gravação em ficheiros dos mapas lidos da linguagem secundária no formato aceite pelo ambiente de simulação
+- [] Possuir um mecanismo de gravação em ficheiros dos mapas lidos da linguagem secundária no formato aceite pelo ambiente de simulação.

@@ -259,12 +259,12 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       return res;
    }
 
-   @Override public ST visitExprRobot(MusParser.ExprRobotContext ctx) {
-      ST callST = new ST("<robotName>, <pos>");
-      callST.add("robotName", visit(ctx.expr(0)));
-      callST.add("pos", visit(ctx.expr(1)));
-      return callST;
-   }
+   // @Override public ST visitExprRobot(MusParser.ExprRobotContext ctx) {
+   //    ST callST = new ST("<robotName>, <pos>");
+   //    callST.add("robotName", visit(ctx.expr(0)));
+   //    callST.add("pos", visit(ctx.expr(1)));
+   //    return callST;
+   // }
 
    @Override public ST visitBoolDoubleCompare(MusParser.BoolDoubleCompareContext ctx) {
       ST res = new ST("<expr> <op1> <exprL> && <expr> <op2> <exprR>");

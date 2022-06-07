@@ -1,17 +1,20 @@
 grammar Mus;
 
 program:
-    stat* EOF
+    (stat|defFunction)* EOF
     ;
 
 stat:
     block | assignment | singleCall;
 
+
+defFunction: TYPE? 'function' ID ('with' (TYPE ID)+)? '(' stat* ')'; 
+
 //o analisador semântico verificará se expr representa um valor booleano
-block: 'if' expr 'do' stat* blockElse? 'end'        #BlockIf
-        | 'while' expr 'do' stat* 'end'             #BlockWhile
-        | call 'until' expr  ';'                    #BlockUntil
-        ; 
+block: 'if' expr 'do' stat* blockElse? 'end'                      #BlockIf
+        | 'while' expr 'do' stat* 'end'                           #BlockWhile
+        | call 'until' expr  ';'                                  #BlockUntil
+        ;
 
 blockElse:
     'else' stat*
@@ -24,7 +27,7 @@ singleCall:
     call ';';
 
 expr:
-    '(' expr ',' expr ')'                                                                   #ExprRobot  //'(' TEXT ',' NUM ')'
+    '(' expr ',' expr ')'                                                                   #ExprTuple  // Robot, Point, Twist, Pose
     | TEXT '->' NUM  ('|' TEXT '->' NUM)+                                                   #ExprEnumWithValues // só aceita literais
     | '(' expr ')'                                                                          #ExprParenthesis
     | 'not' expr                                                                            #BoolNegation
@@ -42,7 +45,7 @@ expr:
     ;
 
 call: (ID '.')? ID (expr)*; //chamada de uma função/variável     
-TYPE:  'NUM' | 'BOOL' | 'TEXT' | 'ENUM' | 'ROBOT';
+TYPE:  'NUM' | 'BOOL' | 'TEXT' | 'ENUM' | 'ROBOT' | 'POINT' | 'TWIST' | 'POSE';
 NUM: ('-')?[0-9]+('.'[0-9]+)?;
 BOOL: [tT]'rue' | [fF]'alse';
 TEXT: '"' (~["] | '""')* '"';
