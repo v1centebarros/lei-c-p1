@@ -11,28 +11,58 @@ import org.stringtemplate.v4.*;
 
 public class CodeGenerator extends MusBaseVisitor<ST> {
 
-   // private ST stringTemplate;
+   // ST Group
    STGroup allTemplates;
+
+   //all ST -> main & robot processes functions
+   private ST mainST;
+   private HashMap<String, ST> robotFunc;
+
 
    //simple functions (without arguments)
    private Map<String, String> simpleFunc = new HashMap<>();
 
+
    //type and values of the last assignment
    private String lastType;
+
+
+   //use keyword activate
    private String lastVar;
 
+
+   //current robot (for robot functions)
+   private String currentRobot;
+
+
    //functions that need an apply statement
-   List<String> needApplyFunc;
-   boolean needApply;
+   private List<String> needApplyFunc;
+   private boolean needApply;
+
+   //aux vars
+   private boolean useActive;  //true -> the statement is a 'use' keyword
+   private boolean isInit;   // true -> if the stat is the init (for ';')
+   private int robotCounter;
    
 
    public CodeGenerator() {
       //stringTemplate = new ST();
       allTemplates = new STGroupFile("Templates.stg");
 
+      //all ST -> main & robot process function
+      mainST = new ST("<main>");
+      robotFunc = new HashMap<>();
+
       //last assignment info
       lastType = null;
       lastVar = null;
+
+      //current robot
+      currentRobot = null;  //null --> main function
+
+      useActive = false;  //use keyword activate
+      isInit = false;     //is init robot
+      robotCounter = 0;
 
       //functions that need an apply statement
       needApply = false;
@@ -63,10 +93,10 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       try {
          FileWriter myWriter = new FileWriter("destinationLanguage.cpp");
 
+         //render ST
          String s = stringTemplate.render();
-         System.out.println("ST: " +  s);
+         System.out.println("ST: \n" +  s);
          myWriter.write(s);
-         //myWriter.write("escrevendo");
          myWriter.close();
          System.out.println("Successfully wrote to the file.");
 
@@ -77,36 +107,75 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    }
 
    @Override public ST visitProgram(MusParser.ProgramContext ctx) {
-      ST programaTodo = allTemplates.getInstanceOf("header");
+      ST programaTodo = allTemplates.getInstanceOf("program");
 
-      programaTodo.add("global", "");
-      //List<StatContext> contextes = ctx.stat();
+      programaTodo.add("global", "");  //see later
+
       for(int i = 0; i < ctx.stat().size(); i++) {
-         programaTodo.add("main", visit(ctx.stat(i)));
+         ST statST = visit(ctx.stat(i));
+
+         if (currentRobot == null)
+            mainST.add("main", statST);
+         else{
+            robotFunc.get(currentRobot).add("stats", statST);
+         }
+            
       }
+
+      //add main ST
+      programaTodo.add("main", mainST);
+
+      //add robotFunc ST
+      for (String func : robotFunc.keySet()) {
+         programaTodo.add("processBlock", robotFunc.get(func));
+      }
+
+
+      //print target code into file
       printToFile(programaTodo);
       return programaTodo;
    }
 
    @Override public ST visitStat(MusParser.StatContext ctx) {
       ST res = new ST("<stat><comma>");
+
       if(ctx.block() != null) {
          res.add("stat", visit(ctx.block()));
          res.add("comma","\n");
-      } else if(ctx.assignment() != null) {
-         res.add("stat", visit(ctx.assignment()));
-         res.add("comma",";\n");
-      } else if(ctx.singleCall() != null) {
-         res.add("stat", visit(ctx.singleCall()));
+      }
+      else if(ctx.assignment() != null) {
+         ST tmp = visit(ctx.assignment());
+
+         if (isInit) {
+            res.add("stat", "");
+            res.add("comma","");          
+            isInit = false;     
+         }
+         else {
+            res.add("stat", tmp);
+            res.add("comma",";\n");   
+         }
+       
+      }
+      else if(ctx.singleCall() != null) {
+         ST tmp = visit(ctx.singleCall());
 
          //insert apply(); if needed
-         if (!needApply)
-            res.add("comma",";\n");
-         else {
-            res.add("comma",";\napply();\n");
-            needApply = false;  //reset apply() var
-         }
-
+            if (!useActive) {
+               res.add("stat", tmp);
+               if (!needApply)
+                  res.add("comma",";\n");
+               else {
+                  res.add("comma",";\napply();\n");
+                  needApply = false;  //reset apply() var
+               }            
+            }
+            else{
+               useActive = false;
+               res.add("stat", "");
+               res.add("comma", "");
+            }
+               
       }
       return res;
    }
@@ -162,25 +231,35 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    }
 
    @Override public ST visitAssignment(MusParser.AssignmentContext ctx) {
-      // ST assign = allTemplates.getInstanceOf("assign");
-      // if(ctx.TYPE() != null) {
-      //    assign.add("type", ctx.TYPE().getText());
-      // }
-      // assign.add("name", ctx.ID().getText());
-      // assign.add("value", visit(ctx.expr()));
-      // return assign;
 
-      ST initRobotST = new ST("init(<expr>)");
       ST assign = allTemplates.getInstanceOf("assign");
 
-      lastVar = "var_" + ctx.ID().getText();
+      //var name
+      String varName = ctx.ID().getText();
+      lastVar = "var_" + varName;
+
       if(ctx.TYPE() != null) {
          String type = ctx.TYPE().getText();
          lastType = type;
 
          if (type.equals("ROBOT")) {
+            ST fork = allTemplates.getInstanceOf("forkBlock");
+
+            //create process function
+            fork.add("counter", robotCounter + "");
+            fork.add("func", "robot_process_" + varName);
+            mainST.add("main", fork);
+            robotCounter++;
+
+            //register string template
+            isInit = true;
+            ST initRobotST = new ST("init(<expr>);\n");
             initRobotST.add("expr", visit(ctx.expr()));
-            return initRobotST;
+            robotFunc.put(varName, allTemplates.getInstanceOf("processBlock"));
+            robotFunc.get(varName).add("process_name", "robot_process_" + varName);
+            robotFunc.get(varName).add("stats", initRobotST);
+
+            return new ST("");
          }
          else {
             assign.add("type", type);
@@ -203,7 +282,7 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       //if the name is a func name -> return function()
       if (simpleFunc.containsKey(varName)) {
          if (simpleFunc.get(varName).equals("beaconCount()"))
-            return new ST("(int)beaconCount()");  //cast to int
+            return new ST("(int) beaconCount()");  //cast to int
          else
             return new ST(simpleFunc.get(varName));
       }
@@ -218,7 +297,10 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
 
          }
       }
-      
+
+      if (useActive)
+         return new ST(ctx.ID().getText());
+
       return new ST("var_" + ctx.ID().getText());
    }
 
@@ -404,13 +486,21 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       String func = "";
 
       if (ctx.ID().size() == 1) {
-         callST.add("ID2", ctx.ID(0).getText());
          func = ctx.ID(0).getText();
+
+         if (func.equals("use")) {
+            useActive = true;
+            currentRobot = (visit(ctx.expr(0))).render();
+            return new ST("");            
+         }
+
+         callST.add("ID2", ctx.ID(0).getText());
+
       }
       if (ctx.ID().size() == 2) {
+         func = ctx.ID(1).getText();
          callST.add("ID1", ctx.ID(0).getText());
          callST.add("ID2", "." + ctx.ID(1).getText());
-         func = ctx.ID(1).getText();
       }
 
       if (ctx.expr() != null) {  
