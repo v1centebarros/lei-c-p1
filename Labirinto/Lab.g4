@@ -9,11 +9,10 @@ stat:
     |labirinto  
     ;
 
-grid: 'GRID' '{' (position ';')+ '}';
-position: 'POSITION' COORDENADAS ('DIRECTION' '=' INT)?; 
+grid: 'GRID' '{' (position ';')* '}';
+position: 'POS' coordenadas ('DIRECTION' '=' INT)?; 
 
 labirinto: 'LABIRINTO' '(' 'NAME' '=' ID ('WIDTH' '=' INT 'HEIGHT' '=' INT)? ')' '{'
-                //beacon (no caso de ser obrigado)
                 (dlab ';')*
             '}' 
     ;
@@ -24,14 +23,15 @@ dlab: target
     |row
     ;
 
-beacon:'BEACON' '=' COORDENADAS ('HEIGHT' '=' INT)?; 
-target:'TARGET' '=' COORDENADAS ('RADIUS' '=' (DOUBLE|INT))?;  //problema com o double
+beacon:'BEACON' '=' coordenadas ('HEIGHT' '=' INT)?; 
+target:'TARGET' '=' coordenadas ('RADIUS' '=' (num))?;
 
-spot: 'SPOT' '=' COORDENADAS ('HEIGHT' '=' INT)? ('RADIUS' '=' (DOUBLE | INT))?;
+spot: 'SPOT' '=' coordenadas ('HEIGHT' '=' INT)? ('RADIUS' '=' (num))?;
 row :'ROW' INT ':' (PADRAO)*;
 
 
-COORDENADAS: '(' DOUBLE ',' DOUBLE ')' ;
+coordenadas: '(' num ',' num ')' ;
+num:(DOUBLE|INT);
 INT:[0-9]+;
 DOUBLE:([0-9]+ '.')? [0-9]+;
 ID: [a-zA-Z_][a-zA-Z_0-9]*;
