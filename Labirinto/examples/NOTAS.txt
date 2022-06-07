@@ -14,18 +14,12 @@ A ordem dos argumentos do SPOT - name,height,Radius - é importante, no entanto 
 GRID -- consiste no conjunto de posições inicias de onde o robo pode partir num determinado labirinto;
 LABIRINTO -- consiste no mapa do labirinto, e os dados dos targets, beacons ou de ambos juntos(spot).
 
+Construção do labirinto:
+    '|'  - parede vertical
+    '.'  - pontos que unem paredes horizontais ou verticais
+    '--' - parede horizontal
+    ' '  - por onde o robo pode circular
 
 NOTA IMPORTANTE: 
     o robo nao anda se tiver 360 graus certos (359 e 361 funciona)
     A ordem de como as posições sao colocadas no ficheiro importa na ordem de como os robos sao colocados no labirinto
-    Double tem de levar sempre (.x)
-    spot a ordem de argumentos após as coordenadas importa (1)
-    no labirinto a ordem dos argumentos importa(1)
-
-
-DUVIDAS:
-    porque que quando o rato chega ao beacon nunca sai de la ?
-    existe nenhum sensor no beacon?
-
-    (1)Falar com o professor para que a ordem nao importe
-    o labirinto é obrigado a ter um beacon ?
