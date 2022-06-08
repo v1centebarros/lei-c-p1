@@ -49,4 +49,4 @@ cidade’ (twist), assim como algumas operações sobre estes tipos de dados.
 
 - [] Permitir a definição de listas.
 
-- [] Possuir um mecanismo de gravação em ficheiros dos mapas lidos da linguagem secundária no formato aceite pelo ambiente de simulação.
+- [X] Possuir um mecanismo de gravação em ficheiros dos mapas lidos da linguagem secundária no formato aceite pelo ambiente de simulação.
