@@ -4,6 +4,9 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
+
+import javax.swing.table.TableStringConverter;
+
 import static java.util.Map.entry;
 
 import java.lang.ProcessBuilder.Redirect.Type;
@@ -52,8 +55,6 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       ))
    );
 
-   private SymbolTable originalTable = table.clone();
-
    private Stack<SymbolTable> tables = new Stack<>();
    private List<String> currentEnum;
 
@@ -75,10 +76,27 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    }
    */
 
-  @Override public String visitDefFunction(MusParser.DefFunctionContext ctx) {
-      private Stack<SymbolTable> tablesFunction = new Stack<>();
-      //TODO
-
+  @Override public String visitDefFunction(MusParser.DefFunctionContext ctx) {   
+      tables.push(table);
+      table = new SymbolTable(table);
+      Map<String, String> newVars = new HashMap<>();
+      String type;
+      if (ctx.TYPE().size() == ctx.ID().size()) {
+         type = ctx.TYPE(0).getText();
+         for (int i = 1; i < ctx.TYPE().size(); i++)
+            newVars.put(ctx.ID(i).getText(), ctx.TYPE(i).getText());
+      }
+      else {
+         type = "VOID";
+         for (int i = 1; i < ctx.ID().size(); i++)
+            newVars.put(ctx.ID(i).getText(), ctx.TYPE(i-1).getText());
+      }
+      newVars.forEach((name, typeVar) -> table.putVariable(name, typeVar));
+      List<MusParser.StatContext> stats = ctx.stat();
+      Iterator<MusParser.StatContext> it = stats.iterator();
+      while(it.hasNext()) visit(it.next());
+      table = tables.pop();
+      return null;
    }
 
    @Override public String visitBlockIf(MusParser.BlockIfContext ctx) {
@@ -384,7 +402,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
             return "ERROR";
          }
          type = visit(it.next());
-         if (!equalsType(arg, type)) {
+         if (!equalsType(type, arg)) {
             System.err.printf("[Line %d] ArgError: received %s but expected %s at position %d\n", ctx.start.getLine(), type, arg, pos);
             return "ERROR";
          }

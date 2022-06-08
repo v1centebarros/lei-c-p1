@@ -1,13 +1,18 @@
-NUM function sumTwoNums with NUM x NUM y (
-    print "THIS FUNCTION RETURNS A NUM";
-    return x + y;
+NUM function sumTwoNums with NUM ola NUM amigo (
+   print "THIS FUNCTION RETURNS A NUM";
+   NUM x = 0;
+   print ola;
+   print amigo;
+   #return statement
 )
+
+x = 1; #must fail
+print ola; #must fail
+print amigo; #must fail
 
 function printMyMsg with TEXT str (
-    print "THIS IS A VOID FUNCTION";
-    print str;
+   print "THIS IS A VOID FUNCTION";
+   print str;
+   print ola; #must fail
+   print amigo; #must fail
 )
-
-
-NUM answer = sumTwoNums 10 10;
-printMyMsg "teste";
