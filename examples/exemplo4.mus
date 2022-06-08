@@ -55,7 +55,7 @@ do
 
         end
         
-        move linearPower - angularPower linearPower + angularPower;
+        move (linearPower-angularPower, linearPower+angularPower); #move POINT
 
     end
 

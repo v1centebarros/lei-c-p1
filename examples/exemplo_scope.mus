@@ -1,21 +1,21 @@
 NUM x = 0;
-if true do                      #push(global); atual = if1
+if true do                           #push(global); atual = if1
    x = 1;
    NUM y = 0;
-   if true do                   #push(if1); atual = if2
+   if true do                        #push(if1); atual = if2
       x = 2;
       y = 1;
       NUM z = 0;
-      if true do                #push(if2); atual = if3
+      if true do                     #push(if2); atual = if3
          x = 3;
          y = 2;
          z = 1;
          NUM w = 0;
-      else                      #push(if3); atual = else1
+      else                           #push(if3); atual = else1
          z = 0;
-         w = -1; #must fail
-      end                       #atual = pop() = if3; atual = pop() = if2
-   end                          #atual = pop() = if1;
-   z = -1; #must fail
+         w = -1; #MUST FAIL
+      end                            #atual = pop() = if3; atual = pop() = if2
+   end                               #atual = pop() = if1;
+   z = -1; #MUST FAIL
 end
-y = -1; #must fail
+y = -1; #MUST FAIL

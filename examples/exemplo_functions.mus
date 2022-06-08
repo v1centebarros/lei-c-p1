@@ -1,18 +1,21 @@
+TEXT randomVar = "sou global";
+
 NUM function sumTwoNums with NUM ola NUM amigo (
    print "THIS FUNCTION RETURNS A NUM";
    NUM x = 0;
+   print randomVar;
    print ola;
    print amigo;
-   #return statement
+   #to do return statement
 )
 
-x = 1; #must fail
-print ola; #must fail
-print amigo; #must fail
+x = 1; #MUST FAIL
+print ola; #MUST FAIL
+print amigo; #MUST FAIL
 
 function printMyMsg with TEXT str (
    print "THIS IS A VOID FUNCTION";
    print str;
-   print ola; #must fail
-   print amigo; #must fail
+   print ola; #MUST FAIL
+   print amigo; #MUST FAIL
 )
