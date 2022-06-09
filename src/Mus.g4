@@ -22,7 +22,7 @@ blockElse:
     ;
 
 assignment:
-    (LIST)? TYPE? ID '=' expr ';';
+    (LIST? TYPE)? ID '=' expr ';';
 
 singleCall:
     call ';';
