@@ -44,10 +44,10 @@ cidade’ (twist), assim como algumas operações sobre estes tipos de dados.
 
 ## Adicionais
 
-– [] Fazer com que a linguagem contenha um sistema de tipos. Devem existir os seguintes tipos de dados: robô, ponto, pose, velocidade, número real, número inteiro, texto, booleano.
+– [O] Fazer com que a linguagem contenha um sistema de tipos. Devem existir os seguintes tipos de dados: robô, ponto, pose, velocidade, número real, número inteiro, texto, booleano.
 
 – [X] Implementar funções e variáveis locais às mesmas.
 
-– [] Permitir a definição de listas.
+– [O] Permitir a definição de listas.
 
 – [X] Possuir um mecanismo de gravação em ficheiros dos mapas lidos da linguagem secundária no formato aceite pelo ambiente de simulação.
