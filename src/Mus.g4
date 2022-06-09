@@ -8,7 +8,7 @@ stat:
     block | assignment | singleCall;
 
 
-defFunction: TYPE? 'function' ID ('with' (TYPE ID)+)? '(' stat* ')'; 
+defFunction: (LIST? TYPE)? 'function' ID ('with' (LIST? TYPE ID)+)? '(' stat* ')'; 
 
 //o analisador semântico verificará se expr representa um valor booleano
 block: 'if' expr 'do' stat* blockElse? 'end'                      #BlockIf
@@ -22,7 +22,7 @@ blockElse:
     ;
 
 assignment:
-    TYPE? ID '=' expr ';';
+    (LIST)? TYPE? ID '=' expr ';';
 
 singleCall:
     call ';';
@@ -47,7 +47,8 @@ expr:
     ;
 
 call: (ID '.')? ID (expr)*; //chamada de uma função/variável     
-TYPE:  'NUM' | 'BOOL' | 'TEXT' | 'ENUM' | 'ROBOT' | 'POINT' | 'TWIST' | 'POSE' | 'LIST';
+TYPE:  'NUM' | 'BOOL' | 'TEXT' | 'ENUM' | 'ROBOT' | 'POINT' | 'TWIST' | 'POSE';
+LIST: 'LIST' ('of')?;
 NUM: ('-')?[0-9]+('.'[0-9]+)?;
 BOOL: [tT]'rue' | [fF]'alse';
 TEXT: '"' (~["] | '""')* '"';
