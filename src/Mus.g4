@@ -15,11 +15,15 @@ block: 'if' expr 'do' stat* blockElse? 'end'                      #BlockIf
         | 'while' expr 'do' stat* 'end'                           #BlockWhile
         | call 'until' expr  ';'                                  #BlockUntil
         | 'for' ID 'in' expr 'do' stat* 'end'                     #BlockForEach
-        | 'with state' (expr 'do' stat*)+ 'end'                   #BlockWithState
+        | 'with state' blockCase+ 'end'                           #BlockWithState
         ;
 
 blockElse:
     'else' stat*
+    ;
+
+blockCase:
+    expr 'do' stat*
     ;
 
 assignment:
