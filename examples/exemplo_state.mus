@@ -1,0 +1,23 @@
+state "IDLE"            #states.add("RUNNING") && currentState = "IDLE
+
+#someCode
+
+state "MOVING"          #states.add("WALKING") && currentState = "WALKING"
+
+#someCode
+
+state "ROTATING"        #states.add("ROTATING") && currentState = "ROTATING"
+
+#someCode
+
+with state
+    "IDLE" do
+        print "IDLE";
+        #break implícito (escrever em C++ )
+    "MOVING" do
+        print "MOVING";
+        #break implícito (escrever em C++ )
+    "ROTATING" do
+        print "ROTATING";
+        #break implícito (escrever em C++ )
+end
