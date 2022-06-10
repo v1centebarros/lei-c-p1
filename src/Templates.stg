@@ -2,13 +2,19 @@ typeMap ::= [
     "NUM": "float", 
     "BOOL": "bool", 
     "TEXT": "string", 
-    "ENUM": "int", 
+    "ENUM": "int",
+    "LIST_NUM": "std::vector<float>",
+    "LIST_TEXT": "std::vector<string>",
+    "LIST_BOOL": "std::vector<bool>",
+    "LIST_POINT": "std::vector<Point>",
+    "LIST_TWIST": "std::vector<Point>",
     "ROBOT": "", 
     default: "void"
 ]
 
-externalFunctionsMap ::= [ 
+externalFunctionsMap ::= [
     "print": "cout << ",
+    "size": "size",
     "initRobot": "init",
     "rotate": "motors",
     "move": "motors",
@@ -31,7 +37,7 @@ externalFunctionsMap ::= [
     "setReturningLed": "setReturningLed",
     "getReturningLed": "getReturningLed",
     "getVisitingLed": "getVisitingLed",
-    default: "unknow"
+    default: "unknown"
 ]
 
 
@@ -44,8 +50,81 @@ program(global, processBlock, funcBlock, main) ::= <<
 #include \<stdlib.h>
 #include \<stdio.h>
 #include \<iostream>
-
+#include \<vector>
+#include \<math.h>
 using namespace std;
+
+
+class Point {
+  public:
+    int x;
+    int y;
+
+    // Constructor
+    Point(int x, int y) {
+      this->x = x;
+      this->y = y;
+    }
+
+    // Distance point to point
+    float distance(Point p) {
+      return sqrt(pow(p.x - this->x, 2) + pow(p.y - this->y, 2));
+    }
+
+    // Multiply point by scalar
+    Point multiply(float scalar) {
+      return Point(this->x * scalar, this->y * scalar);
+    }
+
+    // Overload the + operator
+    Point operator+(const Point& p) {
+      return Point(this->x + p.x, this->y + p.y);
+    }
+
+    // Overload the - operator
+    Point operator-(const Point& p) {
+      return Point(this->x - p.x, this->y - p.y);
+    }
+
+    // overload the \<\< operator
+    friend ostream& operator\<\<(ostream& os, const Point& p) {
+      os \<\< "(" \<\< p.x \<\< ", " \<\< p.y \<\< ")";
+      return os;
+    }
+
+};
+
+std::vector\<float> concat_num (std::vector\<float> v1, std::vector\<float> v2) {
+    for (int i=0; i\<v2.size(); i++) {
+        v1.push_back(v2.at(i));
+    }
+    return v1;
+}
+
+std::vector\<string> concat_text (std::vector\<string> v1, std::vector\<string> v2) {
+    for (int i=0; i\<v2.size(); i++) {
+        v1.push_back(v2.at(i));
+    }
+    return v1;
+}
+
+
+std::vector\<bool> concat_bool (std::vector\<bool> v1, std::vector\<bool> v2) {
+    for (int i=0; i\<v2.size(); i++) {
+        v1.push_back(v2.at(i));
+    }
+    return v1;
+}
+
+
+std::vector\<Point> concat_tuple (std::vector\<Point> v1, std::vector\<Point> v2) {
+    for (int i=0; i\<v2.size(); i++) {
+        v1.push_back(v2.at(i));
+    }
+    return v1;
+}
+
+
 
 <if(global)><global><endif>
 
@@ -110,5 +189,6 @@ blockUntil(expr, call) ::= <<while (!(<expr>)) {
 }
 >>
 
-externalFunctions(ID1, ID2, expr, user_func) ::= <<<if(ID1)><externalFunctionsMap.(ID1)><endif><if(ID2)><externalFunctionsMap.(ID2)><endif><if(user_func)><user_func><endif>(<expr; separator=", ">)
+externalFunctions(ID1, ID2, expr, user_func) ::= <<<if(ID1)><ID1>.<endif><if(ID2)><externalFunctionsMap.(ID2)><endif><if(user_func)><user_func><endif>(<expr; separator=", ">)
 >>
+
