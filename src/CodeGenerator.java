@@ -26,6 +26,9 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    //UDFs with arguments
    private Map<String, String> UDF = new HashMap<>();
 
+   //List variables
+   private HashMap<String, String> listVariables;
+
 
    //type and values of the last assignment
    private String lastType;
@@ -37,7 +40,6 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
 
    //current robot (for robot functions)
    private String currentRobot;
-   private String currentFunc;
 
 
    //functions that need an apply statement
@@ -48,6 +50,11 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    private boolean useActive;  //true -> the statement is a 'use' keyword
    private boolean isInit;   // true -> if the stat is the init (for ';')
    private boolean isUDF;
+   private boolean isList;     // true -> is a list (var or [e1, e2, etc])  => important for the behaviour of +, -, etc
+   private boolean isNum;
+   private boolean isBool;
+   private boolean isText;
+   private boolean isTuple;
    private int robotCounter;
 
    //data types
@@ -73,6 +80,11 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       useActive = false;  //use keyword activate
       isInit = false;     //is init robot
       isUDF = false;      //is UDF
+      isList = false;   //true if is a list
+      isNum = false;
+      isBool = false;
+      isText = false;
+      isTuple = false;      
       robotCounter = 0;
 
       //functions that need an apply statement
@@ -100,12 +112,20 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       //UDF
       UDF = new HashMap<>();
 
+      //list variables
+      listVariables = new HashMap<>();
+
       //Data types (for function declaration)
       dataTypes = new HashMap<>();
       dataTypes.put("NUM", "float");
       dataTypes.put("BOOL", "bool");
       dataTypes.put("TEXT", "string");
       dataTypes.put("ENUM", "int");
+      dataTypes.put("LIST_NUM", "std::vector<float>");
+      dataTypes.put("LIST_TEXT", "std::vector<string>");
+      dataTypes.put("LIST_BOOL", "std::vector<bool>");
+      dataTypes.put("LIST_POINT", "std::vector<Point>");
+      dataTypes.put("LIST_TWIST", "std::vector<Point>");
    }
 
 
@@ -150,6 +170,9 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
             
       }
 
+      if (robotCounter > 0)
+         mainST.add("main_f", "\n\nwhile(wait(NULL) > 0);");
+
       //add main ST
       mainST.add("main_f", "\n//end of main function");  //importante if the main is empty
       programaTodo.add("main", mainST);
@@ -177,7 +200,6 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       
       String func_type = "";
       String func_name = "";
-      currentFunc = func_name;
 
       //If #id == #type --> not void,   #id > #type  -->  void
       boolean isVoid = ctx.ID().size() > ctx.TYPE().size() || ctx.ID().size()==0 && ctx.TYPE().size()==0;
@@ -316,7 +338,7 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
 
       return untilST;
    }
-
+   
    @Override public ST visitAssignment(MusParser.AssignmentContext ctx) {
 
       ST assign = allTemplates.getInstanceOf("assign");
@@ -328,6 +350,12 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       if(ctx.TYPE() != null) {
          String type = ctx.TYPE().getText();
          lastType = type;
+
+         //store var name (important to chnage the behaviour of +, -, etc)
+         if (varName.startsWith("LIST_")) {
+            isList = true;
+            listVariables.put(varName, type);
+         }
 
          if (type.equals("ROBOT")) {
             ST fork = allTemplates.getInstanceOf("forkBlock");
@@ -360,6 +388,23 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
          assign.add("value", visit(ctx.expr()));
          return assign;
       }
+
+   }
+
+   @Override public ST visitExprList(MusParser.ExprListContext ctx) {
+
+      isList = true;
+      ST listST = new ST("{<value; separator=\", \">}");
+
+      if (ctx.expr().size() == 0)
+         listST.add("value", "");
+      else {
+         for (int i=0; i<ctx.expr().size(); i++) {
+            listST.add("value", visit(ctx.expr(i)));
+         }         
+      }
+
+      return listST;
 
    }
 
@@ -402,14 +447,52 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    }
 
    @Override public ST visitNumericAddSub(MusParser.NumericAddSubContext ctx) {
-      ST res = new ST("<expr1> <op> <expr2>");
-      String op = ctx.op.getText();
 
-      res.add("expr1", visit(ctx.expr(0)));
-      res.add("op", ctx.op.getText());
-      res.add("expr2", visit(ctx.expr(1)));
+      // this will update isList, isNum, isText, isTuple, isBool
+      ST op1 = visit(ctx.expr(0));
+      ST op2 = visit(ctx.expr(1));
 
-      return res;
+      //if operands are only numbers
+      if (!isList && !isTuple) {
+         ST res = new ST("<expr1> <op> <expr2>");
+         String op = ctx.op.getText();
+
+         res.add("expr1", visit(ctx.expr(0)));
+         res.add("op", ctx.op.getText());
+         res.add("expr2", visit(ctx.expr(1)));
+
+         return res;         
+      
+      }
+      else if (isList) {
+
+         if (isNum){
+            isNum = false;
+            return new ST("concat_num(" + op1.render() + ", " + op2.render() + ")");            
+         }
+
+         if (isBool) {
+            isBool = false;
+            return new ST("concat_bool(" + op1.render() + ", " + op2.render() + ")");            
+         }
+
+         if (isText){
+            isNum = false;
+            return new ST("concat_text(" + op1.render() + ", " + op2.render() + ")");            
+         }
+
+         if (isTuple) {
+            isBool = false;
+            return new ST("concat_tuple(" + op1.render() + ", " + op2.render() + ")");            
+         }
+
+      }
+      else if (!isList && isTuple){
+         //TODO: fazer operacao entre point
+      }
+
+      return new ST("");
+
    }
 
    @Override public ST visitNumericNegative(MusParser.NumericNegativeContext ctx) {
@@ -419,6 +502,7 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    }
 
    @Override public ST visitNumericLiteral(MusParser.NumericLiteralContext ctx) {
+      isNum = true;
       return new ST(ctx.NUM().getText());
    }
 
@@ -429,6 +513,9 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    }
 
    @Override public ST visitExprTuple(MusParser.ExprTupleContext ctx) {
+
+
+      // TODO: fazer casos para os point, etc.
       ST callST = new ST("<robotName>, <pos>");
       callST.add("robotName", visit(ctx.expr(0)));
       callST.add("pos", visit(ctx.expr(1)));
@@ -511,12 +598,6 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       return new ST(visit(ctx.call()));
    }
 
-   /*@Override public ST visitBoolDoubleCompare(MusParser.BoolCompareContext ctx) {
-      ST res = null;
-      return visitChildren(ctx);
-      //return res;
-   }*/
-
    @Override public ST visitBoolCompare(MusParser.BoolCompareContext ctx) {
       ST condition = new ST("<op1> <operation> <op2>");
       condition.add("op1", visit(ctx.expr(0)));
@@ -539,6 +620,7 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    }
 
    @Override public ST visitBoolLiteral(MusParser.BoolLiteralContext ctx) {
+      isBool = true;
       return new ST((ctx.BOOL().getText()).toLowerCase());
    }
 
@@ -560,6 +642,7 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    }
 
    @Override public ST visitTextLiteral(MusParser.TextLiteralContext ctx) {
+      isText = true;
       return new ST(ctx.TEXT().getText());
    }
 
@@ -594,8 +677,8 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       }
       if (ctx.ID().size() == 2) {
          func = ctx.ID(1).getText();
-         callST.add("ID1", ctx.ID(0).getText());
-         callST.add("ID2", "." + ctx.ID(1).getText());
+         callST.add("ID1", "var_" + ctx.ID(0).getText());
+         callST.add("ID2", ctx.ID(1).getText());
       }
 
       if (ctx.expr() != null) {  
