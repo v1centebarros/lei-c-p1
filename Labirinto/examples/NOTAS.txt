@@ -2,14 +2,12 @@ comentarios multilinhas: /* */
 comentarios de uma so linha : #
 
 Cada instrução acaba com um ponto e virgula (;), na forma de quem escrever poder escrever tudo na mesma linha.
-O labirinto pode ter por default valores para comprimento e altura, tal como este o TARGETS podem um valor de raio default (1)
-e os BEACONS para a sua altura (2).
+O Target pode ter por default valores para o raio (1), tal como este os BEACONS para a sua altura (2) e Spot para sua altura e raio.
 Na maneira de facilitar o programador criamos SPOT que correspondem a um target e um spot no mesmo local. 
 A colocação das linhas do labirinto, dos BEACONS, TARGETS e SPOTs pode ser aletoria no labirinto.
 
 A ordem dos argumentos do labirinto - name,width,height - é importante.
 A ordem dos argumentos do SPOT - name,height,Radius - é importante, no entanto pode ser omitido o Radius e a height.
-
 
 GRID -- consiste no conjunto de posições inicias de onde o robo pode partir num determinado labirinto;
 LABIRINTO -- consiste no mapa do labirinto, e os dados dos targets, beacons ou de ambos juntos(spot).
@@ -21,5 +19,14 @@ Construção do labirinto:
     ' '  - por onde o robo pode circular
 
 NOTA IMPORTANTE: 
-    o robo nao anda se tiver 360 graus certos (359 e 361 funciona)
-    A ordem de como as posições sao colocadas no ficheiro importa na ordem de como os robos sao colocados no labirinto
+    o robo nao anda se tiver 360 graus certos (359 e 361 funciona) logo e feita o resto da divisão;
+    A ordem de como as posições sao colocadas no ficheiro importa na ordem de como os robos sao colocados no labirinto;
+    Não é permitido direções negativas;
+    Cada ficheiro so é aceite apena uma grid e um Labirinto, ou ambas as coisas;
+
+    tratamento de erros:
+        ???
+    Analise Sintatica:
+        ???
+    Mapa run time: 
+        ??
