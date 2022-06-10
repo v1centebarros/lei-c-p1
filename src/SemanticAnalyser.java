@@ -13,7 +13,8 @@ import java.lang.ProcessBuilder.Redirect.Type;
 
 public class SemanticAnalyser extends MusBaseVisitor<String> {
 
-   private List<String> keywords = List.of("NUM", "BOOL", "TEXT", "ENUM", "ROBOT", "POINT", "TWIST", "POSE", "LIST",
+   private List<String> keywords = List.of("NUM", "BOOL", "TEXT", "ENUM", "ROBOT", "POINT", "TWIST", "POSE",
+   "LIST_NUM", "LIST_BOOL", "LIST_TEXT", "LIST_ENUM", "LIST_ROBOT", "LIST_POINT", "LIST_TWIST", "LIST_POSE",
    "if", "else", "while", "until", "for", "in", "do", "end",
    "not", "and", "or",
    "true", "false", "True", "False",
@@ -57,6 +58,8 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
 
    private Stack<SymbolTable> tables = new Stack<>();
    private List<String> currentEnum;
+   private boolean isFunction = false;
+   private String expectedOutput;
 
    private boolean equalsType(String input, String type) {
       return type.contains(input) || type.equals("ANY");
@@ -83,18 +86,57 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       String type;
       if (ctx.TYPE().size() == ctx.ID().size()) {
          type = ctx.TYPE(0).getText();
-         for (int i = 1; i < ctx.TYPE().size(); i++)
-            newVars.put(ctx.ID(i).getText(), ctx.TYPE(i).getText());
+         String name;
+         for (int i = 1; i < ctx.TYPE().size(); i++) {
+            name = ctx.ID(i).getText();
+            if (name.contains(":")) {
+               System.err.printf("[Line %d] NameError: symbol ':' is reserved for object's attributes\n", ctx.start.getLine());
+               return "ERROR";
+            }
+            if (keywords.contains(name)) {
+               System.err.printf("[Line %d] NameError: name '%s' is a keyword\n", ctx.start.getLine(), name);
+               return "ERROR";
+            }
+            if (table.containsFunction(name) || table.containsVariable(name)) {
+               System.err.printf("[Line %d] NameError: name '%s' is already defined\n", ctx.start.getLine(), name);
+               return "ERROR";
+            }
+            newVars.put(name, ctx.TYPE(i).getText());
+         }
       }
       else {
          type = "VOID";
-         for (int i = 1; i < ctx.ID().size(); i++)
-            newVars.put(ctx.ID(i).getText(), ctx.TYPE(i-1).getText());
+         String name;
+         for (int i = 1; i < ctx.ID().size(); i++) {
+            name = ctx.ID(i).getText();
+            if (name.contains(":")) {
+               System.err.printf("[Line %d] NameError: symbol ':' is reserved for object's attributes\n", ctx.start.getLine());
+               return "ERROR";
+            }
+            if (keywords.contains(name)) {
+               System.err.printf("[Line %d] NameError: name '%s' is a keyword\n", ctx.start.getLine(), name);
+               return "ERROR";
+            }
+            if (table.containsFunction(name) || table.containsVariable(name)) {
+               System.err.printf("[Line %d] NameError: name '%s' is already defined\n", ctx.start.getLine(), name);
+               return "ERROR";
+            }
+            newVars.put(name, ctx.TYPE(i-1).getText());
+         }
       }
       newVars.forEach((name, typeVar) -> table.putVariable(name, typeVar));
       List<MusParser.StatContext> stats = ctx.stat();
       Iterator<MusParser.StatContext> it = stats.iterator();
-      while(it.hasNext()) visit(it.next());
+      isFunction = true;
+      expectedOutput = type;
+      String val;
+      while(it.hasNext()) {
+         val = visit(it.next());
+         if (val != null && val.equals("END") && it.hasNext()) {
+            System.out.printf("[Line %d] ReturnWarning: code after return statement will not be executed\n", ctx.start.getLine());
+         }
+      }
+      isFunction = false;
       table = tables.pop();
       return null;
    }
@@ -141,19 +183,32 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    }
 
    @Override public String visitBlockForEach(MusParser.BlockForEachContext ctx) {
-      // tables.push(table);
-      // table = new SymbolTable(table);
-      // String expr = visit(ctx.expr());
-      // if (expr.equals("BOOL")) {
-      //    List<MusParser.StatContext> stats = ctx.stat();
-      //    Iterator<MusParser.StatContext> it = stats.iterator();
-      //    while(it.hasNext()) visit(it.next());
-      //    table = tables.pop();
-      //    return null;
-      // }
-      // System.err.printf("[Line %d] TypeError: condition in block 'while' must be BOOL (not %s)\n", ctx.start.getLine(), expr);
-      // return "ERROR";
-      return null;
+      String expr = visit(ctx.expr());
+      if (expr.contains("LIST")) {
+         tables.push(table);
+         table = new SymbolTable(table);
+         String name = ctx.ID().getText();
+         if (name.contains(":")) {
+            System.err.printf("[Line %d] NameError: symbol ':' is reserved for object's attributes\n", ctx.start.getLine());
+            return "ERROR";
+         }
+         if (keywords.contains(name)) {
+            System.err.printf("[Line %d] NameError: name '%s' is a keyword\n", ctx.start.getLine(), name);
+            return "ERROR";
+         }
+         if (table.containsFunction(name) || table.containsVariable(name)) {
+            System.err.printf("[Line %d] NameError: name '%s' is already defined\n", ctx.start.getLine(), name);
+            return "ERROR";
+         }
+         table.putVariable(name, expr.replace("LIST_", ""));
+         List<MusParser.StatContext> stats = ctx.stat();
+         Iterator<MusParser.StatContext> it = stats.iterator();
+         while(it.hasNext()) visit(it.next());
+         table = tables.pop();
+         return null;
+      }
+      System.err.printf("[Line %d] TypeError: forEach block must iterate over a list\n", ctx.start.getLine());
+      return "ERROR";
    }
 
    @Override public String visitBlockUntil(MusParser.BlockUntilContext ctx) {
@@ -183,7 +238,6 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
             System.err.printf("[Line %d] TypeError: cannot assign %s to %s\n", ctx.start.getLine(), exprType, type);
             return "ERROR";
          }
-         table.putVariable(key, exprType);
          return null;
       }
       String type = ctx.TYPE().getText();
@@ -214,7 +268,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
             table.putVariable(str, "NUM");
          }
       }
-      table.putVariable(name, exprType);
+      table.putVariable(name, type);
       return null;
    }
 
@@ -262,8 +316,18 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       String expr1 = visit(ctx.expr(1));
       if (equalsType(expr0, "NUM") && equalsType(expr1, "NUM")) 
          return "NUM";
-      if ("POINT|TWIST".contains(expr0) && "POINT|TWIST".contains(expr1))
-         return "POINT|TWIST";
+      if (expr0.equals("POINT|TWIST") && expr1.equals("POINT|TWIST"))    
+         return "POINT|TWIST";      
+      if (expr0.equals("POINT|TWIST") && expr1.equals("POINT"))
+         return "POINT";
+      if (expr0.equals("POINT") && expr1.equals("POINT|TWIST"))
+         return "POINT";
+      if (expr0.equals("POINT|TWIST") && expr1.equals("TWIST"))
+         return "TWIST";
+      if (expr0.equals("POINT") && expr1.equals("POINT|TWIST"))
+         return "TWIST";
+      if (expr0.contains("LIST") && expr0.equals(expr1))
+         return expr0;
       System.err.printf("[Line %d] TypeError: unsupported operand type(s) for '%s': %s and %s\n", ctx.start.getLine(), ctx.op.getText(), expr0, expr1);
       return "ERROR";
    }
@@ -340,12 +404,16 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op, expr0, expr1);
          return "ERROR";
       }
-      if (!op.equals("==") && !op.equals("!=")) {
-         if (
-            (equalsType(expr0, "NUM") && equalsType(expr1, "NUM"))
-            || (equalsType(expr0, "POINT|TWIST") && equalsType(expr1, "POINT|TWIST")) //isso permite ponto == velocidade
-            )
-            return "BOOL";
+      if (expr0.contains("POINT") || expr0.contains("TWIST")) {
+         if ( (op.equals("==") || op.equals("!="))
+               && (
+               ( expr0.equals("POINT|TWIST") && expr1.equals("POINT|TWIST"))    //compare(POINT|TWIST [LITERAL], POINT|TWIST [LITERAL])
+               || ( expr0.equals("POINT|TWIST") && expr1.equals("POINT") )      //compare(POINT|TWIST [LITERAL], POINT [ID])
+               || ( expr0.equals("POINT") && expr1.equals("POINT|TWIST") )      //compare(POINT [ID], POINT|TWIST [LITERAL])
+               || ( expr0.equals("POINT|TWIST") && expr1.equals("TWIST") )      //compare(POINT|TWIST [LITERAL], TWIST [ID])
+               || ( expr0.equals("TWIST") && expr1.equals("POINT|TWIST") )      //compare(TWIST [ID], POINT|TWIST [LITERAL])
+               )
+            ) return "BOOL";
          System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op, expr0, expr1);
          return "ERROR";
       }
@@ -384,7 +452,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
             System.out.println("TypeError: all list elements must have the same type");
             return "ERROR";
          }
-      return String.format("LIST<%s>", type);
+      return "LIST_" + type;
    }
 
    @Override public String visitNumericMultDivMod(MusParser.NumericMultDivModContext ctx) { 
@@ -392,11 +460,26 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       String expr1 = visit(ctx.expr(1));
       if (equalsType(expr0, "NUM") && equalsType(expr1, "NUM")) 
          return "NUM";
-      //multiplicação de uma velocidade por um escalar
-      if (("POINT|TWIST".contains(expr0) && equalsType(expr1, "NUM"))
-      ||("POINT|TWIST".contains(expr1) && equalsType(expr0, "NUM")))
-         return "TWIST";
-      System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), ctx.op.getText(), expr0, expr1);
+      String op = ctx.op.getText();
+      if (op.equals("*")) {
+         if (expr0.equals("POINT|TWIST") && equalsType(expr1, "NUM"))    
+            return "POINT|TWIST";
+         if (equalsType(expr0, "NUM") && expr1.equals("POINT|TWIST"))    
+            return "POINT|TWIST";
+         if (expr0.equals("POINT") && equalsType(expr1, "NUM"))    
+            return "POINT";
+         if (equalsType(expr0, "NUM") && expr1.equals("POINT"))    
+            return "POINT";
+         if (expr0.equals("TWIST") && equalsType(expr1, "NUM"))    
+            return "TWIST";
+         if (equalsType(expr0, "NUM") && expr1.equals("TWIST"))    
+            return "TWIST";
+         if (expr0.contains("LIST") && expr1.equals("NUM"))
+            return expr0;
+         if (expr0.equals("NUM") && expr1.contains("LIST"))
+            return expr0;
+      }
+      System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op, expr0, expr1);
       return "ERROR";
    }
 
@@ -404,16 +487,34 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       return "TEXT";
    }
 
-   // @Override public String visitSingleCall(MusParser.SingleCallContext ctx) {
-   //    String res = null;
-   //    return visitChildren(ctx);
-   //    //return res;
-   // }
+   @Override public String visitSingleCall(MusParser.SingleCallContext ctx) {
+      return visit(ctx.call());
+   }
 
    @Override public String visitCall(MusParser.CallContext ctx) {
       String func;
       if (ctx.ID().size() == 1) func = ctx.ID(0).getText();
       else func = ctx.ID(1).getText();
+
+      if (func.equals("return")) {
+         if (isFunction) {
+            if (ctx.expr().size() == 0 && expectedOutput.equals("VOID")) return "END";
+            if (ctx.expr().size() == 1) {
+               String received = visit(ctx.expr(0));
+               if (expectedOutput.equals(received)) return "END";
+               if (expectedOutput.equals("VOID")) {
+                  System.err.printf("[Line %d] InvalidReturnError: returned %s inside a void function\n", ctx.start.getLine(), received);
+                  return "ERROR";
+               }
+               System.err.printf("[Line %d] InvalidReturnError: returned %s but expected %s\n", ctx.start.getLine(), received, expectedOutput);
+               return "ERROR";
+            }
+            System.err.printf("[Line %d] InvalidReturnError: function must return only 1 value\n", ctx.start.getLine());
+            return "ERROR";
+         }
+         System.err.printf("[Line %d] InvalidReturnError: return statement must be inside a function\n", ctx.start.getLine());
+         return "ERROR";
+      }
 
       if (!table.containsFunction(func)) {
          System.err.printf("[Line %d] NameError: name '%s' is not defined\n", ctx.start.getLine(), func);
