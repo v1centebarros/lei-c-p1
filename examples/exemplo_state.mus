@@ -1,12 +1,14 @@
-state "IDLE"            #states.add("RUNNING") && currentState = "IDLE
+#state command does not work with TEXT functions, only TEXT literals and variables
+
+state "IDLE";            #states.add("RUNNING") && currentState = "IDLE
 
 #someCode
 
-state "MOVING"          #states.add("WALKING") && currentState = "WALKING"
+state "MOVING";          #states.add("WALKING") && currentState = "WALKING"
 
 #someCode
 
-state "ROTATING"        #states.add("ROTATING") && currentState = "ROTATING"
+state "ROTATING";        #states.add("ROTATING") && currentState = "ROTATING"
 
 #someCode
 
@@ -19,5 +21,8 @@ with state
         #break implícito (escrever em C++ )
     "ROTATING" do
         print "ROTATING";
+        #break implícito (escrever em C++ )
+    "RANDOM" do         #WARNING MESSAGE
+        print "RANDOM";
         #break implícito (escrever em C++ )
 end

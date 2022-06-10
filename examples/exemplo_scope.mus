@@ -12,6 +12,7 @@ if true do                           #push(global); atual = if1
          z = 1;
          NUM w = 0;
       else                           #push(if3); atual = else1
+         print "ola";
          z = 0;
          w = -1; #MUST FAIL
       end                            #atual = pop() = if3; atual = pop() = if2

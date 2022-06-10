@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
-import javax.swing.table.TableStringConverter;
-
 import static java.util.Map.entry;
 
 import java.lang.ProcessBuilder.Redirect.Type;
@@ -24,6 +22,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       new HashMap<>(Map.ofEntries(
          entry("print", new String[]{"ANY", "VOID"}),
          entry("use", new String[]{"ROBOT", "VOID"}),
+         entry("state", new String[]{"TEXT", "VOID"}),
          entry("input", new String[]{"TEXT", "ANY"}),
          entry("posX", new String[]{"VOID", "NUM"}),
          entry("posY", new String[]{"VOID", "NUM"}),
@@ -60,6 +59,8 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    private List<String> currentEnum;
    private boolean isFunction = false;
    private String expectedOutput;
+   private boolean newState = false;
+   private List<String> states = new ArrayList<>();
 
    private boolean equalsType(String input, String type) {
       return type.contains(input) || type.equals("ANY");
@@ -216,6 +217,32 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       if (expr.equals("BOOL"))
          return visit(ctx.call());
       System.err.printf("[Line %d] TypeError: condition in block 'until' must be BOOL (not %s)\n", ctx.start.getLine(), expr);
+      return "ERROR";
+   }
+
+   @Override public String visitBlockWithState(MusParser.BlockWithStateContext ctx) {
+      Iterator<MusParser.BlockCaseContext> it = ctx.blockCase().iterator();
+      while(it.hasNext()) visit(it.next());
+      return null;
+   }
+
+   @Override public String visitBlockCase(MusParser.BlockCaseContext ctx) {
+      String state = ctx.expr().getText();
+      if (!states.contains(state)) {
+         System.err.printf("[Line %d] StateWarning: state %s does not exist\n", ctx.start.getLine(), state);
+         return "ERROR";
+      }
+      String stateType = visit(ctx.expr());
+      if (stateType.equals("TEXT")) {
+         tables.push(table);
+         table = new SymbolTable(table);
+         List<MusParser.StatContext> stats = ctx.stat();
+         Iterator<MusParser.StatContext> it = stats.iterator();
+         while(it.hasNext()) visit(it.next());
+         table = tables.pop();
+         return null;
+      }
+      System.err.printf("[Line %d] TypeError: states in block 'with state' must be TEXT (not %s)\n", ctx.start.getLine(), stateType);
       return "ERROR";
    }
 
@@ -484,6 +511,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    }
 
    @Override public String visitTextLiteral(MusParser.TextLiteralContext ctx) {
+      if (newState) states.add(ctx.TEXT().getText());
       return "TEXT";
    }
 
@@ -516,6 +544,8 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          return "ERROR";
       }
 
+      if (func.equals("state")) newState = true;
+
       if (!table.containsFunction(func)) {
          System.err.printf("[Line %d] NameError: name '%s' is not defined\n", ctx.start.getLine(), func);
          return "ERROR";
@@ -542,6 +572,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          System.err.printf("[Line %d] ArgError: expected only %d argument(s)\n", ctx.start.getLine(), expectedArgs.length);
          return "ERROR";
       }
+      newState = false;
       return info[1];
    }
 }
