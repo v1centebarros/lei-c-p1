@@ -6,7 +6,7 @@ NUM function sumTwoNums with NUM ola NUM amigo (
    print randomVar;
    print ola;
    print amigo;
-   #to do return statement
+   return 10;
 )
 
 x = 1; #MUST FAIL

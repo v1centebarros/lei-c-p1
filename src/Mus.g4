@@ -51,12 +51,12 @@ expr:
     | NUM                                                                                   #NumericLiteral
     ;
 
-call: (ID '.')? ID (expr)*; //chamada de uma função/variável     
+call: (ID '.')? ID (expr)*; //não está a aceitar object.doSomething    
 TYPE:  ('LIST_')? ('NUM' | 'BOOL' | 'TEXT' | 'ENUM' | 'ROBOT' | 'POINT' | 'TWIST' | 'POSE');
 NUM: ('-')?[0-9]+('.'[0-9]+)?;
 BOOL: [tT]'rue' | [fF]'alse';
 TEXT: '"' (~["] | '""')* '"';
-ID: (([a-zA-Z_][0-9a-zA-Z_]*))(':'[0-9a-zA-Z_]*)?;
+ID: (([a-zA-Z_][0-9a-zA-Z_]*))((':'|'.')[0-9a-zA-Z_]*)?;
 WS: [ \t\r\n]+ -> skip;
 COMMENT_INLINE: '#' .*? '\n' -> skip;
 COMMENT_MULTILINE: '/*' .*? '*/' -> skip;

@@ -4,9 +4,7 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
-
 import static java.util.Map.entry;
-
 import java.lang.ProcessBuilder.Redirect.Type;
 
 public class SemanticAnalyser extends MusBaseVisitor<String> {
@@ -80,15 +78,22 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    }
    */
 
-  @Override public String visitDefFunction(MusParser.DefFunctionContext ctx) {   
+  @Override public String visitDefFunction(MusParser.DefFunctionContext ctx) {
+      String func = ctx.ID(0).getText();
+      if (func.contains(".")) {
+         System.err.printf("[Line %d] NameError: symbol '.' is reserved for object's methods\n", ctx.start.getLine());
+         return "ERROR";
+      }
       tables.push(table);
       table = new SymbolTable(table);
       Map<String, String> newVars = new HashMap<>();
       String type;
+      StringBuilder input = new StringBuilder();
       if (ctx.TYPE().size() == ctx.ID().size()) {
          type = ctx.TYPE(0).getText();
          String name;
          for (int i = 1; i < ctx.TYPE().size(); i++) {
+            if (i > 1) input.append(";");
             name = ctx.ID(i).getText();
             if (name.contains(":")) {
                System.err.printf("[Line %d] NameError: symbol ':' is reserved for object's attributes\n", ctx.start.getLine());
@@ -103,12 +108,14 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
                return "ERROR";
             }
             newVars.put(name, ctx.TYPE(i).getText());
+            input.append(ctx.TYPE(i).getText());
          }
       }
       else {
          type = "VOID";
          String name;
          for (int i = 1; i < ctx.ID().size(); i++) {
+            if (i > 1) input.append(";");
             name = ctx.ID(i).getText();
             if (name.contains(":")) {
                System.err.printf("[Line %d] NameError: symbol ':' is reserved for object's attributes\n", ctx.start.getLine());
@@ -123,6 +130,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
                return "ERROR";
             }
             newVars.put(name, ctx.TYPE(i-1).getText());
+            input.append(ctx.TYPE(i-1).getText());
          }
       }
       newVars.forEach((name, typeVar) -> table.putVariable(name, typeVar));
@@ -131,14 +139,21 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       isFunction = true;
       expectedOutput = type;
       String val;
+      boolean hasReturn = false;
       while(it.hasNext()) {
          val = visit(it.next());
-         if (val != null && val.equals("END") && it.hasNext()) {
-            System.out.printf("[Line %d] ReturnWarning: code after return statement will not be executed\n", ctx.start.getLine());
+         if (val != null && val.equals("END")) {
+            hasReturn = true;
+            if (it.hasNext()) System.out.printf("[Line %d] ReturnWarning: code after return statement will not be executed\n", ctx.start.getLine());
          }
       }
       isFunction = false;
       table = tables.pop();
+      if (!hasReturn && !type.equals("VOID")) {
+         System.out.printf("[Lines %d:%d] ReturnMissingError: non-void function does not have a return statement\n", ctx.start.getLine(), ctx.stop.getLine());
+         return "ERROR"; 
+      }
+      table.putFunction(func, new String[]{input.toString(), expectedOutput});
       return null;
    }
 
@@ -287,13 +302,30 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          System.err.printf("[Line %d] NameError: name '%s' is already defined\n", ctx.start.getLine(), name);
          return "ERROR";
       }
-      if (exprType.equals("ENUM")) {
+      if (type.equals("ENUM")) {
          Iterator<String> it = currentEnum.iterator();
          String str;
          while(it.hasNext()) {
             str = name + ":" + it.next().replaceAll("\"", "");
             table.putVariable(str, "NUM");
          }
+      }
+      if (type.contains("LIST")) {
+         String typeOfList = type.replace("LIST_", "");
+         table.putFunction(name + ".add", new String[]{typeOfList, "VOID"});
+         table.putFunction(name + ".getIndex", new String[]{"NUM", typeOfList}); //check size
+      }
+      if (type.equals("POINT")) {
+         table.putVariable(name + ":x", "NUM");
+         table.putVariable(name + ":y", "NUM");
+      }
+      if (type.equals("TWIST")) {
+         table.putVariable(name + ":linear", "NUM");
+         table.putVariable(name + ":angular", "NUM");
+      }
+      if (type.equals("POSE")) {
+         table.putVariable(name + ":point", "NUM");
+         table.putVariable(name + ":angle", "NUM");
       }
       table.putVariable(name, type);
       return null;
@@ -522,7 +554,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    @Override public String visitCall(MusParser.CallContext ctx) {
       String func;
       if (ctx.ID().size() == 1) func = ctx.ID(0).getText();
-      else func = ctx.ID(1).getText();
+      else func =ctx.ID(0).getText() + "." + ctx.ID(1).getText();
 
       if (func.equals("return")) {
          if (isFunction) {
