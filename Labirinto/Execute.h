@@ -1,21 +1,28 @@
 #pragma once
 
 #include "LabBaseVisitor.h"
+
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include "Map.h"
 
+class Map;
 
 class Execute : public LabBaseVisitor {
 
 private:
    std::string ST = "";
    int writeToFile();
+   Map* map;
 
 public:
-   Execute();
+   //Execute(Map* map);
+   Execute() {};
    ~Execute();
 
+   void setMap(Map* m);
 
    virtual antlrcpp::Any visitProgram(LabParser::ProgramContext *ctx) override;
 

@@ -1,7 +1,9 @@
 <Grid>
-	<Position X="3.000000" Y="7.000000" DIR="180">
-	<Position X="3.000000" Y="8.300000" DIR="180">
-	<Position X="3.000000" Y="9.600000" DIR="180">
+	<Position X="1.500000" Y="7.000000" DIR="180">
+	<Position X="3.000000" Y="2.000000" DIR="90">
+	<Position X="3.000000" Y="9.600000" DIR="0">
+	<Position X="1.500000" Y="12.000000" DIR="180">
+	<Position X="1.500000" Y="4.500000" DIR="1">
 </Grid>
 
 <Lab Name="lab01" Width="28.000000" Height="14.000000">

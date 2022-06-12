@@ -3,5 +3,6 @@
 !lab.g4
 !examples/
 !Execute.*
-!LabMain.cpp
+!*.cpp
+!*.h
 !Makefile

@@ -1,7 +1,7 @@
 .PHONY: all clean cleanall #install
 
 GRAMMAR=Lab.g4
-TARGETS_CPP=LabLexer.cpp LabParser.cpp LabBaseVisitor.cpp LabVisitor.cpp Execute.cpp
+TARGETS_CPP=LabLexer.cpp LabParser.cpp LabBaseVisitor.cpp LabVisitor.cpp Execute.cpp Map.cpp
 OBJS=$(TARGETS_CPP:cpp=o) LabMain.o
 TARGET=LabMain
 

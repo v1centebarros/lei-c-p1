@@ -1,8 +1,16 @@
 #include "Execute.h"
 
+using std::vector;
+using std::string;
 
-Execute::Execute() {
-   std::cout << ST;
+
+// Execute::Execute(Map* map) {
+//    //this->map = map;
+//    std::cout << ST;
+// }
+
+void Execute::setMap(Map* m) {
+   this->map = m;
 }
 
 Execute::~Execute() {
@@ -166,9 +174,48 @@ antlrcpp::Any Execute::visitRow(LabParser::RowContext *ctx) {
    int pos = std::stoi(ctx->INT()->getText());
    ST.append(" Pos=\"");   ST.append(std::to_string(pos));
    ST.append("\"");
-   std::cout << " POS= " << ctx->PADRAO()->getText();
-   ST.append(" Pattern="); ST.append(ctx->PADRAO()->getText());
+   //std::cout << " POS= " << ctx->PADRAO()->getText();
+   string row = ctx->PADRAO()->getText();
+   ST.append(" Pattern="); ST.append(row);
    ST.append("/>\n");
+   //std::cout << " tamanho = " << row.size() <<"\n";
+   
+   vector<bool> linha;
+   bool teste =true;
+   for(size_t i = 1; i < row.size()-1; i++) {
+      if(teste){
+         if(row[i] == '-' && row[i+1] == '-'){
+            //std::cout << "estou aqui2\n";
+            linha.push_back(true);
+         } else if(row[i] == ' ' && row[i+1] == ' '){
+            //std::cout << "estou aqui4\n";
+            linha.push_back(false);
+         }
+         teste =false;
+         i++;
+      }else{
+         if(row[i] == '+'){
+            //std::cout << "estou aqui\n";
+            linha.push_back(true);
+         } else if(row[i] == '|'){
+            //std::cout << "estou aqui3\n";
+            linha.push_back(true);
+         }else {if(row[i] == ' '){
+            //std::cout << "estou aqui5\n";
+            linha.push_back(false);
+            }
+         }
+         teste =true;   
+      }
+   }
+   
+   //this->map->addRow(linha);
+   for (size_t i = 0; i < linha.size(); i++)
+   {
+      std::cout << linha[i] << " ";
+   }
+   std::cout << "\n";
+   
    return res;
 }
 

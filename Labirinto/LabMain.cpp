@@ -4,18 +4,28 @@
 #include "LabParser.h"
 #include "Execute.h"
 
-#include <iostream>
+#include <fstream>
 
 using namespace std;
 using namespace antlr4;
 using namespace antlr4::tree;
 
 int main(int argc, const char* argv[]) {
-   std::istream *stream;
+   
+   std::filebuf fb;
+   fb.open("teste.lab", std::ios::in);
+   if (!fb.is_open()){
+      cout << "File not open";
+      return -1;
+   }
+
+   std::istream stream(&fb);
    // create a ANTLRInputStream that reads from standard input:
    ANTLRInputStream* input;
-   stream = &cin;
-   input = new ANTLRInputStream(*stream);
+   //stream = &cin;
+   
+
+   input = new ANTLRInputStream(stream);
    // create a lexer that feeds off of input ANTLRInputStream:
    LabLexer* lexer = new LabLexer(input);
    // create a buffer of tokens pulled from the lexer:
@@ -33,4 +43,7 @@ int main(int argc, const char* argv[]) {
       Execute* visitor0 = new Execute();
       visitor0->visit(tree);
    }
+
+   fb.close();
+   return 0;
 }
