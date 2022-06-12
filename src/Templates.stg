@@ -15,6 +15,8 @@ typeMap ::= [
 externalFunctionsMap ::= [
     "print": "cout << ",
     "size": "size",
+    "add": "push_back",
+    "getIndex": "at",
     "initRobot": "init",
     "rotate": "motors",
     "move": "motors",
@@ -187,6 +189,12 @@ blockWhile(expr, stat) ::= <<while (<expr>) {
 blockUntil(expr, call) ::= <<while (!(<expr>)) {
     <call>
 }
+>>
+
+blockForeach(var, lst, stat) ::= <<for (auto <var> : <lst>) {
+        <stat>
+}
+
 >>
 
 externalFunctions(ID1, ID2, expr, user_func) ::= <<<if(ID1)><ID1>.<endif><if(ID2)><externalFunctionsMap.(ID2)><endif><if(user_func)><user_func><endif>(<expr; separator=", ">)

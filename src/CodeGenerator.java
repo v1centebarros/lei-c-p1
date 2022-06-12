@@ -338,6 +338,20 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
 
       return untilST;
    }
+
+
+   @Override public ST visitBlockForEach(MusParser.BlockForEachContext ctx) {
+      ST forST = allTemplates.getInstanceOf("blockForeach");
+      forST.add("var", "var_" + ctx.ID().getText());
+      forST.add("lst", visit(ctx.expr()));
+
+      for(int i = 0; i < ctx.stat().size(); i++) {
+         forST.add("stat", visit(ctx.stat(i)));
+      }
+
+      return forST;
+   }
+   
    
    @Override public ST visitAssignment(MusParser.AssignmentContext ctx) {
 
@@ -356,6 +370,8 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
             isList = true;
             listVariables.put(varName, type);
          }
+         else
+            isList = false;
 
          if (type.equals("ROBOT")) {
             ST fork = allTemplates.getInstanceOf("forkBlock");
@@ -410,30 +426,48 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
 
    @Override public ST visitExprVar(MusParser.ExprVarContext ctx) {
       String varName = ctx.ID().getText();
-      
-      //if the name is a func name -> return function()
-      if (simpleFunc.containsKey(varName)) {
-         if (simpleFunc.get(varName).equals("beaconCount()"))
-            return new ST("(int) beaconCount()");  //cast to int
-         else
-            return new ST(simpleFunc.get(varName));
+
+
+      if (varName.contains(".")) {
+
+         ST callST = allTemplates.getInstanceOf("externalFunctions");
+         String id1 = varName.split("\\.")[0];
+         String id2 = varName.split("\\.")[1];
+         callST.add("ID1", "var_" + id1);
+         callST.add("ID2", id2);
+         return callST;
+
       }
-      else if (varName.equals("input")) {
-         if (lastType.equals("NUM")){
+      else {
 
-            return new ST("0;\ncin >> " + lastVar);
-
-         } else if (lastType.equals("TEXT")){
-
-            return new ST("\"\";\ngetline(cin, " + lastVar + ")" );
-
+         //if the name is a func name -> return function()
+         if (simpleFunc.containsKey(varName)) {
+            if (simpleFunc.get(varName).equals("beaconCount()"))
+               return new ST("(int) beaconCount()");  //cast to int
+            else
+               return new ST(simpleFunc.get(varName));
          }
+         else if (varName.equals("input")) {
+            if (lastType.equals("NUM")){
+
+               return new ST("0;\ncin >> " + lastVar);
+
+            } else if (lastType.equals("TEXT")){
+
+               return new ST("\"\";\ngetline(cin, " + lastVar + ")" );
+
+            }
+         }
+
+         if (useActive)
+            return new ST(ctx.ID().getText());
+
+         return new ST("var_" + ctx.ID().getText());
+
       }
 
-      if (useActive)
-         return new ST(ctx.ID().getText());
 
-      return new ST("var_" + ctx.ID().getText());
+
    }
 
    @Override public ST visitExprEnumWithValues(MusParser.ExprEnumWithValuesContext ctx) {
@@ -654,6 +688,26 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
 
       ST callST = allTemplates.getInstanceOf("externalFunctions");
       String func = "";
+
+
+      if (ctx.ID().size() == 1 && ctx.ID(0).getText().split("\\.").length == 2) {
+         String id1 = ctx.ID(0).getText().split("\\.")[0];
+         String id2 = ctx.ID(0).getText().split("\\.")[1];
+
+         callST.add("ID1", "var_" + id1);
+         callST.add("ID2", id2);
+
+         for (int i=0; i<ctx.expr().size(); i++) {
+            callST.add("expr", visit(ctx.expr(i))); 
+         }
+
+         return callST;
+
+      }
+
+
+
+
 
       if (ctx.ID().size() == 1) {
          func = ctx.ID(0).getText();
