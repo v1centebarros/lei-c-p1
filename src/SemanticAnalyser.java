@@ -99,6 +99,10 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
                System.err.printf("[Line %d] NameError: symbol ':' is reserved for object's attributes\n", ctx.start.getLine());
                return "ERROR";
             }
+            if (name.contains(".")) {
+               System.err.printf("[Line %d] NameError: symbol '.' is reserved for object's methods\n", ctx.start.getLine());
+               return "ERROR";
+            }
             if (keywords.contains(name)) {
                System.err.printf("[Line %d] NameError: name '%s' is a keyword\n", ctx.start.getLine(), name);
                return "ERROR";
@@ -119,6 +123,10 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
             name = ctx.ID(i).getText();
             if (name.contains(":")) {
                System.err.printf("[Line %d] NameError: symbol ':' is reserved for object's attributes\n", ctx.start.getLine());
+               return "ERROR";
+            }
+            if (name.contains(".")) {
+               System.err.printf("[Line %d] NameError: symbol '.' is reserved for object's methods\n", ctx.start.getLine());
                return "ERROR";
             }
             if (keywords.contains(name)) {
@@ -208,6 +216,10 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
             System.err.printf("[Line %d] NameError: symbol ':' is reserved for object's attributes\n", ctx.start.getLine());
             return "ERROR";
          }
+         if (name.contains(".")) {
+            System.err.printf("[Line %d] NameError: symbol '.' is reserved for object's methods\n", ctx.start.getLine());
+            return "ERROR";
+         }
          if (keywords.contains(name)) {
             System.err.printf("[Line %d] NameError: name '%s' is a keyword\n", ctx.start.getLine(), name);
             return "ERROR";
@@ -292,6 +304,10 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       String name = ctx.ID().getText();
       if (name.contains(":")) {
          System.err.printf("[Line %d] NameError: symbol ':' is reserved for object's attributes\n", ctx.start.getLine());
+         return "ERROR";
+      }
+      if (name.contains(".")) {
+         System.err.printf("[Line %d] NameError: symbol '.' is reserved for object's methods\n", ctx.start.getLine());
          return "ERROR";
       }
       if (keywords.contains(name)) {
