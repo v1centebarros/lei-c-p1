@@ -1,4 +1,4 @@
-// Generated from /home/emanuel/Desktop/C/projeto/comp2022-mus-p3g3/Labirinto/Lab.g4 by ANTLR 4.9.2
+// Generated from /home/mariana/UNIVERSIDADE/C/Projeto/comp2022-mus-p3g3/Labirinto/Lab.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -19,7 +19,7 @@ public class LabParser extends Parser {
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
 		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
 		T__17=18, T__18=19, T__19=20, INT=21, DOUBLE=22, ID=23, PADRAO=24, WS=25, 
-		LINE_COMMENT=26, MULTILINE_COMMENT=27, ERROR=28;
+		LINE_COMMENT=26, MULTILINE_COMMENT=27;
 	public static final int
 		RULE_program = 0, RULE_stat = 1, RULE_grid = 2, RULE_position = 3, RULE_labirinto = 4, 
 		RULE_dlab = 5, RULE_beacon = 6, RULE_target = 7, RULE_spot = 8, RULE_row = 9, 
@@ -44,7 +44,7 @@ public class LabParser extends Parser {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
 			null, null, null, null, null, null, null, null, null, "INT", "DOUBLE", 
-			"ID", "PADRAO", "WS", "LINE_COMMENT", "MULTILINE_COMMENT", "ERROR"
+			"ID", "PADRAO", "WS", "LINE_COMMENT", "MULTILINE_COMMENT"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -146,11 +146,11 @@ public class LabParser extends Parser {
 	}
 
 	public static class StatContext extends ParserRuleContext {
-		public GridContext grid() {
-			return getRuleContext(GridContext.class,0);
-		}
 		public LabirintoContext labirinto() {
 			return getRuleContext(LabirintoContext.class,0);
+		}
+		public GridContext grid() {
+			return getRuleContext(GridContext.class,0);
 		}
 		public StatContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -169,35 +169,35 @@ public class LabParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(31);
-				grid();
-				setState(32);
-				match(T__0);
-				setState(33);
 				labirinto();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(35);
-				labirinto();
-				setState(36);
-				match(T__0);
-				setState(37);
+				setState(32);
 				grid();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(39);
+				setState(33);
+				grid();
+				setState(34);
+				match(T__0);
+				setState(35);
 				labirinto();
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(40);
+				setState(37);
+				labirinto();
+				setState(38);
+				match(T__0);
+				setState(39);
 				grid();
 				}
 				break;
@@ -765,7 +765,7 @@ public class LabParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\36\u0088\4\2\t\2"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\35\u0088\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\3\2\5\2\34\n\2\3\2\3\2\3\2\3\2\3\3\3\3\3\3\3\3\3"+
 		"\3\3\3\3\3\3\3\3\3\3\3\5\3,\n\3\3\4\3\4\3\4\3\4\3\4\7\4\63\n\4\f\4\16"+
@@ -778,9 +778,9 @@ public class LabParser extends Parser {
 		"\2\2\4+\3\2\2\2\6-\3\2\2\2\b9\3\2\2\2\n@\3\2\2\2\f[\3\2\2\2\16]\3\2\2"+
 		"\2\20e\3\2\2\2\22m\3\2\2\2\24z\3\2\2\2\26\177\3\2\2\2\30\u0085\3\2\2\2"+
 		"\32\34\5\4\3\2\33\32\3\2\2\2\33\34\3\2\2\2\34\35\3\2\2\2\35\36\7\3\2\2"+
-		"\36\37\3\2\2\2\37 \7\2\2\3 \3\3\2\2\2!\"\5\6\4\2\"#\7\3\2\2#$\5\n\6\2"+
-		"$,\3\2\2\2%&\5\n\6\2&\'\7\3\2\2\'(\5\6\4\2(,\3\2\2\2),\5\n\6\2*,\5\6\4"+
-		"\2+!\3\2\2\2+%\3\2\2\2+)\3\2\2\2+*\3\2\2\2,\5\3\2\2\2-.\7\4\2\2.\64\7"+
+		"\36\37\3\2\2\2\37 \7\2\2\3 \3\3\2\2\2!,\5\n\6\2\",\5\6\4\2#$\5\6\4\2$"+
+		"%\7\3\2\2%&\5\n\6\2&,\3\2\2\2\'(\5\n\6\2()\7\3\2\2)*\5\6\4\2*,\3\2\2\2"+
+		"+!\3\2\2\2+\"\3\2\2\2+#\3\2\2\2+\'\3\2\2\2,\5\3\2\2\2-.\7\4\2\2.\64\7"+
 		"\5\2\2/\60\5\b\5\2\60\61\7\3\2\2\61\63\3\2\2\2\62/\3\2\2\2\63\66\3\2\2"+
 		"\2\64\62\3\2\2\2\64\65\3\2\2\2\65\67\3\2\2\2\66\64\3\2\2\2\678\7\6\2\2"+
 		"8\7\3\2\2\29:\7\7\2\2:>\5\26\f\2;<\7\b\2\2<=\7\t\2\2=?\7\27\2\2>;\3\2"+

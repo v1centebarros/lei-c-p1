@@ -3,7 +3,10 @@
 using std::vector;
 using std::string;
 
-
+// -- guardar keywords
+private list<String> keyWords = {"GRID", "LABIRINTO", "POS" , "DIRECTION", "NAME",
+                                 "WIDTH", "HEIGHT", "BEACON", "TARGET", "RADIUS" ,
+                                 "SPOT" , "ROW"}
 // Execute::Execute(Map* map) {
 //    //this->map = map;
 //    std::cout << ST;

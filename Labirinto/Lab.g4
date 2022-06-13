@@ -4,11 +4,10 @@ program:
     (stat? ';') EOF
     ;
 
-stat:
-    grid ';' labirinto
-    |labirinto ';' grid          
-    |labirinto  
+stat:labirinto  
     |grid
+    |grid ';' labirinto
+    |labirinto ';' grid          
     ;
 
 grid: 'GRID' '{' (position ';')* '}';
@@ -41,4 +40,3 @@ PADRAO: '"' (' ' |'|'|'+'|'--')* '"';
 WS: [ \t\r\n]+ -> skip;
 LINE_COMMENT: '#' .*? ('\n'|EOF) -> skip;
 MULTILINE_COMMENT: '/*' .*? '*/' -> skip;
-ERROR:.;
