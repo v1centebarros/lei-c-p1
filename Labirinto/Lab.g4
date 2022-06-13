@@ -13,7 +13,7 @@ stat:labirinto
 grid: 'GRID' '{' (position ';')* '}';
 position: 'POS' coordenadas ('DIRECTION' '=' INT)?; 
 
-labirinto: 'LABIRINTO' '(' 'NAME' '=' ID 'WIDTH' '=' num 'HEIGHT' '=' num')' '{'
+labirinto: 'LABIRINTO' '(' 'NAME' '=' ID 'WIDTH' '=' INT 'HEIGHT' '=' INT')' '{'
                 (dlab ';')*
             '}' 
     ;

@@ -320,11 +320,9 @@ public class LabParser extends Parser {
 
 	public static class LabirintoContext extends ParserRuleContext {
 		public TerminalNode ID() { return getToken(LabParser.ID, 0); }
-		public List<NumContext> num() {
-			return getRuleContexts(NumContext.class);
-		}
-		public NumContext num(int i) {
-			return getRuleContext(NumContext.class,i);
+		public List<TerminalNode> INT() { return getTokens(LabParser.INT); }
+		public TerminalNode INT(int i) {
+			return getToken(LabParser.INT, i);
 		}
 		public List<DlabContext> dlab() {
 			return getRuleContexts(DlabContext.class);
@@ -360,13 +358,13 @@ public class LabParser extends Parser {
 			setState(68);
 			match(T__6);
 			setState(69);
-			num();
+			match(INT);
 			setState(70);
 			match(T__11);
 			setState(71);
 			match(T__6);
 			setState(72);
-			num();
+			match(INT);
 			setState(73);
 			match(T__12);
 			setState(74);
@@ -785,7 +783,7 @@ public class LabParser extends Parser {
 		"\2\64\62\3\2\2\2\64\65\3\2\2\2\65\67\3\2\2\2\66\64\3\2\2\2\678\7\6\2\2"+
 		"8\7\3\2\2\29:\7\7\2\2:>\5\26\f\2;<\7\b\2\2<=\7\t\2\2=?\7\27\2\2>;\3\2"+
 		"\2\2>?\3\2\2\2?\t\3\2\2\2@A\7\n\2\2AB\7\13\2\2BC\7\f\2\2CD\7\t\2\2DE\7"+
-		"\31\2\2EF\7\r\2\2FG\7\t\2\2GH\5\30\r\2HI\7\16\2\2IJ\7\t\2\2JK\5\30\r\2"+
+		"\31\2\2EF\7\r\2\2FG\7\t\2\2GH\7\27\2\2HI\7\16\2\2IJ\7\t\2\2JK\7\27\2\2"+
 		"KL\7\17\2\2LR\7\5\2\2MN\5\f\7\2NO\7\3\2\2OQ\3\2\2\2PM\3\2\2\2QT\3\2\2"+
 		"\2RP\3\2\2\2RS\3\2\2\2SU\3\2\2\2TR\3\2\2\2UV\7\6\2\2V\13\3\2\2\2W\\\5"+
 		"\20\t\2X\\\5\16\b\2Y\\\5\22\n\2Z\\\5\24\13\2[W\3\2\2\2[X\3\2\2\2[Y\3\2"+

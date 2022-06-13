@@ -1,4 +1,4 @@
-LABIRINTO (NAME = lab03 WIDTH =20  HEIGHT = 13) { 
+LABIRINTO (NAME = lab03 WIDTH = 28  HEIGHT = 14) { 
 
 	/* DEfinir Beacon */
 	BEACON = (3,1); #default altura é 2
@@ -23,7 +23,7 @@ LABIRINTO (NAME = lab03 WIDTH =20  HEIGHT = 13) {
     tem apenas um beacon sozinho, com valor default de altura.
         
 --------XML---------
-<Lab Name="Lab 3" Width="20.0" Height="13.0">
+<Lab Name="Lab 3" Width="28.0" Height="14.0">
 	<Beacon X="3.0" Y="3" Height="2"/>
 
 	<Row  Pos="12" Pattern="           |              |              "  />

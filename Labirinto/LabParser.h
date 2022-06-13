@@ -117,8 +117,8 @@ public:
     LabirintoContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *ID();
-    std::vector<NumContext *> num();
-    NumContext* num(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> INT();
+    antlr4::tree::TerminalNode* INT(size_t i);
     std::vector<DlabContext *> dlab();
     DlabContext* dlab(size_t i);
 

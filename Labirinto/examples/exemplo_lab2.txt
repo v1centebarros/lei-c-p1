@@ -1,5 +1,5 @@
 #Definir um labirinto
-LABIRINTO (NAME = lab02 WIDTH = 17.5 HEIGHT = 14) { 
+LABIRINTO (NAME = lab02 WIDTH = 28 HEIGHT = 14) { 
 	TARGET = (9,5); #Definir target 
     BEACON = (3,3); #Definir beacon
     SPOT = (26,7); #Definir beacon e target conjuntos

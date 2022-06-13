@@ -1,16 +1,15 @@
 #include "Execute.h"
-#include <list>
 
 using std::vector;
 using std::string;
 
 // -- guardar keywords
-list<string> keyWords = {"GRID", "LABIRINTO", "POS" , "DIRECTION", "NAME",
+string keyWords[] = {"GRID", "LABIRINTO", "POS" , "DIRECTION", "NAME",
                         "WIDTH", "HEIGHT", "BEACON", "TARGET", "RADIUS" ,
                         "SPOT" , "ROW"};
 
-float HeightMap;
-float WidthMap;
+int HeightMap;
+int WidthMap;
 // Execute::Execute(Map* map) {
 //    //this->map = map;
 //    std::cout << ST;
@@ -51,25 +50,35 @@ antlrcpp::Any Execute::visitStat(LabParser::StatContext *ctx) {
 antlrcpp::Any Execute::visitGrid(LabParser::GridContext *ctx) {
    antlrcpp::Any res = nullptr;
    std::string r;
+
    ST.append("<Grid>\n");
    res = visitChildren(ctx);
    ST.append("</Grid>\n\n");
+   
    return res;
 }
 
 antlrcpp::Any Execute::visitPosition(LabParser::PositionContext *ctx) {
    antlrcpp::Any res = nullptr;
    std::string r;
-   ST.append("\t<Position");
-   res = visitChildren(ctx);
+   
+   int dir;
    if(ctx->INT()!=nullptr){
       //std::cout << "DIR= " << ctx->INT()->getText();
-      int dir = std::stoi(ctx->INT()->getText())%360;
-      ST.append(" DIR=\"");   ST.append(std::to_string(dir));
-      ST.append("\"");
+      dir = std::stoi(ctx->INT()->getText())%360;
+      if(dir < 0){
+         std::cout << "[Line "<< ctx->start->getLine() << "] NameError: Direção não pode ser negativa";
+         return "ERROR";
+      }
    }else{
-      ST.append(" DIR=\"180\"");
+      dir = 180;
    }
+   
+   //colocar position no ficheiro
+   ST.append("\t<Position");
+   res = visitChildren(ctx);
+   ST.append(" DIR=\"");   ST.append(std::to_string(dir));
+   ST.append("\"");
    ST.append(">\n");
    return res;
 }
@@ -77,47 +86,35 @@ antlrcpp::Any Execute::visitPosition(LabParser::PositionContext *ctx) {
 antlrcpp::Any Execute::visitLabirinto(LabParser::LabirintoContext *ctx) {
    antlrcpp::Any res = nullptr;
    std::string r;
-   
-   //std::cout << ctx->ID()->getText();
-   //verficar que o nome não é uma keyword
-   if (keyWords.contains(ctx->ID()->getText())){
-      std::cout << "[Line "<< ctx->start->getLine() << "] NameError: name '" <<ctx->ID()->getText()<< "' is a keyword\n";
+
+   int Width = std::stoi(ctx->INT(0)->getText());
+   if (Width <= 0){
+      std::cout << "[Line "<< ctx->start->getLine() << "] NameError:  Width tem ser maior que zero.\n";
+      //exit(0);
       return "ERROR";
    }
+   WidthMap = std::stoi(ctx->INT(0)->getText())- 1;  
 
+   int Height = std::stoi(ctx->INT(1)->getText());
+   if (Height <= 0){
+      std::cout << "[Line "<< ctx->start->getLine() << "] NameError: Height tem ser maior que zero.\n";
+      //exit(0);
+      return "ERROR";
+   }
+   HeightMap = std::stoi(ctx->INT(1)->getText()) - 1;
+
+   //colocar labirinto no ficheiro
    ST.append("<Lab");
    ST.append(" Name=\"");   
    ST.append(ctx->ID()->getText());
    ST.append("\"");
-   
-   //std::cout << "Width= " << ctx->num(0)->getText();
-   float Width = std::stof(ctx->num(0)->getText());
-   if (Width > 0){
-      ST.append(" Width=\"");   ST.append(std::to_string(Width));
-      ST.append("\"");
-   }else{
-      std::cout << "[Line "<< ctx->start->getLine() << "] NameError: ";
-      return "ERROR";
-   }
-      
-
-   //std::cout << "Height= " << ctx->num(1)->getText();
-   float Height = std::stof(ctx->num(1)->getText());
-   if (Height > 0){
-      ST.append(" Height=\"");   ST.append(std::to_string(Height));
-      ST.append("\"");
-   }
-   else{
-      std::cout << "[Line "<< ctx->start->getLine() << "] NameError: ";
-      return "ERROR";
-   }
-   
+   ST.append(" Width=\"");   ST.append(std::to_string(Width));
+   ST.append("\"");
+   ST.append(" Height=\"");   ST.append(std::to_string(Height));
+   ST.append("\"");
    ST.append(">\n");
    res = visitChildren(ctx);
    ST.append("</Lab>\n\n"); 
-
-   HeightMap = Height - 1;
-   WidthMap = Width - 1;
    return res;
 }
 
@@ -131,16 +128,23 @@ antlrcpp::Any Execute::visitDlab(LabParser::DlabContext *ctx) {
 antlrcpp::Any Execute::visitBeacon(LabParser::BeaconContext *ctx) {
    antlrcpp::Any res = nullptr;
    std::string r;
+   int height = 0;
+   if(ctx->INT()!=nullptr){
+      height = std::stoi(ctx->INT()->getText());
+      if (height <= 0){
+         std::cout << "[Line "<< ctx->start->getLine() << "] NameError: Height tem ser maior que zero.\n";
+         //exit(0);
+         return "ERROR";
+      }
+   }else{
+      height=2;
+   } 
+
+   //colocar beacon no ficheiro
    ST.append("\t<Beacon");
    res = visitChildren(ctx);
-   if(ctx->INT()!=nullptr){
-      //std::cout << " HEIGHT= " << ctx->INT()->getText();
-      int height = std::stoi(ctx->INT()->getText());
-      ST.append(" Height=\"");   ST.append(std::to_string(height));
-      ST.append("\"");
-   }else{
-      ST.append(" Height=\"2\"");
-   }
+   ST.append(" Height=\"");   ST.append(std::to_string(height));
+   ST.append("\"");
    ST.append("/>\n");
    return res;
 }
@@ -148,16 +152,24 @@ antlrcpp::Any Execute::visitBeacon(LabParser::BeaconContext *ctx) {
 antlrcpp::Any Execute::visitTarget(LabParser::TargetContext *ctx) {
    antlrcpp::Any res = nullptr;
    std::string r;
+
+   float radius = -1;
+   if(ctx->num()!=nullptr){
+      radius = std::stof(ctx->num()->getText());
+      if (radius <= 0){
+         std::cout << "[Line "<< ctx->start->getLine() << "] NameError: Radius tem ser maior que zero.\n";
+         //exit(0);
+         return "ERROR";
+      }
+   }else{
+      radius=1;
+   }
+
+   //colocar target no ficheiro
    ST.append("\t<Target");
    res = visitChildren(ctx);
-   if(ctx->num()!=nullptr){
-      //std::cout << " Radius= " << ctx->num()->getText();
-      float radius = std::stof(ctx->num()->getText());
-      ST.append(" Radius=\"");   ST.append(std::to_string(radius));
-      ST.append("\"");
-   }else{
-      ST.append(" Radius=\"1\"");
-   }
+   ST.append(" Radius=\"");   ST.append(std::to_string(radius));
+   ST.append("\"");
    ST.append("/>\n");
    return res;
 }
@@ -165,84 +177,105 @@ antlrcpp::Any Execute::visitTarget(LabParser::TargetContext *ctx) {
 antlrcpp::Any Execute::visitSpot(LabParser::SpotContext *ctx) {
    antlrcpp::Any res = nullptr;
    std::string r;
+   
+   int height = 0;
+   if(ctx->INT()!=nullptr){
+      height = std::stoi(ctx->INT()->getText());
+      if (height <= 0){
+         std::cout << "[Line "<< ctx->start->getLine() << "] NameError: Height tem ser maior que zero.\n";
+         //exit(0);
+         return "ERROR";
+      }
+   }else{
+      height=2;
+   } 
+
+   float radius = -1;
+   if(ctx->num()!=nullptr){
+      radius = std::stof(ctx->num()->getText());
+      if (radius <= 0){
+         std::cout << "[Line "<< ctx->start->getLine() << "] NameError: Radius tem ser maior que zero.\n";
+         //exit(0);
+         return "ERROR";
+      }
+   }else{
+      radius=1;
+   }
+
+   //colocar o beacon no ficheiro
    ST.append("\t<Beacon");
    res = visitChildren(ctx);
-   if(ctx->INT()!=nullptr){
-      //std::cout << " HEIGHT= " << ctx->INT()->getText();
-      int height = std::stoi(ctx->INT()->getText());
-      ST.append(" Height=\"");   ST.append(std::to_string(height));
-      ST.append("\"");
-   }else{
-      ST.append(" Height=\"2\"");
-   }
+   ST.append(" Height=\"");   ST.append(std::to_string(height));
+   ST.append("\"");
    ST.append("/>\n");
    
+   //colocar o target no ficheiro
    ST.append("\t<Target");
    res = visitChildren(ctx);
-   if(ctx->num()!=nullptr){
-      //std::cout << " Radius= " << ctx->num()->getText();
-      float radius = std::stof(ctx->num()->getText());
-      ST.append(" Radius=\"");   ST.append(std::to_string(radius));
-      ST.append("\"");
-   }else{
-      ST.append(" Radius=\"1\"");
-   }
+   ST.append(" Radius=\"");   ST.append(std::to_string(radius));
+   ST.append("\"");
    ST.append("/>\n");
-   
+
    return res;
 }
 
 antlrcpp::Any Execute::visitRow(LabParser::RowContext *ctx) {
    antlrcpp::Any res = nullptr;
    std::string r;
-   ST.append("\t<Row");
+
    res = visitChildren(ctx);
-   //std::cout << " POS= " << ctx->INT()->getText();
    int pos = std::stoi(ctx->INT()->getText());
-   ST.append(" Pos=\"");   ST.append(std::to_string(pos));
-   ST.append("\"");
-   //std::cout << " POS= " << ctx->PADRAO()->getText();
+   if(pos != --HeightMap){
+     std::cout << "[Line "<< ctx->start->getLine() << "] NameError: A Ordem das linhas està incorreta.\n";
+      //exit(0);
+      return "ERROR";
+   }
+
    string row = ctx->PADRAO()->getText();
-   ST.append(" Pattern="); ST.append(row);
-   ST.append("/>\n");
-   //std::cout << " tamanho = " << row.size() <<"\n";
-   
    vector<bool> linha;
    bool teste =true;
    for(size_t i = 1; i < row.size()-1; i++) {
       if(teste){
          if(row[i] == '-' && row[i+1] == '-'){
-            //std::cout << "estou aqui2\n";
             linha.push_back(true);
          } else if(row[i] == ' ' && row[i+1] == ' '){
-            //std::cout << "estou aqui4\n";
             linha.push_back(false);
          }
          teste =false;
          i++;
       }else{
          if(row[i] == '+'){
-            //std::cout << "estou aqui\n";
             linha.push_back(true);
          } else if(row[i] == '|'){
-            //std::cout << "estou aqui3\n";
             linha.push_back(true);
          }else {if(row[i] == ' '){
-            //std::cout << "estou aqui5\n";
             linha.push_back(false);
             }
          }
          teste =true;   
       }
    }
-   
+   if(WidthMap != linha.size()){
+      std::cout << "[Line "<< ctx->start->getLine() << "] NameError: .\n";
+      //exit(0);
+      return "ERROR";
+   }
+
+   //imprimir mapa no terminal 0-não tem parede; 1- tem parede
    //this->map->addRow(linha);
-   for (size_t i = 0; i < linha.size(); i++)
+   /*for (size_t i = 0; i < linha.size(); i++)
    {
       std::cout << linha[i] << " ";
    }
-   std::cout << "\n";
-   
+   std::cout << "\n";*/
+
+   //colocar o mapa no ficheiro
+   ST.append("\t<Row");
+   ST.append(" Pos=\"");   ST.append(std::to_string(pos));
+   ST.append("\"");
+   ST.append(" Pattern="); ST.append(row);
+   ST.append("/>\n");
+
    return res;
 }
 
