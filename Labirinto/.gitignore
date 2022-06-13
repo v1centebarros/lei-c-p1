@@ -2,7 +2,6 @@
 */
 !lab.g4
 !examples/
-!Execute.*
 !*.cpp
 !*.h
 !Makefile
