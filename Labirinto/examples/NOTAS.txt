@@ -22,11 +22,13 @@ NOTA IMPORTANTE:
     o robo nao anda se tiver 360 graus certos (359 e 361 funciona) logo e feita o resto da divisão;
     A ordem de como as posições sao colocadas no ficheiro importa na ordem de como os robos sao colocados no labirinto;
     Não é permitido direções negativas;
-    Cada ficheiro so é aceite apena uma grid e um Labirinto, ou ambas as coisas;
+    Cada ficheiro so é aceite apena uma grid e um Labirinto, ou ambas as coisas separadamente;
 
-    tratamento de erros:
-        ???
-    Analise Sintatica:
-        ???
-    Mapa run time: 
-        ??
+
+    ------analise sintatica------
+    O tamanho do mapa serà linha-1 x coluna-1 do tamanho dado.
+    A colocação as linhas no ficheiro deve ser feito da linha-1 até à zero; 
+
+    -------tratamento de erros---------------
+    verificar de acordo com as keywords;
+    etc;
