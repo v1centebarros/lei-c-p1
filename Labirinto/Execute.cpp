@@ -54,7 +54,7 @@ antlrcpp::Any Execute::visitGrid(LabParser::GridContext *ctx) {
    ST.append("<Grid>\n");
    res = visitChildren(ctx);
    ST.append("</Grid>\n\n");
-   
+
    return res;
 }
 
@@ -282,11 +282,9 @@ antlrcpp::Any Execute::visitRow(LabParser::RowContext *ctx) {
 antlrcpp::Any Execute::visitCoordenadas(LabParser::CoordenadasContext *ctx) {
    antlrcpp::Any res = nullptr;
    std::string r;
+   
    float x, y;
-   //std::cout << " X=" << ctx->num(0)->getText();
    x = std::stof(ctx->num(0)->getText());
-
-   //std::cout << " Y=" << ctx->num(1)->getText();
    y = std::stof(ctx->num(1)->getText());
    
    ST.append(" X=\"");   ST.append(std::to_string(x)); //remover casas decimais
