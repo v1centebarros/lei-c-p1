@@ -12,31 +12,31 @@ A ordem dos argumentos do SPOT - name,height,Radius - é importante, no entanto 
 GRID -- consiste no conjunto de posições inicias de onde o robo pode partir num determinado labirinto;
 LABIRINTO -- consiste no mapa do labirinto, e os dados dos targets, beacons ou de ambos juntos(spot).
 
-Construção do labirinto:
+Construção do mapa:
     '|'  - parede vertical
     '+'  - pontos que unem paredes horizontais ou verticais
     '--' - parede horizontal
     ' '  - por onde o robo pode circular
 
 NOTA IMPORTANTE: 
-    o robo nao anda se tiver 360 graus certos (359 e 361 funciona) logo e feita o resto da divisão;
+    No simulador o robo não se mexe se tiver uma direção de 360, pelo é calculado o resto da divisão por 360 
+para podermos aceitar uma maior gama de direções. São excluidas as direções negativas.;
     A ordem de como as posições sao colocadas no ficheiro importa na ordem de como os robos sao colocados no labirinto;
-    Não é permitido direções negativas;
-    Cada ficheiro so é aceite apena uma grid e um Labirinto, ou ambas as coisas separadamente;
+    Em cada ficheiro gerado pela linguagem só é da ou uma grid, ou um labirinto, ou um labirinto e uma grid, ou seja, 
+não é aceite mais de dois labirintos ou duas grids, por exemplo.
+
+----Analise sintatica-----
+    A escrita do mapa deve começar na linha cujo valor é altura do labirinto menos dois e ir até a linha zero. Quanto ao 
+padrão este deve ter acordo com construção do mapa referida anteriormente. 
+    A altura de um beacon, se colocada, deve ser superior a 0, e o mesmo no caso raio no target.
+    A altura e o comprimento do labirinto deve ser superior a 0.
+
 
 
     TODO:
-    ------analise sintatica------
-    O tamanho do mapa serà linha-1 x coluna-1 do tamanho dado.
-    A colocação as linhas no ficheiro deve ser feito da linha-1 até à zero; 
-   
     -------tratamento de erros---------------
     ficheiro exemplo de erros;
 
-    verificar de acordo com as keywords;
-
-    no lab: 
-        verficar a altura e o comprimento se é maior que 0;
-        Verficar que é digito e é inteiro;
-
-    etc
+    verificar de acordo com as keywords; (antlr4)
+    verificar se é digito; (antlr4)
+    verificar se um determinado digito é inteiro; (antlr4)
