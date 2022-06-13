@@ -329,7 +329,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       if (type.contains("LIST")) {
          String typeOfList = type.replace("LIST_", "");
          table.putFunction(name + ".add", new String[]{typeOfList, "VOID"});
-         table.putFunction(name + ".getIndex", new String[]{"NUM", typeOfList}); //check size
+         table.putFunction(name + ".getIndex", new String[]{"NUM", typeOfList}); //index out of bounds is a runtime error
       }
       if (type.equals("POINT")) {
          table.putVariable(name + ":x", "NUM");
@@ -608,16 +608,19 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          if (arg.equals("")) break;
          if (!it.hasNext()) {
             System.err.printf("[Line %d] ArgError: argument of type %s is missing\n", ctx.start.getLine(), arg);
+            newState = false;
             return "ERROR";
          }
          type = visit(it.next());
          if (!equalsType(type, arg)) {
             System.err.printf("[Line %d] ArgError: received %s but expected %s at position %d\n", ctx.start.getLine(), type, arg, pos);
+            newState = false;
             return "ERROR";
          }
       }
       if (it.hasNext()) {
          System.err.printf("[Line %d] ArgError: expected only %d argument(s)\n", ctx.start.getLine(), expectedArgs.length);
+         newState = false;
          return "ERROR";
       }
       newState = false;
