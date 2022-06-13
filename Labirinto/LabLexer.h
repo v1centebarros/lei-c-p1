@@ -16,7 +16,7 @@ public:
     T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, T__12 = 13, T__13 = 14, 
     T__14 = 15, T__15 = 16, T__16 = 17, T__17 = 18, T__18 = 19, T__19 = 20, 
     INT = 21, DOUBLE = 22, ID = 23, PADRAO = 24, WS = 25, LINE_COMMENT = 26, 
-    MULTILINE_COMMENT = 27, ERROR = 28
+    MULTILINE_COMMENT = 27
   };
 
   explicit LabLexer(antlr4::CharStream *input);

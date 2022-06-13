@@ -1,12 +1,16 @@
 #include "Execute.h"
+#include <list>
 
 using std::vector;
 using std::string;
 
 // -- guardar keywords
-private list<String> keyWords = {"GRID", "LABIRINTO", "POS" , "DIRECTION", "NAME",
-                                 "WIDTH", "HEIGHT", "BEACON", "TARGET", "RADIUS" ,
-                                 "SPOT" , "ROW"}
+list<string> keyWords = {"GRID", "LABIRINTO", "POS" , "DIRECTION", "NAME",
+                        "WIDTH", "HEIGHT", "BEACON", "TARGET", "RADIUS" ,
+                        "SPOT" , "ROW"};
+
+float HeightMap;
+float WidthMap;
 // Execute::Execute(Map* map) {
 //    //this->map = map;
 //    std::cout << ST;
@@ -73,27 +77,47 @@ antlrcpp::Any Execute::visitPosition(LabParser::PositionContext *ctx) {
 antlrcpp::Any Execute::visitLabirinto(LabParser::LabirintoContext *ctx) {
    antlrcpp::Any res = nullptr;
    std::string r;
-   ST.append("<Lab");
+   
    //std::cout << ctx->ID()->getText();
-   ST.append(" Name=\"");   ST.append(ctx->ID()->getText());
+   //verficar que o nome não é uma keyword
+   if (keyWords.contains(ctx->ID()->getText())){
+      std::cout << "[Line "<< ctx->start->getLine() << "] NameError: name '" <<ctx->ID()->getText()<< "' is a keyword\n";
+      return "ERROR";
+   }
+
+   ST.append("<Lab");
+   ST.append(" Name=\"");   
+   ST.append(ctx->ID()->getText());
    ST.append("\"");
    
    //std::cout << "Width= " << ctx->num(0)->getText();
    float Width = std::stof(ctx->num(0)->getText());
-   ST.append(" Width=\"");   ST.append(std::to_string(Width));
-   ST.append("\"");
+   if (Width > 0){
+      ST.append(" Width=\"");   ST.append(std::to_string(Width));
+      ST.append("\"");
+   }else{
+      std::cout << "[Line "<< ctx->start->getLine() << "] NameError: ";
+      return "ERROR";
+   }
+      
 
    //std::cout << "Height= " << ctx->num(1)->getText();
    float Height = std::stof(ctx->num(1)->getText());
-   ST.append(" Height=\"");   ST.append(std::to_string(Height));
-   ST.append("\"");
-
-
+   if (Height > 0){
+      ST.append(" Height=\"");   ST.append(std::to_string(Height));
+      ST.append("\"");
+   }
+   else{
+      std::cout << "[Line "<< ctx->start->getLine() << "] NameError: ";
+      return "ERROR";
+   }
+   
    ST.append(">\n");
    res = visitChildren(ctx);
-   ST.append("</Lab>\n\n");
-   //criar arraylist bidimensional com o tamanho do labirinto 
-   
+   ST.append("</Lab>\n\n"); 
+
+   HeightMap = Height - 1;
+   WidthMap = Width - 1;
    return res;
 }
 
