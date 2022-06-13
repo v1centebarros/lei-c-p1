@@ -1,8 +1,14 @@
 #include "CiberAV.h"
 
+#include "RobSock.h"
+
 #include <stdio.h>
 #include <stdint.h>
 #include <iostream>
+
+#include "RobSock.h"
+
+#include "../../../Labirinto/Map.h"
 
 void gotoBeacon(int bn)
 {
@@ -17,6 +23,8 @@ void gotoBeacon(int bn)
     printf("\n..Going to beacon\n");
     while (groundType() != bn)
     {
+
+        printf("Print position x = %f, y = %f,  direction %f\n", GetX(), GetY(), GetCompassSensor());
         double linearPower = 80.0;
         double angularPower = 1 * beaconAngle(bn);
         double fdist = obstacleDistance(FRONTSENSOR);
@@ -65,6 +73,8 @@ void gotoStart()
     printf("\n..Going to start spot, full speed\n");
     while (startDistance() > 2)
     {
+        printf("Print position x = %f, y = %f,  direction %f\n", GetX(), GetY(), GetCompassSensor());
+
         double linearPower = 80.0;
         double angularPower = 1 * startAngle();
         double fdist = obstacleDistance(FRONTSENSOR);
@@ -117,6 +127,8 @@ int main()
     /* connecting to simulator */
     init2(name, 0, "localhost");
 
+    printf("Print position %f\n", GetX());
+
     /* visit all beacons */
     printf("beaconCount: %u\n", beaconCount());
     for (uint32_t i = 1; i <= beaconCount(); i++) {
@@ -130,6 +142,8 @@ int main()
 
     /* anouncing the returning */
     returning();
+
+    printf("Print position %f\n", GetX());
     
     /* return to start position */
     gotoStart();
