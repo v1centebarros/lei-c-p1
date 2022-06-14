@@ -1,5 +1,5 @@
-<Lab Name="Adeus" Width="28" Height="14">
-	<Beacon X="3.000000" Y="1.000000" Height="2"/>
+<Lab Name=""LABIRINTO"" Width="28" Height="14">
+	<Target X="10.000000" Y="7.000000" Radius="2.000000"/>
 	<Beacon X="26.000000" Y="7.000000" Height="2"/>
 	<Target X="26.000000" Y="7.000000" Radius="1.000000"/>
 	<Row Pos="12" Pattern="           |              |              "/>

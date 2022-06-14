@@ -37,6 +37,6 @@ padrão este deve ter acordo com construção do mapa referida anteriormente.
     -------tratamento de erros---------------
     ficheiro exemplo de erros;
 
-    verificar de acordo com as keywords; (antlr4)
-    verificar se é digito; (antlr4)
-    verificar se um determinado digito é inteiro; (antlr4)
+    verificar se é digito; 
+    verificar se um determinado digito é inteiro;
+    alterar nome dos erros;

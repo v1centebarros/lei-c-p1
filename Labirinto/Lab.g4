@@ -35,7 +35,7 @@ coordenadas: '(' num ',' num ')' ;
 num:(DOUBLE|INT);
 INT:[0-9]+;
 DOUBLE:([0-9]+ '.')? [0-9]+;
-ID: [a-zA-Z_][a-zA-Z_0-9]*;
+ID: '"'[a-zA-Z_][a-zA-Z_0-9]* '"';
 PADRAO: '"' (' ' |'|'|'+'|'--')* '"';
 WS: [ \t\r\n]+ -> skip;
 LINE_COMMENT: '#' .*? ('\n'|EOF) -> skip;

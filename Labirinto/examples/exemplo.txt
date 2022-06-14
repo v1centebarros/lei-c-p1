@@ -7,7 +7,7 @@ GRID{
 
 
 #Definir um labirinto
-LABIRINTO (NAME = lab01 WIDTH = 28 HEIGHT = 14) { 
+LABIRINTO (NAME = "lab01" WIDTH = 28 HEIGHT = 14) { 
 	BEACON = (15,9); 						#Definir Beacon com valor default altura(2)
 	TARGET = (7,7.5) RADIUS = 1.5; 			#Definir target
 	SPOT = (13,4) RADIUS = 1.5; 			#Definir target e beacon com valor default da altura(2)
