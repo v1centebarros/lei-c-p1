@@ -5,3 +5,6 @@
 !*.cpp
 !*.h
 !Makefile
+!Exemplos_ERRO_LAB
+!*txt
+

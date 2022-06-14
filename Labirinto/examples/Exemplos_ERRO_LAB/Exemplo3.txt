@@ -1,0 +1,11 @@
+#Exemplo 3 - Definir no Labirinto um beacon com uma altura igual a zero.
+
+FICHEIRO:
+
+    LABIRINTO (NAME = "teste" WIDTH = 17 HEIGHT = 14) { 
+        TARGET = (26,7) RADIUS = 3;                     
+        BEACON = (3,1) HEIGHT = 0;
+    };
+
+TERMINAL:
+    [Line 3] NameError: A Height do Beacon tem ser superior a zero.
