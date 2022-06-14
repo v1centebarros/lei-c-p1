@@ -10,6 +10,7 @@ string keyWords[] = {"GRID", "LABIRINTO", "POS" , "DIRECTION", "NAME",
 
 int HeightMap;
 size_t WidthMap;
+int linhaNum;
 // Execute::Execute(Map* map) {
 //    //this->map = map;
 //    std::cout << ST;
@@ -108,6 +109,10 @@ antlrcpp::Any Execute::visitLabirinto(LabParser::LabirintoContext *ctx) {
    ST.append(">\n");
    res = visitChildren(ctx);
    ST.append("</Lab>\n\n"); 
+   if(HeightMap != 0) {
+      std::cerr << "[Line "<< linhaNum << "] NameError: O mapa está incompleto.\n";
+      exit(EXIT_FAILURE);
+   }
    return res;
 }
 
@@ -216,7 +221,7 @@ antlrcpp::Any Execute::visitRow(LabParser::RowContext *ctx) {
    res = visitChildren(ctx);
    int pos = std::stoi(ctx->INT()->getText());
    if(pos != --HeightMap){
-     std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: A Ordem das linhas està incorreta.\n";
+     std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: A Ordem das linhas incorreta ou linha " << HeightMap <<" não existe.\n";
       exit(EXIT_FAILURE);
    }
 
@@ -245,7 +250,7 @@ antlrcpp::Any Execute::visitRow(LabParser::RowContext *ctx) {
       }
    }
    if(WidthMap != linha.size()){
-      std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: Tamanho incorreto  .\n";
+      std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: Tamanho incorreto de Comprimento do mapa.\n";
       exit(EXIT_FAILURE);
    }
 
@@ -263,7 +268,7 @@ antlrcpp::Any Execute::visitRow(LabParser::RowContext *ctx) {
    ST.append("\"");
    ST.append(" Pattern="); ST.append(row);
    ST.append("/>\n");
-
+   linhaNum = ctx->start->getLine();
    return res;
 }
 
