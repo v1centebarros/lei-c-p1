@@ -68,7 +68,7 @@ antlrcpp::Any Execute::visitPosition(LabParser::PositionContext *ctx) {
       dir = std::stoi(ctx->INT()->getText())%360;
       if(dir < 0){
          std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: Direção não pode ser negativa";
-         exit(1);
+         exit(EXIT_FAILURE);
       }
    }else{
       dir = 180;
@@ -95,15 +95,15 @@ antlrcpp::Any Execute::visitLabirinto(LabParser::LabirintoContext *ctx) {
    }*/
    int Width = std::stoi(ctx->INT(0)->getText());
    if (Width <= 0){
-      std::cout << "[Line "<< ctx->start->getLine() << "] NameError:  Width tem ser maior que zero.\n";
-      exit(1);
+      std::cerr << "[Line "<< ctx->start->getLine() << "] NameError:  Width tem ser maior que zero.\n";
+      exit(EXIT_FAILURE);
    }
    WidthMap = std::stoi(ctx->INT(0)->getText())- 1;  
 
    int Height = std::stoi(ctx->INT(1)->getText());
    if (Height <= 0){
-      std::cout << "[Line "<< ctx->start->getLine() << "] NameError: Height tem ser maior que zero.\n";
-      exit(1);
+      std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: Height tem ser maior que zero.\n";
+      exit(EXIT_FAILURE);
    }
    HeightMap = std::stoi(ctx->INT(1)->getText()) - 1;
 
@@ -137,7 +137,7 @@ antlrcpp::Any Execute::visitBeacon(LabParser::BeaconContext *ctx) {
       height = std::stoi(ctx->INT()->getText());
       if (height <= 0){
          std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: Height tem ser maior que zero.\n";
-         exit(1);
+         exit(EXIT_FAILURE);
       }
    }else{
       height=2;
@@ -161,7 +161,7 @@ antlrcpp::Any Execute::visitTarget(LabParser::TargetContext *ctx) {
       radius = std::stof(ctx->num()->getText());
       if (radius <= 0){
          std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: Radius tem ser maior que zero.\n";
-         exit(1);
+         exit(EXIT_FAILURE);
       }
    }else{
       radius=1;
@@ -185,7 +185,7 @@ antlrcpp::Any Execute::visitSpot(LabParser::SpotContext *ctx) {
       height = std::stoi(ctx->INT()->getText());
       if (height <= 0){
          std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: Height tem ser maior que zero.\n";
-         exit(1);
+         exit(EXIT_FAILURE);
       }
    }else{
       height=2;
@@ -196,7 +196,7 @@ antlrcpp::Any Execute::visitSpot(LabParser::SpotContext *ctx) {
       radius = std::stof(ctx->num()->getText());
       if (radius <= 0){
          std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: Radius tem ser maior que zero.\n";
-         exit(1);
+         exit(EXIT_FAILURE);
       }
    }else{
       radius=1;
@@ -227,7 +227,7 @@ antlrcpp::Any Execute::visitRow(LabParser::RowContext *ctx) {
    int pos = std::stoi(ctx->INT()->getText());
    if(pos != --HeightMap){
      std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: A Ordem das linhas està incorreta.\n";
-      exit(1);
+      exit(EXIT_FAILURE);
    }
 
    string row = ctx->PADRAO()->getText();
@@ -256,7 +256,7 @@ antlrcpp::Any Execute::visitRow(LabParser::RowContext *ctx) {
    }
    if(WidthMap != linha.size()){
       std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: .\n";
-      exit(1);
+      exit(EXIT_FAILURE);
    }
 
    //imprimir mapa no terminal 0-não tem parede; 1- tem parede
