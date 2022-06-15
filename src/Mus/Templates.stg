@@ -64,32 +64,32 @@ class Point {
 
     // Constructor
     Point(int x, int y) {
-      this->x = x;
-      this->y = y;
+      this-\>x = x;
+      this-\>y = y;
     }
 
     // Distance point/pose
     float distance(float x, float y) {
-      return sqrt(pow(x - this->x, 2) + pow(y - this->y, 2));
+      return sqrt(pow(x - this-\>x, 2) + pow(y - this-\>y, 2));
     }
 
     // overload the * operator to multiply a point by a scalar
     Point operator*(float scalar) {
-      return Point(this->x * scalar, this->y * scalar);
+      return Point(this-\>x * scalar, this-\>y * scalar);
     }
 
     // Overload the + operator
     Point operator+(const Point& p) {
-      return Point(this->x + p.x, this->y + p.y);
+      return Point(this-\>x + p.x, this-\>y + p.y);
     }
 
     // Overload the - operator
     Point operator-(const Point& p) {
-      return Point(this->x - p.x, this->y - p.y);
+      return Point(this-\>x - p.x, this-\>y - p.y);
     }
 
     // overload the \<\< operator
-    friend ostream& operator<<(ostream& os, const Point& p) {
+    friend ostream& operator\<\<(ostream& os, const Point& p) {
       os \<\< "(" \<\< p.x \<\< ", " \<\< p.y \<\< ")";
       return os;
     }
@@ -123,7 +123,7 @@ class Twist{
     }
 
     // overload the \<\< operator
-    friend ostream& operator<<(ostream& os, const Twist& t) {
+    friend ostream& operator\<\<(ostream& os, const Twist& t) {
       os \<\< "(" \<\< t.x \<\< ", " \<\< t.y \<\< ")";
       return os;
     }
@@ -143,7 +143,7 @@ class Pose{
       if(angle >180){
         this->angle= 360 - angle;
       }
-      else if (angle < -180){
+      else if (angle \< -180){
         this->angle = 360 + angle;
       }
       else{
@@ -171,7 +171,7 @@ class Pose{
     }
 
     // overload the \<\< operator
-    friend ostream& operator<<(ostream& os, const Pose& p) {
+    friend ostream& operator\<\<(ostream& os, const Pose& p) {
       os \<\< "(" \<\< p.x \<\< ", " \<\< p.y \<\< ", " \<\< p.theta \<\< ")";
       return os;
     }
