@@ -90,7 +90,7 @@ class Point {
 
     // overload the \<\< operator
     friend ostream& operator<<(ostream& os, const Point& p) {
-      os \<\< "(" \<\< p.x << ", " \<\< p.y \<\< ")";
+      os \<\< "(" \<\< p.x \<\< ", " \<\< p.y \<\< ")";
       return os;
     }
 
@@ -124,7 +124,7 @@ class Twist{
 
     // overload the \<\< operator
     friend ostream& operator<<(ostream& os, const Twist& t) {
-      os \<\< "(" << t.x \<\< ", " \<\< t.y \<\< ")";
+      os \<\< "(" \<\< t.x \<\< ", " \<\< t.y \<\< ")";
       return os;
     }
     
@@ -172,7 +172,7 @@ class Pose{
 
     // overload the \<\< operator
     friend ostream& operator<<(ostream& os, const Pose& p) {
-      os \<\< "(" \<\< p.x \<\< ", " \<\< p.y << ", " \<\< p.theta \<\< ")";
+      os \<\< "(" \<\< p.x \<\< ", " \<\< p.y \<\< ", " \<\< p.theta \<\< ")";
       return os;
     }
 };
