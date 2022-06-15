@@ -80,6 +80,10 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
 
   @Override public String visitDefFunction(MusParser.DefFunctionContext ctx) {
       String func = ctx.ID(0).getText();
+      if (func.contains(":")) {
+         System.err.printf("[Line %d] NameError: symbol ':' is reserved for object's attributes\n", ctx.start.getLine());
+         return "ERROR";
+      }
       if (func.contains(".")) {
          System.err.printf("[Line %d] NameError: symbol '.' is reserved for object's methods\n", ctx.start.getLine());
          return "ERROR";
