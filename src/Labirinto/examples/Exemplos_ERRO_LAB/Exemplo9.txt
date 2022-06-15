@@ -1,6 +1,5 @@
 #Exemplo 9 - Definir um labirinto e posições inicias dos robos, onde uma das posiçoẽs iniciais não esta no labirinto.
 
-#FICHEIRO:
     LABIRINTO (NAME = "lab01" WIDTH = 28 HEIGHT = 14) {};
 	GRID{POS (1.5,16) DIRECTION = 180;};
 

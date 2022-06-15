@@ -1,7 +1,5 @@
 #Exemplo - Pretende-se criar um desafio para o robo descobrir o mapa. Para tal, precisa-se definir um mapa. 
-	(Não precisa de definir pontos de chegada ou de passagem)
-
-#Ficheiro:
+#	(Não precisa de definir pontos de chegada ou de passagem)
 
 	LABIRINTO (NAME = "lab03" WIDTH = 28  HEIGHT = 14) { 
 		/* Definir mapa*/

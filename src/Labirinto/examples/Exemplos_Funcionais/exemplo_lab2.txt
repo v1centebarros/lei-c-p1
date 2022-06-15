@@ -1,7 +1,6 @@
 #Exemplo- Definir um Labirinto com um Target, um Beacon e um Spot, recorrendo ao valor default de raio e altura,
-	e com um mapa associado, ou seja, com obstásculos. 
+#	e com um mapa associado, ou seja, com obstásculos. 
 
-#Ficheiro:
 	LABIRINTO (NAME = "lab02" WIDTH = 28 HEIGHT = 14) { 
 		TARGET = (9,5); #Definir target 
 		BEACON = (3,3); #Definir beacon

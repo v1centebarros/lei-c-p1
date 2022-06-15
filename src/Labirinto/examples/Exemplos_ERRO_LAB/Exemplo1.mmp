@@ -4,10 +4,12 @@
     LABIRINTO (NAME = "teste" WIDTH = 0 HEIGHT = 10) { };
 
 #TERMINAL:
-#   [Line 1] NameError: A Width do Labirinto tem ser superior a zero.
+#   [Line 1] MazeError: Width must be positive.
 
-/*FICHEIRO:
+/*
+FICHEIRO:
    LABIRINTO (NAME = "teste" WIDTH = 17 HEIGHT = 0) { }; 
 
 TERMINAL:
-   [Line 1] NameError: A Height do Labirinto tem ser superior a zero.*/
+   [Line 1] MazeError: Height must be positive.
+*/

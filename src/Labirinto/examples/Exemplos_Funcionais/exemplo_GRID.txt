@@ -1,5 +1,4 @@
 #Exemplo 1- Pretende-se defenir as posições iniciais de cinco robos no labirinto, tal como a sua orientação.
-#Ficheiro:
     GRID{
         POS (1.5,7) DIRECTION = 180;
         POS (3,2) DIRECTION = 90;

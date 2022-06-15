@@ -1,6 +1,5 @@
 #Exemplo 3 - Definir no Labirinto um beacon com uma altura igual a zero.
 
-#FICHEIRO:
 
     LABIRINTO (NAME = "teste" WIDTH = 17 HEIGHT = 14) { 
         TARGET = (26,7) RADIUS = 3;                     
@@ -8,4 +7,4 @@
     };
 
 #TERMINAL:
-#    [Line 3] NameError: A Height do Beacon tem ser superior a zero.
+#    [Line 5] MazeError: Invalid (26,7) coordinates.

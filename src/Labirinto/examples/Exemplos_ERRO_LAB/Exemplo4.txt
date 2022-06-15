@@ -8,9 +8,10 @@
     };
 
 #TERMINAL:
-#    [Line 3] NameError: A Height do Spot tem ser superior a zero.
+#    [Line 3] SpotError: Height must be positive.
 
-#FICHEIRO:
+/*
+FICHEIRO:
 
     LABIRINTO (NAME = "teste" WIDTH = 17 HEIGHT = 14) { 
         BEACON = (3,1) HEIGHT = 3;
@@ -18,4 +19,5 @@
     };
 
 #TERMINAL:
-#    [Line 3] NameError: O Radius do Spot tem ser superior a zero.
+#    [Line 3] SpotError: Radius must be positive.
+*/

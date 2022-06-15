@@ -110,7 +110,7 @@ antlrcpp::Any Execute::visitLabirinto(LabParser::LabirintoContext *ctx) {
    ST.append("</Lab>\n\n"); 
    if( HeightMap + 1 != Height){
       if(HeightMap != 0) {
-         std::cerr << "[Line "<< linhaNum << "] Maze is incomplete.\n";
+         std::cerr << "[Line "<< linhaNum << "] MazeError: Missing Properties.\n";
          exit(EXIT_FAILURE);
       }
    }
@@ -133,7 +133,7 @@ antlrcpp::Any Execute::visitBeacon(LabParser::BeaconContext *ctx) {
    if(ctx->INT()!=nullptr){
       height = std::stoi(ctx->INT()->getText());
       if (height <= 0){
-         std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: A Height do Beacon tem ser superior a zero.\n";
+         std::cerr << "[Line "<< ctx->start->getLine() << "] BeaconError: Height must be positive.\n";
          exit(EXIT_FAILURE);
       }
    }else{
@@ -157,7 +157,7 @@ antlrcpp::Any Execute::visitTarget(LabParser::TargetContext *ctx) {
    if(ctx->num()!=nullptr){
       radius = std::stof(ctx->num()->getText());
       if (radius <= 0){
-         std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: O Radius do Target tem ser superior a zero.\n";
+         std::cerr << "[Line "<< ctx->start->getLine() << "] TargetError: Radius must be positive.\n";
          exit(EXIT_FAILURE);
       }
    }else{
@@ -181,7 +181,7 @@ antlrcpp::Any Execute::visitSpot(LabParser::SpotContext *ctx) {
    if(ctx->INT()!=nullptr){
       height = std::stoi(ctx->INT()->getText());
       if (height <= 0){
-         std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: A Height do Spot tem ser superior a zero.\n";
+         std::cerr << "[Line "<< ctx->start->getLine() << "] SpotError: Height must be positive.\n";
          exit(EXIT_FAILURE);
       }
    }else{
@@ -192,7 +192,7 @@ antlrcpp::Any Execute::visitSpot(LabParser::SpotContext *ctx) {
    if(ctx->num()!=nullptr){
       radius = std::stof(ctx->num()->getText());
       if (radius <= 0){
-         std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: O Radius do Spot tem ser superior a zero.\n";
+         std::cerr << "[Line "<< ctx->start->getLine() << "] SpotError: Radius must be positive.\n";
          exit(EXIT_FAILURE);
       }
    }else{
@@ -223,7 +223,7 @@ antlrcpp::Any Execute::visitRow(LabParser::RowContext *ctx) {
    res = visitChildren(ctx);
    int pos = std::stoi(ctx->INT()->getText());
    if(pos != --HeightMap){
-     std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: A Ordem das linhas incorreta ou linha " << HeightMap <<" não existe.\n";
+     std::cerr << "[Line "<< ctx->start->getLine() << "] MapError: Lines swapped or " << HeightMap <<" does not exist.\n";
       exit(EXIT_FAILURE);
    }
 
@@ -252,7 +252,7 @@ antlrcpp::Any Execute::visitRow(LabParser::RowContext *ctx) {
       }
    }
    if(WidthMap != linha.size()){
-      std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: Tamanho incorreto de Comprimento do mapa.\n";
+      std::cerr << "[Line "<< ctx->start->getLine() << "] MapError: Invalid length.\n";
       exit(EXIT_FAILURE);
    }
 
@@ -283,14 +283,14 @@ antlrcpp::Any Execute::visitCoordenadas(LabParser::CoordenadasContext *ctx) {
    y = std::stof(ctx->num(1)->getText()); 
    if(Width!= -1){
       if(!(x>0 && x<=Width)){
-            std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: Coordenadas ("<< x << "," << y << ") não pertence ao labirinto.\n";
+            std::cerr << "[Line "<< ctx->start->getLine() << "] MazeError: Invalid ("<< x << "," << y << ") coordinates.\n";
             exit(EXIT_FAILURE);
          }
    }
 
    if(Height!= -1){
       if(!(y>0 && y<=Height)){
-         std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: Coordenadas ("<< x << "," << y << ") não pertence ao labirinto.\n";
+         std::cerr << "[Line "<< ctx->start->getLine() << "] MazeError: Invalid ("<< x << "," << y << ") coordinates.\n";
          exit(EXIT_FAILURE);
       }
    }

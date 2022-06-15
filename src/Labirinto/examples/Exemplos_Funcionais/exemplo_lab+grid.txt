@@ -1,7 +1,6 @@
 /*Exemplo - Pretende-se definir num único ficheiro um conjuntos de posições iniciais do robo num labirinto,
 	e um labirinto com diferentes targets, beacons, e spot de forma aletória num mapa.*/
 
-#Ficheiro:
 
 	#Definir um labirinto
 	LABIRINTO (NAME = "lab01" WIDTH = 28 HEIGHT = 14) { 

@@ -9,20 +9,20 @@
     };
 
 #TERMINAL:
-#    [Line 2] NameError: Coordenadas (10,12) não pertence ao labirinto.
+#    [Line 2] MazeError: Invalid (10,12) coordinates.
 
 
-#FICHEIRO:
+/*#FICHEIRO:
 
     LABIRINTO (NAME = "teste" WIDTH = 17 HEIGHT = 10) {                     
         BEACON = (20,1) HEIGHT = 3;
     };
 
 #TERMINAL:
-#    [Line 2] NameError: Coordenadas (20,1) não pertence ao labirinto.
+#    [Line 2] MazeError: Invalid (20,1) coordinates.
 
 
-/*
+
 FICHEIRO:
 
     LABIRINTO (NAME = "teste" WIDTH = 17 HEIGHT = 10) { 
@@ -31,5 +31,5 @@ FICHEIRO:
     };
 
 TERMINAL:
-    [Line 3] NameError: Coordenadas (26,7) não pertence ao labirinto.
+    [Line 3] MazeError: Invalid (26,7) coordinates.
 */

@@ -1,7 +1,5 @@
 #Exemplo 6 - Definir no Labirinto uma mapa com a ordem incorreta de linhas ou sem uma linha.
 
-#FICHEIRO:
-
     LABIRINTO (NAME = "lab02" WIDTH = 28 HEIGHT = 14) { 
         SPOT = (26,7); #Definir beacon e target conjuntos
 
@@ -19,4 +17,4 @@
     };
 
 #TERMINAL:
-#    [Line 10] NameError: A Ordem das linhas incorreta ou linha 6 não existe.
+#    [Line 12] MapError: Lines swapped or 6 does not exist.

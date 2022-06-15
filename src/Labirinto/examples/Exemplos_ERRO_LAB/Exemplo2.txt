@@ -1,6 +1,5 @@
 #Exemplo 2 - Definir no Labirinto um target com um raio igual a zero.
 
-#FICHEIRO:
 
     LABIRINTO (NAME = "teste" WIDTH = 17 HEIGHT = 10) { 
         TARGET = (10,7) RADIUS = 0;                     
@@ -9,6 +8,6 @@
     };
 
 #TERMINAL:
-#    [Line 2] NameError: O Radius do Target tem ser superior a zero.
+#    [Line 5] TargetError: Radius must be positive.
 
     
