@@ -6,7 +6,6 @@ program:
 
 stat:labirinto  
     |grid
-    |grid ';' labirinto
     |labirinto ';' grid          
     ;
 

@@ -1,0 +1,21 @@
+#Exemplo - Pretende-se defenir um Labirinto com um Target, um beacon e um Spot, NÃO recorrendo a valores defaults, e sem qualquer obstáculo.
+Ficheiro:
+	LABIRINTO (NAME = "lab01" WIDTH = 30 HEIGHT = 10) { 
+		TARGET = (10,7) RADIUS = 1.5; #Definir target 
+		BEACON = (3,1) HEIGHT = 3; #Definir beacon
+		SPOT = (26,7) HEIGHT = 2 RADIUS = 1; #Definir beacon e target conjuntos
+	};
+
+Comentários:
+	Para construir um labirinto, sem qualquer obstáculo, pode-se não colocar mapa, desta forma ele será vazio.
+	Para definir Targets e Beacons sem recorrer a valores default utiliza-se os argumentos RADIUS e HEIGHT, para cada um respetivamente.
+	Para o spot deve definir ambos, mas com a atenção de ser primeiro a HEIGHT e só depois RADIUS.
+    
+	
+XML Resultante:
+	<Lab Name="lab01" Width="30.0" Height="10.0">
+		<Target X="10.0" Y="7" Radius="1.5"/>
+		<Beacon X="3.0" Y="1" Height="3"/>
+		<Beacon X="26.0" Y="7" Height="2"/>
+		<Target X="26.0" Y="7" Radius="1"/>
+	</Lab>

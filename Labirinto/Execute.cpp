@@ -9,7 +9,9 @@ string keyWords[] = {"GRID", "LABIRINTO", "POS" , "DIRECTION", "NAME",
                         "SPOT" , "ROW"};
 
 int HeightMap;
+int Height = -1;
 size_t WidthMap;
+int Width = -1 ;
 int linhaNum;
 // Execute::Execute(Map* map) {
 //    //this->map = map;
@@ -84,14 +86,14 @@ antlrcpp::Any Execute::visitLabirinto(LabParser::LabirintoContext *ctx) {
    antlrcpp::Any res = nullptr;
    std::string r;
 
-   int Width = std::stoi(ctx->INT(0)->getText());
+   Width = std::stoi(ctx->INT(0)->getText());
    if (Width <= 0){
       std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: A Width do Labirinto tem ser superior a zero.\n";
       exit(EXIT_FAILURE);
    }
    WidthMap = std::stoi(ctx->INT(0)->getText())- 1;  
 
-   int Height = std::stoi(ctx->INT(1)->getText());
+   Height = std::stoi(ctx->INT(1)->getText());
    if (Height <= 0){
       std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: A Height do Labirinto tem ser superior a zero.\n";
       exit(EXIT_FAILURE);
@@ -109,10 +111,13 @@ antlrcpp::Any Execute::visitLabirinto(LabParser::LabirintoContext *ctx) {
    ST.append(">\n");
    res = visitChildren(ctx);
    ST.append("</Lab>\n\n"); 
-   if(HeightMap != 0) {
-      std::cerr << "[Line "<< linhaNum << "] NameError: O mapa está incompleto.\n";
-      exit(EXIT_FAILURE);
+   if( HeightMap + 1 != Height){
+      if(HeightMap != 0) {
+         std::cerr << "[Line "<< linhaNum << "] NameError: O mapa está incompleto.\n";
+         exit(EXIT_FAILURE);
+      }
    }
+   
    return res;
 }
 
@@ -278,7 +283,20 @@ antlrcpp::Any Execute::visitCoordenadas(LabParser::CoordenadasContext *ctx) {
    
    float x, y;
    x = std::stof(ctx->num(0)->getText());
-   y = std::stof(ctx->num(1)->getText());
+   y = std::stof(ctx->num(1)->getText()); 
+   if(Width!= -1){
+      if(!(x>0 && x<=Width)){
+            std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: Coordenadas ("<< x << "," << y << ") não pertence ao labirinto.\n";
+            exit(EXIT_FAILURE);
+         }
+   }
+
+   if(Height!= -1){
+      if(!(y>0 && y<=Height)){
+         std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: Coordenadas ("<< x << "," << y << ") não pertence ao labirinto.\n";
+         exit(EXIT_FAILURE);
+      }
+   }
    
    ST.append(" X=\"");   ST.append(std::to_string(x)); //remover casas decimais
    ST.append("\" Y=\""); ST.append(std::to_string(y));

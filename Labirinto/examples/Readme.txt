@@ -25,20 +25,12 @@ Ordenação do mapa:
 
 
 NOTA IMPORTANTE: 
-    No simulador o robo não se mexe se tiver uma direção de 360, pelo é calculado o resto da divisão por 360 para 
+    -No simulador o robo não se mexe se tiver uma direção de 360, pelo é calculado o resto da divisão por 360 para 
 podermos aceitar uma maior gama de direções. São excluidas as direções negativas e as que não forem inteiras;
-    A ordem de como as posições são colocadas na GRID, corresponde à ordem de como os robos são colocados no labirinto;
-    Em cada ficheiro gerado pela linguagem só é possível ter ou uma grid, ou um labirinto, ou um labirinto e uma grid, ou seja, 
-não é aceite mais de dois labirintos ou duas grids, por exemplo.
-    A altura de um beacon, se colocada, deve ser superior a 0, e o mesmo no caso raio no target.
-    A altura e o comprimento do labirinto deve ser superior a 0.
-    O mapa não pode estar incompleto, ou seja, não pode falhar nem com tamanho do labirinto, nem por falhas linhas ou falta de espaços do labirinto.
-
-
-
-    TODO:
-    -------tratamento de erros---------------
-    ficheiro exemplo de erros; (associados ao que fiz --feito 
-                                falta associados ao antlr4 e verificar se termina)
-    melhorar ficheiros de exemplos;
-    alterar nome dos erros;
+    -A ordem de como as posições são colocadas na GRID, corresponde à ordem de como os robos são colocados no labirinto;
+    -Em cada ficheiro gerado pela linguagem só é possível ter ou uma grid, ou um labirinto, ou um labirinto e uma grid,nesta mesma ordem,
+ou seja,não é aceite mais de dois labirintos ou duas grids e não aceite uma grid e depois um labirinto, por exemplo;
+    -A altura de um beacon, se colocada, deve ser superior a 0, e o mesmo no caso raio no target;
+    -A altura e o comprimento do labirinto deve ser superior a 0;
+    -O mapa não pode estar incompleto, ou seja, não pode falhar nem com tamanho do labirinto, nem por falhas linhas ou falta de espaços do labirinto;
+    -No caso de ser construia apenas uma grid no labirinto, não considerado limites nas coordenadas, apenas que devem ser positivas em qualquer dos eixos.

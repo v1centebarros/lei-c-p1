@@ -1,0 +1,33 @@
+#Exemplo 8-Definir um Target ou BEACON ou um Spot fora do Labirinto.
+
+FICHEIRO:
+
+    LABIRINTO (NAME = "teste" WIDTH = 17 HEIGHT = 10) { 
+        TARGET = (10,12) RADIUS = 0.5;                     
+        BEACON = (3,1) HEIGHT = 3;
+        SPOT = (26,7) HEIGHT = 2 RADIUS = 1;
+    };
+
+TERMINAL:
+    [Line 2] NameError: Coordenadas (10,12) não pertence ao labirinto.
+
+
+FICHEIRO:
+
+    LABIRINTO (NAME = "teste" WIDTH = 17 HEIGHT = 10) {                     
+        BEACON = (20,1) HEIGHT = 3;
+    };
+
+TERMINAL:
+    [Line 2] NameError: Coordenadas (20,1) não pertence ao labirinto.
+
+
+FICHEIRO:
+
+    LABIRINTO (NAME = "teste" WIDTH = 17 HEIGHT = 10) { 
+        TARGET = (10,7) RADIUS = 0.5;                     
+        SPOT = (26,7) HEIGHT = 2 RADIUS = 1;
+    };
+
+TERMINAL:
+    [Line 3] NameError: Coordenadas (26,7) não pertence ao labirinto.
