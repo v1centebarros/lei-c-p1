@@ -1,0 +1,61 @@
+
+/*____________________________________________________________________________________________
+|                                                                                            |
+|                          ESTE EXEMPLO MOSTRA A UTILIZAÇÃO DE FUNÇÕES                       |
+|                           COMO AUXILIO NA MANIPULAÇÃO DE UM ROBOT                          |
+|____________________________________________________________________________________________|*/
+
+
+
+
+#função que permite mover o robot em direção ao farol (aceita como argumento o farol)
+
+function move_to_farol with NUM farol (
+    while groundType != farol do
+        NUM linearPower = 80.0;
+        NUM angularPower = 1 * beaconAngle farol;
+        move linearPower-angularPower linearPower+angularPower;
+    end
+
+)
+
+
+#função que permite mover o robot em direção ao ponto inicial
+
+function move_to_start (
+    while startDistance > 2 do
+        NUM linearPower = 80.0;
+        NUM angularPower = 1 * startAngle;
+        move linearPower-angularPower linearPower+angularPower;
+    end
+)
+
+
+
+
+#criar um robot chamado "Nody" na posição 1
+ROBOT nody = ("Nody", 1);
+use nody;
+NUM farol = 1;
+
+
+#alinhar o robot com o farol
+rotate 80 until -10 < beaconAngle farol < 10;
+
+
+#mover robot em direção ao farol através da função criada
+move_to_farol farol;
+
+
+stop;
+pickUp;
+returning;
+
+rotate 80 until -10 < startAngle <10;
+
+
+#mover robot até à posição inicial com a função criada
+move_to_start;
+
+stop;
+finish;

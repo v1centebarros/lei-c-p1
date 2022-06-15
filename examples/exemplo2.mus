@@ -1,26 +1,26 @@
 /*____________________________________________________________________________________________
 |                                                                                            |
-|                     RECORRER A LISTAS PARA ARMAZENAR OS NÚMEROS DOS                        |
-|                       FARÓIS E ATRAVÉS DE UM FOREACH, VISITA-LOS                           |
+|                  EXEMPLO COM UM ROBOT NUM MAPA COM VÁRIOS FAROIS                           |
 |____________________________________________________________________________________________|*/
 
 
-ROBOT nody = ("Nody", 1);
+
+
+ROBOT nody = ("nody", 1);
+
 use nody;
 
-LIST_NUM farois = [1, 2];
+NUM farol = 1;
+NUM total_farois = beaconCount;  #obter o numero total de farois no mapa
 
 
-
-#visitar cada um dos farois com um foreach
-
-for farol in farois
+while farol <= total_farois 
 do
-
-    print "    ✔ Going to beacon ";
+    print "✔ Going to beacon ";
     print farol;
     print "\n";
     
+    # rodar em direcao ao farol
     rotate 80 until -10 < beaconAngle farol < 10;
 
     while groundType != farol 
@@ -33,6 +33,7 @@ do
         NUM rdist = obstacleDistance 2;
 
 
+	#deviar de um objeto (robot ou parede) se colidir
         if collides do
             linearPower = 0.0;
             angularPower = -50.0;
@@ -68,13 +69,20 @@ do
     stop;
     pickUp;
 
+    #proximo farol
+    farol = farol + 1;
+
 end
 
-
-
-#retornar ao ponto de partida
 returning;
+
+# mover robot em direcao ao ponto inicial
+print "✔ Rotating to start spot\n";
+
 rotate 80 until -10 < startAngle < 10;
+
+print "✔ Going to start spot, full speed\n";
+
 
 while startDistance > 2
 do
@@ -118,6 +126,9 @@ do
 
 end
 
+
+print "✔ Going to start spot, slowly\n";
+
 while startDistance > 0.3
 do
 
@@ -128,4 +139,3 @@ do
 end
 
 stop;
-

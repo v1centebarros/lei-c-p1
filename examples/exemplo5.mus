@@ -1,0 +1,92 @@
+/*____________________________________________________________________________________________
+|                                                                                            |
+|                    CRIAR E MANIPULAR DOIS ROBOTS (suporta mais)                            |
+|                       (NÃO preparado para evitar colisões)                                 |
+|____________________________________________________________________________________________|*/
+
+
+
+/* primeiro temos de criar os 2 robots -> nody e mafarrico */
+
+ROBOT nody = ("Nody", 1);
+ROBOT mafarrico = ("Mafarrico", 2);
+
+
+
+
+/* comecemos por definir o comportamento do nody */
+use nody;
+NUM farol = 1;
+
+
+#alinhar o robot com o farol
+rotate 80 until -10 < beaconAngle farol < 10;
+
+
+#após alinhado, mover robot em direção ao farol
+while groundType != farol do
+    NUM linearPower = 80.0;
+    NUM angularPower = 1 * beaconAngle farol;
+    move linearPower-angularPower linearPower+angularPower;
+end
+
+stop;
+pickUp;
+returning;
+
+
+#alinhar o robot com a posição onde começou
+rotate 80 until -10 < startAngle <10;
+
+
+#após alinhado, mover robot em direção ao ponto inicial
+while startDistance > 2 do
+    NUM linearPower = 80.0;
+    NUM angularPower = 1 * startAngle;
+    move linearPower-angularPower linearPower+angularPower;
+end
+
+stop;
+finish;
+
+print "Fim do percurso do nody\n";
+
+
+
+
+/* definir o comportamento do robot mafarrico */
+use mafarrico;
+NUM farol = 1;
+
+
+#alinhar o robot com o farol
+rotate 80 until -10 < beaconAngle farol < 10;
+
+
+#após alinhado, mover robot em direção ao farol
+while groundType != farol do
+    NUM linearPower = 80.0;
+    NUM angularPower = 1 * beaconAngle farol;
+    move linearPower-angularPower linearPower+angularPower;
+end
+
+stop;
+pickUp;
+returning;
+
+
+#alinhar o robot com a posição onde começou
+rotate 80 until -10 < startAngle <10;
+
+
+#após alinhado, mover robot em direção ao ponto inicial
+while startDistance > 2 do
+    NUM linearPower = 80.0;
+    NUM angularPower = 1 * startAngle;
+    move linearPower-angularPower linearPower+angularPower;
+end
+
+stop;
+finish;
+
+print "Fim do percurso do mafarrico\n";

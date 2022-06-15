@@ -1,13 +1,16 @@
-/* 
-    Exemplo básico de criação e manipulação de um robot
-*/
+/*____________________________________________________________________________________________
+|                                                                                            |
+|                  EXEMPLO BÁSICO DE CRIAÇÃO E MANIPULAÇÃO DE UM ROBOT                       |
+|____________________________________________________________________________________________|*/
+
+
 
 
 #criar um robot chamado "Nody" na posição 1
 ROBOT nody = ("Nody", 1);
 
 
-#fazer com que o robot a ser manipulado seja o no Nody
+#fazer com que o robot a ser manipulado seja o Nody
 use nody;
 
 
