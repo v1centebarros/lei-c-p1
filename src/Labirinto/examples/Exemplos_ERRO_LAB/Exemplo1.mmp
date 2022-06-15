@@ -1,0 +1,13 @@
+#Exemplo 1 - Definição de um labirinto com comprimento ou altura zero.
+
+#FICHEIRO:
+    LABIRINTO (NAME = "teste" WIDTH = 0 HEIGHT = 10) { };
+
+#TERMINAL:
+#   [Line 1] NameError: A Width do Labirinto tem ser superior a zero.
+
+/*FICHEIRO:
+   LABIRINTO (NAME = "teste" WIDTH = 17 HEIGHT = 0) { }; 
+
+TERMINAL:
+   [Line 1] NameError: A Height do Labirinto tem ser superior a zero.*/

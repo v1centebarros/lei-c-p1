@@ -1,7 +1,7 @@
 #Exemplo - Pretende-se criar um desafio para o robo descobrir o mapa. Para tal, precisa-se definir um mapa. 
 	(Não precisa de definir pontos de chegada ou de passagem)
 
-Ficheiro:
+#Ficheiro:
 
 	LABIRINTO (NAME = "lab03" WIDTH = 28  HEIGHT = 14) { 
 		/* Definir mapa*/
@@ -20,7 +20,7 @@ Ficheiro:
 		ROW 0  : "        |                                ";
 	};
         
-XML Resultante:
+/*XML Resultante:
 
 	<Lab Name="lab03" Width="28.0" Height="14.0">
 		<Row  Pos="12" Pattern="           |              |              "  />
@@ -37,3 +37,4 @@ XML Resultante:
 		<Row  Pos="1"  Pattern="  +--+  +  +  +  +  +--+--+  +  +  +  +  "  />
 		<Row  Pos="0"  Pattern="        |                                "  />
 	</Lab>
+*/

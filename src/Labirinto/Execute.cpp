@@ -22,9 +22,6 @@ void Execute::setMap(Map* m) {
    this->map = m;
 }
 
-Execute::~Execute() {
-   std::cout << "ola2";
-}
 
 int Execute::writeToFile() {
    std::ofstream fileout;
@@ -88,14 +85,14 @@ antlrcpp::Any Execute::visitLabirinto(LabParser::LabirintoContext *ctx) {
 
    Width = std::stoi(ctx->INT(0)->getText());
    if (Width <= 0){
-      std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: A Width do Labirinto tem ser superior a zero.\n";
+      std::cerr << "[Line "<< ctx->start->getLine() << "] MazeError: Width must be positive.\n";
       exit(EXIT_FAILURE);
    }
    WidthMap = std::stoi(ctx->INT(0)->getText())- 1;  
 
    Height = std::stoi(ctx->INT(1)->getText());
    if (Height <= 0){
-      std::cerr << "[Line "<< ctx->start->getLine() << "] NameError: A Height do Labirinto tem ser superior a zero.\n";
+      std::cerr << "[Line "<< ctx->start->getLine() << "] MazeError: Height must be positive.\n";
       exit(EXIT_FAILURE);
    }
    HeightMap = std::stoi(ctx->INT(1)->getText()) - 1;
@@ -113,7 +110,7 @@ antlrcpp::Any Execute::visitLabirinto(LabParser::LabirintoContext *ctx) {
    ST.append("</Lab>\n\n"); 
    if( HeightMap + 1 != Height){
       if(HeightMap != 0) {
-         std::cerr << "[Line "<< linhaNum << "] NameError: O mapa está incompleto.\n";
+         std::cerr << "[Line "<< linhaNum << "] Maze is incomplete.\n";
          exit(EXIT_FAILURE);
       }
    }

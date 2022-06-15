@@ -1,6 +1,6 @@
 #Exemplo 5 - Definir no Labirinto em que o mapa esteja incompleto.
 
-FICHEIRO:
+#FICHEIRO:
 
     LABIRINTO (NAME = "teste" WIDTH = 28 HEIGHT = 14) { 
         SPOT = (26,7); #Definir beacon e target conjuntos
@@ -15,5 +15,5 @@ FICHEIRO:
         ROW 5  : "--+  +--+--+--+  +--+  +--+--+  +  +  +  ";
     };
 
-TERMINAL:
-    [Line 11] NameError: O mapa está incompleto.
+#TERMINAL:
+#    [Line 11] NameError: O mapa está incompleto.

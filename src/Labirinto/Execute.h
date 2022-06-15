@@ -20,7 +20,6 @@ private:
 public:
    //Execute(Map* map);
    Execute() {};
-   ~Execute();
 
    void setMap(Map* m);
 

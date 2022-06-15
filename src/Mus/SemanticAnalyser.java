@@ -549,10 +549,10 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
             return "TWIST";
          if (equalsType(expr0, "NUM") && expr1.equals("TWIST"))    
             return "TWIST";
-         if (expr0.contains("LIST") && expr1.equals("NUM"))
-            return expr0;
-         if (expr0.equals("NUM") && expr1.contains("LIST"))
-            return expr0;
+         // if (expr0.contains("LIST") && expr1.equals("NUM"))
+         //    return expr0;
+         // if (expr0.equals("NUM") && expr1.contains("LIST"))
+         //    return expr0;
       }
       System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op, expr0, expr1);
       return "ERROR";
@@ -600,8 +600,16 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       }
       String[] info = table.getFunction(func);
       String[] expectedArgs = info[0].split(";");
-      List<MusParser.ExprContext> stats = ctx.expr();
-      Iterator<MusParser.ExprContext> it = stats.iterator();
+      List<MusParser.ExprContext> exprs = ctx.expr();
+      Iterator<MusParser.ExprContext> it = exprs.iterator();
+      if (expectedArgs[0].equals("VOID")) {
+         newState = false;
+         if (exprs.size() != 0) {
+            System.err.printf("[Line %d] ArgError: received arguments in void function\n", ctx.start.getLine());
+            return "ERROR";
+         }
+         return info[1];
+      }
       String type, arg;
       for (int pos = 0; pos < expectedArgs.length; pos++) {
          arg = expectedArgs[pos];
@@ -612,7 +620,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
             return "ERROR";
          }
          type = visit(it.next());
-         if (!equalsType(type, arg)) {
+         if (!arg.contains(type) && !arg.equals("ANY")) {
             System.err.printf("[Line %d] ArgError: received %s but expected %s at position %d\n", ctx.start.getLine(), type, arg, pos);
             newState = false;
             return "ERROR";

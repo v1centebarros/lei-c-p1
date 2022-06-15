@@ -1,40 +1,60 @@
-#exemplo da tradução do a1.cpp para .mus
+/* 
+    Exemplo básico de criação e manipulação de um robot
+*/
 
-NUM position= 0;
-ROBOT Grimmy = ("Grimmy", position);
 
+#criar um robot chamado "Nody" na posição 1
+ROBOT nody = ("Nody", 1);
+
+
+#fazer com que o robot a ser manipulado seja o no Nody
+use nody;
+
+
+#imprimir informação no terminal
 print "Going to beacon 1\n";
 
-NUM bn = 1;
+
+NUM farol = 1;
 print "..Rotating to beacon\n";
 
-rotate 80 until -10 < beaconAngle bn < 10; #ja faz o apply
-# há apply com argumento, é importante ou podemos fazer o apply automatico com um valor default?
 
-print "\n..Going to beacon\n";
+#alinhar o robot com o farol
+rotate 80 until -10 < beaconAngle farol < 10;
 
-while groundType != bn do
+
+#após alinhado, mover robot em direção ao farol
+while groundType != farol do
     NUM linearPower = 80.0;
-    NUM angularPower = 1 * beaconAngle bn;
-    move (linearPower-angularPower, linearPower+angularPower); #move POINT
+    NUM angularPower = 1 * beaconAngle farol;
+    move linearPower-angularPower linearPower+angularPower;
 end
 
-stop; # move 0 0
 
+#quando chegar, para robot
+stop;
+
+
+#fazer pickup (altera os LEDs do robot)
 pickUp;
 
+
+#passar ao estado de retornar (altera os LEDs do robot)
 returning;
 
+
+#alinhar o robot com a posição onde começou
 rotate 80 until -10 < startAngle <10;
 
+
+#após alinhado, mover robot em direção ao ponto inicial
 while startDistance > 2 do
     NUM linearPower = 80.0;
     NUM angularPower = 1 * startAngle;
-    move (linearPower-angularPower, linearPower+angularPower); #move POINT
+    move linearPower-angularPower linearPower+angularPower;
 end
 
 stop;
-
 finish;
 
 print "Bye!\n";

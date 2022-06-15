@@ -1,0 +1,16 @@
+POINT p1 = (0,0)
+POITN p2 = (3,4)
+NUM dist = p1.distance(p2)
+p2 = p2.multiply(2)
+NUM p1_x = p1:x
+
+NUM linear = 2
+NUM angular = 3
+TWIST t1= (linear, angular)
+
+NUM angle_ = 100
+POSE pos= (p2:x, p2:y, angle)
+
+NUM angle_to_point = pos.angle(p1)
+
+# prints, somas e subtraçoes funcionam diretamente

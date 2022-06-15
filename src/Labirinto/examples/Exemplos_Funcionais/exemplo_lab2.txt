@@ -1,7 +1,7 @@
 #Exemplo- Definir um Labirinto com um Target, um Beacon e um Spot, recorrendo ao valor default de raio e altura,
 	e com um mapa associado, ou seja, com obstásculos. 
 
-Ficheiro:
+#Ficheiro:
 	LABIRINTO (NAME = "lab02" WIDTH = 28 HEIGHT = 14) { 
 		TARGET = (9,5); #Definir target 
 		BEACON = (3,3); #Definir beacon
@@ -22,7 +22,7 @@ Ficheiro:
 		ROW 0  : "        |                                ";
 	};
 
-Comentários:
+/*Comentários:
 	Para o problema dado é construído um mapa de acordo com as dimensões do labirinto, nos pontos onde o robo precisa de passar
 ou chegar, só necessário colocar as suas coordenas e por default a altura do spot e do beacon será 2, e raio do target e do spot será 1.
     
@@ -46,3 +46,4 @@ XML Resultante:
 		<Row  Pos="1"  Pattern="  +--+  +  +  +  +  +--+--+  +  +  +  +  "  />
 		<Row  Pos="0"  Pattern="        |                                "  />
 	</Lab>
+*/

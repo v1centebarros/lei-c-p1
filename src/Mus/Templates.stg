@@ -68,13 +68,13 @@ class Point {
       this->y = y;
     }
 
-    // Distance point to point
-    float distance(Point p) {
-      return sqrt(pow(p.x - this->x, 2) + pow(p.y - this->y, 2));
+    // Distance point/pose
+    float distance(float x, float y) {
+      return sqrt(pow(x - this->x, 2) + pow(y - this->y, 2));
     }
 
-    // Multiply point by scalar
-    Point multiply(float scalar) {
+    // overload the * operator to multiply a point by a scalar
+    Point operator*(float scalar) {
       return Point(this->x * scalar, this->y * scalar);
     }
 
@@ -89,43 +89,93 @@ class Point {
     }
 
     // overload the \<\< operator
-    friend ostream& operator\<\<(ostream& os, const Point& p) {
-      os \<\< "(" \<\< p.x \<\< ", " \<\< p.y \<\< ")";
+    friend ostream& operator<<(ostream& os, const Point& p) {
+      os \<\< "(" \<\< p.x << ", " \<\< p.y \<\< ")";
       return os;
     }
 
 };
 
-std::vector\<float> concat_num (std::vector\<float> v1, std::vector\<float> v2) {
-    for (int i=0; i\<v2.size(); i++) {
-        v1.push_back(v2.at(i));
+class Twist{
+  public:
+    int linear;
+    int angular;
+
+    // Constructor
+    Twist(int linear, int angular) {
+      this->linear = linear;
+      this->angular = angular;
     }
-    return v1;
-}
 
-std::vector\<string> concat_text (std::vector\<string> v1, std::vector\<string> v2) {
-    for (int i=0; i\<v2.size(); i++) {
-        v1.push_back(v2.at(i));
+    // overload the * operator to multiply a point by a scalar
+    Twist operator*(float scalar) {
+      return Twist(this->linear * scalar, this->angular * scalar);
     }
-    return v1;
-}
 
-
-std::vector\<bool> concat_bool (std::vector\<bool> v1, std::vector\<bool> v2) {
-    for (int i=0; i\<v2.size(); i++) {
-        v1.push_back(v2.at(i));
+    // overload the + operator
+    Twist operator+(const Twist& t) {
+      return Twist(this->x + t.x, this->y + t.y);
     }
-    return v1;
-}
 
-
-std::vector\<Point> concat_tuple (std::vector\<Point> v1, std::vector\<Point> v2) {
-    for (int i=0; i\<v2.size(); i++) {
-        v1.push_back(v2.at(i));
+    // overload the - operator
+    Twist operator-(const Twist& t) {
+      return Twist(this->x - t.x, this->y - t.y);
     }
-    return v1;
-}
 
+    // overload the \<\< operator
+    friend ostream& operator<<(ostream& os, const Twist& t) {
+      os \<\< "(" << t.x \<\< ", " \<\< t.y \<\< ")";
+      return os;
+    }
+    
+};
+
+class Pose{
+  public:
+    int x;
+    int y;
+    int angle;
+
+    Pose (int x, int y, int angle) {
+      this->x = x;
+      this->y = y;
+      angle = angle % 360;
+      if(angle >180){
+        this->angle= 360 - angle;
+      }
+      else if (angle < -180){
+        this->angle = 360 + angle;
+      }
+      else{
+        this->angle = angle;
+      }
+    }
+
+    // Distance point/pose
+    float distance(float x, float y) {
+      return sqrt(pow(x - this->x, 2) + pow(y - this->y, 2));
+    }
+    // angle between pose and point in degrees
+    float angleTo(float x, float y) {
+      return atan2(y - this->y, x - this->x) * 180 / M_PI - this->theta;
+    }
+
+    // overload the + operator
+    Pose operator+(const Twist& t) {
+      return Pose(this->x + t.x, this->y + t.y, this->theta + t.y);
+    }
+
+    // overload the - operator
+    Pose operator-(const Twist& t) {
+      return Pose(this->x - t.x, this->y - t.y, this->theta - t.y);
+    }
+
+    // overload the \<\< operator
+    friend ostream& operator<<(ostream& os, const Pose& p) {
+      os \<\< "(" \<\< p.x \<\< ", " \<\< p.y << ", " \<\< p.theta \<\< ")";
+      return os;
+    }
+};
 
 
 <if(global)><global><endif>
@@ -154,7 +204,6 @@ if (pid<counter> == 0)
 {
     <func>();
 }
-
 
 >>
 
