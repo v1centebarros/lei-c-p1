@@ -719,7 +719,11 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
          }
 
          if (func.equals("return")) {
-            return new ST("return " + visit(ctx.expr(0)).render());
+            if (ctx.expr().size() == 1) {
+               return new ST("return " + visit(ctx.expr(0)).render());
+            } else {
+               return new ST("return");
+            }
          }
 
          // check if is UDF or external functions
