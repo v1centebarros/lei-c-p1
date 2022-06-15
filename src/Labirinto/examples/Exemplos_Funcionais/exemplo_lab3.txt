@@ -1,0 +1,39 @@
+#Exemplo - Pretende-se criar um desafio para o robo descobrir o mapa. Para tal, precisa-se definir um mapa. 
+	(Não precisa de definir pontos de chegada ou de passagem)
+
+Ficheiro:
+
+	LABIRINTO (NAME = "lab03" WIDTH = 28  HEIGHT = 14) { 
+		/* Definir mapa*/
+		ROW 12 : "           |              |              ";
+		ROW 11 : "--+--+--+--+  +--+--+--+  +  +  +  +  +  ";
+		ROW 10 : "              |        |  |              ";
+		ROW 9  : "  +--+--+--+--+  +--+--+  +--+  +  +  +  ";
+		ROW 8  : "     |           |     |     |           ";
+		ROW 7  : "--+  +  +  +  +--+  +  +--+  +--+  +  +  ";
+		ROW 6  : "  |  |        |     |  |  |     |        ";
+		ROW 5  : "--+  +--+--+--+  +--+  +--+--+  +  +  +  ";
+		ROW 4  : "     |           |  |  |        |        ";
+		ROW 3  : "  +  +  +--+--+--+  +  +  +--+--+  +  +  ";
+		ROW 2  : "  |  |  |           |     |              ";
+		ROW 1  : "  +--+  +  +  +  +  +--+--+  +  +  +  +  ";
+		ROW 0  : "        |                                ";
+	};
+        
+XML Resultante:
+
+	<Lab Name="lab03" Width="28.0" Height="14.0">
+		<Row  Pos="12" Pattern="           |              |              "  />
+		<Row  Pos="11" Pattern="--+--+--+--+  +--+--+--+  +  +  +  +  +  "  />
+		<Row  Pos="10" Pattern="              |        |  |              "  />
+		<Row  Pos="9"  Pattern="  +--+--+--+--+  +--+--+  +--+  +  +  +  "  />
+		<Row  Pos="8"  Pattern="     |           |     |     |           "  />
+		<Row  Pos="7"  Pattern="--+  +  +  +  +--+  +  +--+  +--+  +  +  "  />
+		<Row  Pos="6"  Pattern="  |  |        |     |  |  |     |        "  />
+		<Row  Pos="5"  Pattern="--+  +--+--+--+  +--+  +--+--+  +  +  +  "  />
+		<Row  Pos="4"  Pattern="     |           |  |  |        |        "  />
+		<Row  Pos="3"  Pattern="  +  +  +--+--+--+  +  +  +--+--+  +  +  "  />
+		<Row  Pos="2"  Pattern="  |  |  |           |     |              "  />
+		<Row  Pos="1"  Pattern="  +--+  +  +  +  +  +--+--+  +  +  +  +  "  />
+		<Row  Pos="0"  Pattern="        |                                "  />
+	</Lab>

@@ -1,12 +1,11 @@
 # Ignore everything
-*
+
 
 # But not these files...
 !.gitignore
 !CodeGenerator.java
 !Mus.g4
 !MusMain.java
-!MusMain2.java
 !SemanticAnalyser.java
 !SymbolTable.java
 !Templates.stg

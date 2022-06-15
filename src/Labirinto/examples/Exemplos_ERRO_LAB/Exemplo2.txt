@@ -1,0 +1,13 @@
+#Exemplo 2 - Definir no Labirinto um target com um raio igual a zero.
+
+FICHEIRO:
+
+    LABIRINTO (NAME = "teste" WIDTH = 17 HEIGHT = 10) { 
+        TARGET = (10,7) RADIUS = 0;                     
+        BEACON = (3,1) HEIGHT = 3;
+        SPOT = (26,7) HEIGHT = 2 RADIUS = 1;
+    };
+
+TERMINAL:
+    [Line 2] NameError: O Radius do Target tem ser superior a zero.
+    

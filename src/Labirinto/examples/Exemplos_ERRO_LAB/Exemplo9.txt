@@ -1,0 +1,8 @@
+#Exemplo 9 - Definir um labirinto e posições inicias dos robos, onde uma das posiçoẽs iniciais não esta no labirinto.
+
+FICHEIRO:
+    LABIRINTO (NAME = "lab01" WIDTH = 28 HEIGHT = 14) {};
+	GRID{POS (1.5,16) DIRECTION = 180;};
+
+TERMINAL:
+    [Line 2] NameError: Coordenadas (1.5,16) não pertence ao labirinto.

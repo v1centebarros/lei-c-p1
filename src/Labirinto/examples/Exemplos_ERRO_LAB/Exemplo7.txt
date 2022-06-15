@@ -1,0 +1,23 @@
+#Exemplo 7 - Definir no Labirinto uma mapa tamanho de comprimento errado.
+
+FICHEIRO:
+
+    LABIRINTO (NAME = "lab02" WIDTH = 28 HEIGHT = 14) { 
+        SPOT = (26,7); #Definir beacon e target conjuntos
+
+        ROW 12 : "           |              |              ";
+        ROW 11 : "--+--+--+--+  +--+--+--+  +  +  +  +  +  ";
+        ROW 10 : "              |        |  |              ";
+        ROW 9  : "  +--+--+--+--+  +--+--+  +--+  +  +  +  ";
+        ROW 8  : "     |           |     |     |           ";
+        ROW 7  : "--+  +  +  +  +--+  +  +--+  +--+  +  +  ";
+        ROW 6  : "  |  |        |     |  |  |     |        ";
+        ROW 5  : "--+  +--  +--+  +--+--+  +  +  +  ";
+        ROW 4  : "     |           |  |  |        |        ";
+        ROW 3  : "  +  +  +--+--+--+  +  +  +--+--+  +  +  ";
+        ROW 2  : "  |  |  |           |     |              ";
+        ROW 1  : "  +--+  +  +  +  +  +--+--+  +  +  +  +  ";
+    };
+
+TERMINAL:
+    [Line 11] NameError: Tamanho incorreto de Comprimento do mapa.
