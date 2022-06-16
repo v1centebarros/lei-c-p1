@@ -11,6 +11,7 @@
 		BEACON = (5,2) HEIGHT = 3; 				#Definir Beacon
 		SPOT = (26,7) HEIGHT = 3 RADIUS = 1.5;	#Definir Beacon e Target conjunto
 		SPOT = (26,1) HEIGHT = 3; 				#Definir Beacon e Target conjunto com valor default raio (1)
+		SPOT = (24,5) RADIUS = 1.5;				#Definir Beacon e Target conjunto com valor default altura (2)
 		SPOT = (20,7); 							#Definir Beacon e Target conjunto com valor default de raio (1) e altura (2)
 		
 		/* DEfinir mapa*/
@@ -48,6 +49,8 @@
 #		<Target X="26.0" Y="7" Radius="1.5"/>
 #		<Beacon X="26.0" Y="1" Height="3"/>
 #		<Target X="26.0" Y="1" Radius="1"/>
+#		<Beacon X="24.0" Y="5" Height="2"/>
+#		<Target X="24.0" Y="5" Radius="1.5"/>
 #		<Beacon X="20.0" Y="7" Height="2"/>
 #		<Target X="20.0" Y="7" Radius="1"/>
 #		<Row  Pos="12" Pattern="           |                             "  />

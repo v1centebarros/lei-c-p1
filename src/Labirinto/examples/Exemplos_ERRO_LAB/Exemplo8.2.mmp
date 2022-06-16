@@ -1,0 +1,10 @@
+#Exemplo 8-Definir um Spot fora do Labirinto.
+
+    LABIRINTO (NAME = "teste" WIDTH = 17 HEIGHT = 10) { 
+        TARGET = (10,7) RADIUS = 0.5;                     
+        SPOT = (26,7) HEIGHT = 2 RADIUS = 1;
+    };
+
+/*TERMINAL:
+    [Line 5] MazeError: Invalid (26,7) coordinates.
+*/

@@ -1,6 +1,6 @@
 #Exemplo 1- Pretende-se defenir as posições iniciais de cinco robos no labirinto, tal como a sua orientação.
     GRID{
-        POS (1.5,7) DIRECTION = 180;
+        POS (1.5,7) DIRECTION = -180;
         POS (3,2) DIRECTION = 90;
         POS (3,9.6) DIRECTION = 0;
         POS (1.5,12);
@@ -14,7 +14,7 @@ a direção default (180).
     
 XML Resultante:
     <Grid>
-        <Position X="1.5" Y="7" Dir="180"/>
+        <Position X="1.5" Y="7" Dir="-180"/>
         <Position X="3" Y="2" Dir="90"/>
         <Position X="3" Y="9.6" Dir="0"/>
         <Position X="1.5" Y="12" Dir="180"/>

@@ -22,6 +22,7 @@ No esquema abaixo segue-se uma breve visão do que irá ser abordado ao longo de
 10. listas
 11. comentários
 12. **Lista completa das keywords da linguagem (IMPORTANTE)**
+13. Como executar um programa em Mus
 
 
 </br></br></br>
@@ -329,3 +330,20 @@ A seguir encontram-se as keywords e a respetiva funcionalidade:
 | <code>setVisitedLed state         </code> | Ligar ou desligar LED \(1 ligar, 0 desligar\)                       |
 | <code>getReturningLed             </code> | Devolve o estado do led de returning                                |
 | <code>getVisitedLed               </code> | Devolve o estado do led de visiting                                 |
+
+
+</br></br>
+
+## **7. Instrução condicional**
+Para executar um programa em Mus deve primeiramente situar-se na pasta do projeto e de seguida executar o script musRun.sh, passando como primeiro argumento a localização do ficheiro .mus com o código fonte e como segundo argumento o nome do Viewer.
+
+```
+./musRun ./example_path Viewer_name</code>
+```
+
+Para mais informação executar
+
+```
+./musRun
+```
+

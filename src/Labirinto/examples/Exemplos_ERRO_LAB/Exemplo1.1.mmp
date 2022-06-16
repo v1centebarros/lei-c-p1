@@ -1,0 +1,6 @@
+#Exemplo 1 - Definição de um labirinto com comprimento zero.
+
+    LABIRINTO (NAME = "teste" WIDTH = 0 HEIGHT = 10) { };
+
+#TERMINAL:
+#   [Line 3] MazeError: Width must be positive.

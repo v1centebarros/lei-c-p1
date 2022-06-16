@@ -1,0 +1,10 @@
+#Exemplo 8-Definir um Target fora do Labirinto.
+
+    LABIRINTO (NAME = "teste" WIDTH = 17 HEIGHT = 10) { 
+        TARGET = (10,12) RADIUS = 0.5;                     
+        BEACON = (3,1) HEIGHT = 3;
+        SPOT = (26,7) HEIGHT = 2 RADIUS = 1;
+    };
+
+#TERMINAL:
+#    [Line 4] MazeError: Invalid (10,12) coordinates.

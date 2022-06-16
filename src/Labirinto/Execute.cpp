@@ -229,7 +229,7 @@ antlrcpp::Any Execute::visitRow(LabParser::RowContext *ctx) {
 
    string row = ctx->PADRAO()->getText();
    vector<bool> linha;
-   bool teste =true;
+   bool teste = true;
    for(size_t i = 1; i < row.size()-1; i++) {
       if(teste){
          if(row[i] == '-' && row[i+1] == '-'){
@@ -237,7 +237,7 @@ antlrcpp::Any Execute::visitRow(LabParser::RowContext *ctx) {
          } else if(row[i] == ' ' && row[i+1] == ' '){
             linha.push_back(false);
          }
-         teste =false;
+         teste = false;
          i++;
       }else{
          if(row[i] == '+'){

@@ -1,0 +1,9 @@
+#Exemplo 4 - Definir no Labirinto um spot com uma altura igual a zero.
+
+    LABIRINTO (NAME = "teste" WIDTH = 17 HEIGHT = 14) { 
+        BEACON = (3,1) HEIGHT = 3;
+        SPOT = (26,7) HEIGHT = 0 RADIUS = 1;
+    };
+
+#TERMINAL:
+#    [Line 5] SpotError: Height must be positive.

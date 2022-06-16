@@ -358,6 +358,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
             table.putVariable(str, "NUM");
          }
       }
+      if (type.equals("ROBOT")) table.putFunction(name + ".loadMap", new String[]{"TEXT", "VOID"});
       if (type.contains("LIST")) {
          String typeOfList = type.replace("LIST_", "");
          table.putFunction(name + ".add", new String[]{typeOfList, "VOID"});
@@ -474,7 +475,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          return "POINT|TWIST";
       if (equalsType(expr0, "POINT|TWIST") && equalsType(expr1, "NUM"))
          return "POSE";
-      System.err.printf("[Line %d] TypeError: tuple must be ROBOT, POINT or POSE\n", ctx.start.getLine());
+      System.err.printf("[Line %d] TypeError: tuple must be ROBOT, POINT, TWIST or POSE\n", ctx.start.getLine());
       System.exit(1);
       return "ERROR";
    }

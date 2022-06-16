@@ -1,0 +1,7 @@
+#Exemplo 1 - Definição de um labirinto com  altura zero.
+
+   LABIRINTO (NAME = "teste" WIDTH = 17 HEIGHT = 0) { }; 
+
+/*TERMINAL:
+   [Line 3] MazeError: Height must be positive.
+*/

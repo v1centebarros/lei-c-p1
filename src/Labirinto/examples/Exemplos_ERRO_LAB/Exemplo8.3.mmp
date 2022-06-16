@@ -1,0 +1,8 @@
+#Exemplo 8-Definir um BEACON fora do Labirinto.
+
+    LABIRINTO (NAME = "teste" WIDTH = 17 HEIGHT = 10) {                     
+        BEACON = (20,1) HEIGHT = 3;
+    };
+
+#TERMINAL:
+#    [Line 4] MazeError: Invalid (20,1) coordinates.

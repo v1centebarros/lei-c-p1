@@ -1,0 +1,48 @@
+#Exemplo- Definir um Labirinto com um Target, um Beacon e um Spot, recorrendo ao valor default de raio e altura,
+#	e com um mapa associado, ou seja, com obstásculos. 
+
+	LABIRINTO (NAME = "lab02" WIDTH = 28 HEIGHT = 14) { 
+		TARGET = (9,5); #Definir target 
+		BEACON = (3,3); #Definir beacon
+		SPOT = (26,7);  #Definir beacon e target conjuntos
+
+		ROW 12 : "           |              |              ";
+		ROW 11 : "--+--+--+--+  +--+--+--+  +  +  +  +  +  ";
+		ROW 10 : "              |        |  |              ";
+		ROW 9  : "  +--+--+--+--+  +--+--+  +--+  +  +  +  ";
+		ROW 8  : "     |           |     |     |           ";
+		ROW 7  : "--+  +  +  +  +--+  +  +--+  +--+  +  +  ";
+		ROW 6  : "  |  |        |     |  |  |     |        ";
+		ROW 5  : "--+  +--+--+--+  +--+  +--+--+  +  +  +  ";
+		ROW 4  : "     |           |  |  |        |        ";
+		ROW 3  : "  +  +  +--+--+--+  +  +  +--+--+  +  +  ";
+		ROW 2  : "  |  |  |           |     |              ";
+		ROW 1  : "  +--+  +  +  +  +  +--+--+  +  +  +  +  ";
+		ROW 0  : "        |                                ";
+	};
+
+/*Comentários:
+	Para o problema dado é construído um mapa de acordo com as dimensões do labirinto, nos pontos onde o robo precisa de passar
+ou chegar, só necessário colocar as suas coordenas e por default a altura do spot e do beacon será 2, e raio do target e do spot será 1.
+    
+XML Resultante:
+	<Lab Name="lab02" Width="28" Height="14.0">
+		<Target X="9.0" Y="5" Radius="1"/>
+		<Beacon X="3.0" Y="3" Height="2"/>
+		<Beacon X="26.0" Y="7" Height="2"/>
+		<Target X="26.0" Y="7" Radius="1"/>
+		<Row  Pos="12" Pattern="           |              |              "  />
+		<Row  Pos="11" Pattern="--+--+--+--+  +--+--+--+  +  +  +  +  +  "  />
+		<Row  Pos="10" Pattern="              |        |  |              "  />
+		<Row  Pos="9"  Pattern="  +--+--+--+--+  +--+--+  +--+  +  +  +  "  />
+		<Row  Pos="8"  Pattern="     |           |     |     |           "  />
+		<Row  Pos="7"  Pattern="--+  +  +  +  +--+  +  +--+  +--+  +  +  "  />
+		<Row  Pos="6"  Pattern="  |  |        |     |  |  |     |        "  />
+		<Row  Pos="5"  Pattern="--+  +--+--+--+  +--+  +--+--+  +  +  +  "  />
+		<Row  Pos="4"  Pattern="     |           |  |  |        |        "  />
+		<Row  Pos="3"  Pattern="  +  +  +--+--+--+  +  +  +--+--+  +  +  "  />
+		<Row  Pos="2"  Pattern="  |  |  |           |     |              "  />
+		<Row  Pos="1"  Pattern="  +--+  +  +  +  +  +--+--+  +  +  +  +  "  />
+		<Row  Pos="0"  Pattern="        |                                "  />
+	</Lab>
+*/
