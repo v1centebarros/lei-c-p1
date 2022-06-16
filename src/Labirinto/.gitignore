@@ -1,0 +1,15 @@
+*
+*/
+!.gitignore
+!lab.g4
+!examples/
+!Execute.cpp
+!Execute.h
+!Map.cpp
+!Map.h
+!Main.cpp
+!Makefile
+!Exemplos_ERRO_LAB
+!Exemplos_Funcionais
+!*txt
+!*mmp
