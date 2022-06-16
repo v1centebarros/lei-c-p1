@@ -15,7 +15,7 @@ int main(int argc, const char* argv[]) {
    std::filebuf fb;
    fb.open("teste.lab", std::ios::in);
    if (!fb.is_open()){
-      cout << "File not open";
+      cout << "File not open\n";
       return -1;
    }
 
@@ -43,7 +43,7 @@ int main(int argc, const char* argv[]) {
       Execute* visitor0 = new Execute();
       visitor0->visit(tree);
    }else{
-      cout<<"<< ERROS sintáticos\n\n";
+      cout<<">> ERROS SINTÁTICOS\n\n";
    }
 
    fb.close();
