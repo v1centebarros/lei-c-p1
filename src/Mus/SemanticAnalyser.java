@@ -405,6 +405,8 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          return "TWIST";
       if (expr0.equals("POINT") && expr1.equals("POINT|TWIST"))
          return "TWIST";
+      if (expr0.equals("TEXT") && expr1.equals("TEXT"))
+         return "TEXT";
       if (expr0.contains("LIST") && expr0.equals(expr1))
          return expr0;
       System.err.printf("[Line %d] TypeError: unsupported operand type(s) for '%s': %s and %s\n", ctx.start.getLine(), ctx.op.getText(), expr0, expr1);
@@ -447,16 +449,6 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       String op2 = ctx.op2.getText();
       String expr2 = visit(ctx.expr(2));
       
-      if (op1.equals("and") || op1.equals("or")) {
-         if (equalsType(expr0, "BOOL") && equalsType(expr1, "BOOL")) return "BOOL";
-         System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op1, expr0, expr1);
-         return "ERROR";
-      }
-      if (op2.equals("and") || op2.equals("or")) {
-         if (equalsType(expr1, "BOOL") && expr2.equals("BOOL")) return "BOOL";
-         System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op2, expr1, expr2);
-         return "ERROR";
-      }
       if (!equalsType(expr0, "NUM") || !equalsType(expr1, "NUM")) {
          System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op1, expr0, expr1);
          return "ERROR";
