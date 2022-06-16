@@ -393,12 +393,18 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    @Override public String visitExprVar(MusParser.ExprVarContext ctx) {
       String key = ctx.ID().getText();
       if (table.containsVariable(key)) return table.getVariable(key);
-      else if (table.containsFunction(key)) return table.getFunction(key)[1];
-      else {
-         System.err.printf("[Line %d] NameError: name '%s' is not defined\n", ctx.start.getLine(), key);
-         System.exit(1);
-         return "ERROR";
+      if (table.containsFunction(key)) {
+         String[] info = table.getFunction(key);
+         if (!info[0].equals("VOID")) {
+            System.err.printf("[Line %d] NameError: name '%s' is not defined\n", ctx.start.getLine(), key);
+            System.exit(1);
+            return "ERROR";
+         }
+         return info[1];
       }
+      System.err.printf("[Line %d] NameError: name '%s' is not defined\n", ctx.start.getLine(), key);
+      System.exit(1);
+      return "ERROR";
    }
 
    @Override public String visitExprEnumWithValues(MusParser.ExprEnumWithValuesContext ctx) {
