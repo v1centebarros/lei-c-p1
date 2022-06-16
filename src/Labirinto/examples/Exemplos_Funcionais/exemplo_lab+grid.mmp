@@ -53,7 +53,7 @@
 #		<Target X="24.0" Y="5" Radius="1.5"/>
 #		<Beacon X="20.0" Y="7" Height="2"/>
 #		<Target X="20.0" Y="7" Radius="1"/>
-#		<Row  Pos="12" Pattern="           |                             "  />
+#		<Row  Pos="12" Pattern="           |              |              "  />
 #		<Row  Pos="11" Pattern="--+--+--+--+  +--+--+--+  +  +  +  +  +  "  />
 #		<Row  Pos="10" Pattern="              |        |  |              "  />
 #		<Row  Pos="9"  Pattern="  +--+--+--+--+  +--+--+  +--+  +  +  +  "  />
