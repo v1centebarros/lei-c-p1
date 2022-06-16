@@ -378,14 +378,18 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       if (type.equals("POINT")) {
          table.putVariable(name + ":x", "NUM");
          table.putVariable(name + ":y", "NUM");
+         table.putFunction(name + ".distanceTo", new String[]{"POINT|POSE", "NUM"});
       }
       if (type.equals("TWIST")) {
          table.putVariable(name + ":linear", "NUM");
          table.putVariable(name + ":angular", "NUM");
       }
       if (type.equals("POSE")) {
-         table.putVariable(name + ":point", "NUM");
+         table.putVariable(name + ":x", "NUM");
+         table.putVariable(name + ":y", "NUM");
          table.putVariable(name + ":angle", "NUM");
+         table.putFunction(name + ".distanceTo", new String[]{"POINT|POSE", "NUM"});
+         table.putFunction(name + ".angleTo", new String[]{"POINT|POSE", "NUM"});
       }
       table.putVariable(name, type);
       return null;
@@ -449,7 +453,11 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       if (equalsType(expr0, "NUM") && equalsType(expr1, "NUM")) 
          return "NUM";
       if (expr0.equals("POINT|TWIST") && expr1.equals("POINT|TWIST"))    
-         return "POINT|TWIST";      
+         return "POINT|TWIST";
+      if (expr0.equals("POINT") && expr1.equals("POINT"))
+         return "POINT";
+      if (expr0.equals("TWIST") && expr1.equals("TWIST"))
+         return "TWIST";   
       if (expr0.equals("POINT|TWIST") && expr1.equals("POINT"))
          return "POINT";
       if (expr0.equals("POINT") && expr1.equals("POINT|TWIST"))

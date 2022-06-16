@@ -1,30 +1,27 @@
 # Criar 2 pontos 
 POINT p1 = (0,0);
-POITN p2 = (3,4);
-print "Ponto: "+ p2 + "\n";
+POINT p2 = (3,4);
 
 # Multiplicar o ponto por 1 escalar e somar outro ponto ( também suporta subtração)
 p2 = p2 * 2;
-p2 = p2 + p1
+p2 = p2 + p1;
 
 # Aceder a um dos atributos do ponto
-NUM p1_x = p1:x:
+NUM p1_x = p1:x;
 
 # Criar um Twist (tem as mesmas operações que o ponto exceto a distancia)
 NUM linear = 2;
 NUM angular = 3;
-TWIST t1= (linear, angular);
-print "Twist: " + t1 + "\n"; 
+TWIST t1 = (linear, angular);
 
 # Criar uma pose
 NUM angle_ = 100;
-POSE pos= (p2:x, p2:y, angle_);
-print "Pose: " + pos + "\n";
+POSE pos= (p2, angle_);
 
 # Obter o angulo entre essa pose e outra pose ou ponto
 NUM angle_to_point = pos.angleTo p1;
 # Também suporta as operações do ponto, mas com poses)
 
 # Calcular a distancia entre pontos/poses
-NUM dist1 = distance pos p1;
-NUM dist2 = distance p1 p2;
+NUM dist1 = pos.distanceTo p1;
+NUM dist2 = p1.distanceTo p2;
