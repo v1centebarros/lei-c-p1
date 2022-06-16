@@ -51,7 +51,7 @@ No exemplo anterior, caso quisessemos controlar o robot nody, teríamos de inser
 <code>use nody;</code>
 
 </br></br>
-## 3. Tipo de dados da linguagem MUS
+## **3. Utilização de variáveis**
 Uma necessidade básica de um programador é armazenar valores para que possam ser utilizados posteriormente. 
 
 Com esse efeito, à semelhança de todas as linguagens de programação, a linguagem MUS permite definir variáveis da seguinte forma:
