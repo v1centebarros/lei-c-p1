@@ -64,28 +64,28 @@ class Point {
 
     // Constructor
     Point(int x, int y) {
-      this-\>x = x;
-      this-\>y = y;
+      this->x = x;
+      this->y = y;
     }
 
     // Distance point/pose
     float distance(float x, float y) {
-      return sqrt(pow(x - this-\>x, 2) + pow(y - this-\>y, 2));
+      return sqrt(pow(x - this->x, 2) + pow(y - this->y, 2));
     }
 
     // overload the * operator to multiply a point by a scalar
     Point operator*(float scalar) {
-      return Point(this-\>x * scalar, this-\>y * scalar);
+      return Point(this->x * scalar, this->y * scalar);
     }
 
     // Overload the + operator
     Point operator+(const Point& p) {
-      return Point(this-\>x + p.x, this-\>y + p.y);
+      return Point(this->x + p.x, this->y + p.y);
     }
 
     // Overload the - operator
     Point operator-(const Point& p) {
-      return Point(this-\>x - p.x, this-\>y - p.y);
+      return Point(this->x - p.x, this->y - p.y);
     }
 
     // overload the \<\< operator
@@ -114,17 +114,17 @@ class Twist{
 
     // overload the + operator
     Twist operator+(const Twist& t) {
-      return Twist(this->x + t.x, this->y + t.y);
+      return Twist(this->linear + t.linear, this->angular + t.angular);
     }
 
     // overload the - operator
     Twist operator-(const Twist& t) {
-      return Twist(this->x - t.x, this->y - t.y);
+      return Twist(this->linear - t.linear, this->angular - t.angular);
     }
 
     // overload the \<\< operator
     friend ostream& operator\<\<(ostream& os, const Twist& t) {
-      os \<\< "(" \<\< t.x \<\< ", " \<\< t.y \<\< ")";
+      os \<\< "(" \<\< t.linear \<\< ", " \<\< t.angular \<\< ")";
       return os;
     }
     
@@ -157,25 +157,71 @@ class Pose{
     }
     // angle between pose and point in degrees
     float angleTo(float x, float y) {
-      return atan2(y - this->y, x - this->x) * 180 / M_PI - this->theta;
+      return atan2(y - this->y, x - this->x) * 180 / M_PI - this->angle;
     }
 
     // overload the + operator
-    Pose operator+(const Twist& t) {
-      return Pose(this->x + t.x, this->y + t.y, this->theta + t.y);
+    Pose operator+(const Pose& t) {
+      return Pose(this->x + t.x, this->y + t.y, this->angle + t.y);
     }
 
     // overload the - operator
-    Pose operator-(const Twist& t) {
-      return Pose(this->x - t.x, this->y - t.y, this->theta - t.y);
+    Pose operator-(const Pose& t) {
+      return Pose(this->x - t.x, this->y - t.y, this->angle - t.y);
     }
 
     // overload the \<\< operator
     friend ostream& operator\<\<(ostream& os, const Pose& p) {
-      os \<\< "(" \<\< p.x \<\< ", " \<\< p.y \<\< ", " \<\< p.theta \<\< ")";
+      os \<\< "(" \<\< p.x \<\< ", " \<\< p.y \<\< ", " \<\< p.angle \<\< ")";
       return os;
     }
 };
+
+
+
+std::vector\<float> concat_num (std::vector\<float> v1, std::vector\<float> v2) {
+    for (unsigned long int i=0; i\<v2.size(); i++) {
+        v1.push_back(v2.at(i));
+    }
+    return v1;
+}
+
+std::vector\<string> concat_text (std::vector\<string> v1, std::vector\<string> v2) {
+    for (unsigned long int i=0; i\<v2.size(); i++) {
+        v1.push_back(v2.at(i));
+    }
+    return v1;
+}
+
+
+std::vector\<bool> concat_bool (std::vector\<bool> v1, std::vector\<bool> v2) {
+    for (unsigned long int i=0; i\<v2.size(); i++) {
+        v1.push_back(v2.at(i));
+    }
+    return v1;
+}
+
+
+std::vector\<Point> concat_tuple (std::vector\<Point> v1, std::vector\<Point> v2) {
+    for (unsigned long int i=0; i\<v2.size(); i++) {
+        v1.push_back(v2.at(i));
+    }
+    return v1;
+}
+
+std::vector\<Twist> concat_tuple (std::vector\<Twist> v1, std::vector\<Twist> v2) {
+    for (unsigned long int i=0; i\<v2.size(); i++) {
+        v1.push_back(v2.at(i));
+    }
+    return v1;
+}
+
+std::vector\<Pose> concat_tuple (std::vector\<Pose> v1, std::vector\<Pose> v2) {
+    for (unsigned long int i=0; i\<v2.size(); i++) {
+        v1.push_back(v2.at(i));
+    }
+    return v1;
+}
 
 
 <if(global)><global><endif>
