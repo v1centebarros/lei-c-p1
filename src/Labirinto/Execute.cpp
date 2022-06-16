@@ -100,7 +100,7 @@ antlrcpp::Any Execute::visitLabirinto(LabParser::LabirintoContext *ctx) {
    //colocar labirinto no ficheiro
    ST.append("<Lab");
    ST.append(" Name= ");   
-   ST.append(ctx->ID()->getText());
+   ST.append(ctx->STRING()->getText());
    ST.append(" Width=\"");   ST.append(std::to_string(Width));
    ST.append("\"");
    ST.append(" Height=\"");   ST.append(std::to_string(Height));

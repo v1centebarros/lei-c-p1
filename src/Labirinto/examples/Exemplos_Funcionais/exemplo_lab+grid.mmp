@@ -32,9 +32,9 @@
 
 	#Definir posições de saida do robo
 	GRID{
-		POS (3,7) DIRECTION = 180;
-		POS (3,8.3) DIRECTION = 180;
-		POS (3,9.6); #default DIRECTION é 180
+		POS (3,6.5) DIRECTION = -180;
+		POS (3,7.8) DIRECTION = 180;
+		POS (3,9.0); #default DIRECTION é 180
 	};
 
 #XML Resultante:
@@ -53,7 +53,7 @@
 #		<Target X="24.0" Y="5" Radius="1.5"/>
 #		<Beacon X="20.0" Y="7" Height="2"/>
 #		<Target X="20.0" Y="7" Radius="1"/>
-#		<Row  Pos="12" Pattern="           |                             "  />
+#		<Row  Pos="12" Pattern="           |              |              "  />
 #		<Row  Pos="11" Pattern="--+--+--+--+  +--+--+--+  +  +  +  +  +  "  />
 #		<Row  Pos="10" Pattern="              |        |  |              "  />
 #		<Row  Pos="9"  Pattern="  +--+--+--+--+  +--+--+  +--+  +  +  +  "  />
@@ -69,8 +69,9 @@
 #
 #	</Lab>
 #
-#	<Grid>
-#		<Position X="3.0" Y="7.0" Dir="180"/>
-#		<Position X="3.0" Y="8.3" Dir="180"/>
-#		<Position X="3.0" Y="9.6" Dir="180"/>
-#	</Grid>
+#<Grid>
+#	<Position X="3.0" Y="6.5" Dir="-180"/>
+#	<Position X="3.0" Y="7.8" Dir="180"/>
+#	<Position X="3.0" Y="9.0" Dir="180"/>
+#</Grid>
+

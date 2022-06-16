@@ -15,12 +15,13 @@ function main(){
 
     java MusMain < ../../$1
 
-    antlr4-clean > /dev/null 2>&1 && cd ../../
 
     if [ $? -ne 0 ]; then
-        echo "Invalid argument: $1"
+        # echo "Invalid argument: $1"
         exit 1
     fi
+
+    antlr4-clean > /dev/null 2>&1 && cd ../../
 
     cp ./src/Mus/destinationLanguage.cpp ./ciberTools/agents/avAgent/myAgent.cpp
 

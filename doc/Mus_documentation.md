@@ -1,7 +1,7 @@
 # Mus Language Documentation
 </br>
 
-> **NOTA:** A ordem pela qual os conteúdos são apresentados nesta documentação, difere na ordem na qual os requisitos são apresentados no guião do projeto, uma vez que a compreensão dos conteúdo torna-se mais fácil seguindo outra ordem.
+> **NOTA:**  A ordem pela qual os conteúdos são apresentados nesta documentação, difere na ordem na qual os requisitos são apresentados no guião do projeto, uma vez que a compreensão dos conteúdo torna-se mais fácil seguindo outra ordem.
 
 Nas seguintes secções irão ser apresentados e explicados exemplos simples e concretos da utilização da linguagem Mus (extensão .mus).
 No esquema abaixo segue-se uma breve visão do que irá ser abordado ao longo desta breve documentação.
@@ -29,7 +29,7 @@ A linguagem MUS permite a utilização de vários tipos de dados, nomeadamente:
 - numérico - NUM
 - textual - TEXT
 - boleano - BOOL
-- enumerado - ENUM ??????????????
+- enumerado - ENUM
 
 </br></br>
 
@@ -327,6 +327,8 @@ A seguir encontram-se as keywords e a respetiva funcionalidade:
 | <code>getReturningLed             </code> | Devolve o estado do led de returning                                |
 | <code>getVisitedLed               </code> | Devolve o estado do led de visiting                                 |
 
+
+> **NOTA IMPORTANTE:** Em funções que aceitam números inteiros como argumento, como por exemplo <code>beaconAngle arg</code>, caso seja passado um número com casa decimal, este irá ser convertido para número inteiro.
 
 </br></br>
 
