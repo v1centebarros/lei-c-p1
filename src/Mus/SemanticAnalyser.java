@@ -21,7 +21,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          entry("print", new String[]{"ANY", "VOID"}),
          entry("use", new String[]{"ROBOT", "VOID"}),
          entry("state", new String[]{"TEXT", "VOID"}),
-         entry("input", new String[]{"TEXT", "ANY"}),
+         entry("input", new String[]{"VOID", "ANY"}),
          entry("posX", new String[]{"VOID", "NUM"}),
          entry("posY", new String[]{"VOID", "NUM"}),
          entry("rotate", new String[]{"NUM", "VOID"}),
