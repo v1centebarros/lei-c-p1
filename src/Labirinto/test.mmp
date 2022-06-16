@@ -1,0 +1,49 @@
+GRID{
+    POSITION (1.5,7) DIRECTION = 180;
+    POSITION (3,2) DIRECTION = 90;
+    POSITION (3,9.6) DIRECTION = 0;
+    POSITION (1.5,12);
+    POSITION (1.5,4.5) DIRECTION = 361;
+};
+
+LABIRINTO (NAME = lab01 WIDTH = 28 HEIGHT = 14) { 
+	BEACON = (15,9); 						#Definir Beacon com valor default altura(2)
+	TARGET = (7,7.5) RADIUS = 1.5; 			#Definir target
+	SPOT = (13,4) RADIUS = 1.5; 			#Definir target e beacon com valor default da altura(2)
+	TARGET = (10,5); 						#Definir target com valor default do raio (1) 
+	BEACON = (5,2) HEIGHT = 3; 				#Definir Beacon
+	SPOT = (26,7) HEIGHT = 3 RADIUS = 1.5;	#Definir Beacon e Target conjunto
+	SPOT = (26,1) HEIGHT = 3; 				#Definir Beacon e Target conjunto com valor default raio (1)
+	SPOT = (20,7); 							#Definir Beacon e Target conjunto com valor default de raio (1) e altura (2)
+
+	#SPOT = (26,7) RADIUS = 14 HEIGHT = 2; nao funciona ainda
+	
+	/* Definir mapa*/
+	ROW 12 : "           |              |              ";
+	ROW 11 : "--+--+--+--+  +--+--+--+  +  +  +  +  +  ";
+	ROW 10 : "              |        |  |              ";
+	ROW 9  : "  +--+--+--+--+  +--+--+  +--+  +  +  +  ";
+	ROW 8  : "     |           |     |     |           ";
+	ROW 7  : "--+  +  +  +  +--+  +  +--+  +--+  +  +  ";
+	ROW 6  : "  |  |        |     |  |  |     |        ";
+	ROW 5  : "--+  +--+--+--+  +--+  +--+--+  +  +  +  ";
+	ROW 4  : "     |           |  |  |        |        ";
+	ROW 3  : "  +--+  +--+--+--+  +  +  +--+--+  +  +  ";
+	ROW 2  : "  |  |  |           |     |              ";
+	ROW 1  : "  +--+  +  +  +  +  +--+--+  +  +  +  +  ";
+	ROW 0  : "        |                                ";
+};
+                                            
+/*0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 
+1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 0 1 0 1 0 1 0 1 0 1 0 
+0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0 1 0 0 0 0 0 0 0 0 0 
+0 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 0 1 1 1 0 1 0 1 0 1 0 
+0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 0 0 0 0 
+1 1 0 1 0 1 0 1 0 1 1 1 0 1 0 1 1 1 0 1 1 1 0 1 0 1 0 
+0 1 0 1 0 0 0 0 0 1 0 0 0 1 0 1 0 1 0 0 0 1 0 0 0 0 0 
+1 1 0 1 1 1 1 1 1 1 0 1 1 1 0 1 1 1 1 1 0 1 0 1 0 1 0 
+0 0 0 1 0 0 0 0 0 0 0 1 0 1 0 1 0 0 0 0 0 1 0 0 0 0 0 
+0 1 1 1 0 1 1 1 1 1 1 1 0 1 0 1 0 1 1 1 1 1 0 1 0 1 0 
+0 1 0 1 0 1 0 0 0 0 0 0 0 1 0 0 0 1 0 0 0 0 0 0 0 0 0 
+0 1 1 1 0 1 0 1 0 1 0 1 0 1 1 1 1 1 0 1 0 1 0 1 0 1 0 
+0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0*/
