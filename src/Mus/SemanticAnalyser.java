@@ -58,6 +58,13 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    );
 
    private Stack<SymbolTable> tables = new Stack<>();
+   private List<String> mustHaveRobotFunctions =
+   List.of("posX", "posY", "rotate", "move", "pickUp", "returning", "finish",
+                        "beaconAngle", "startAngle", "northAngle", "groundType", "onTarget",
+                        "beaconCount", "collides", "obstacleDistance", "startDistance", "stop",
+                        "setVisitingLed", "setReturningLed", "getVisitingLed", "getReturningLed",
+                        "isWallInFront", "isWallOnRight", "isWallOnLeft");
+   private boolean robotInUse = false;
    private List<String> currentEnum;
    private boolean isFunction = false;
    private String expectedOutput;
@@ -649,6 +656,13 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          System.exit(1);
          return "ERROR";
       }
+
+      if (!robotInUse && mustHaveRobotFunctions.contains(func)) {
+         System.err.printf("[Line %d] MustUseRobotError: function '%s' must be called after a use statement\n", ctx.start.getLine(), func);
+         System.exit(1);
+         return "ERROR";
+      }
+
       String[] info = table.getFunction(func);
       String[] expectedArgs = info[0].split(";");
       List<MusParser.ExprContext> exprs = ctx.expr();
@@ -692,6 +706,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          }
          tables.push(table);
          table = new SymbolTable(table);
+         robotInUse = true;
       }
       newState = false;
       return info[1];
