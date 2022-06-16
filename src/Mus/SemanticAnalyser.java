@@ -2,6 +2,7 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Stack;
 import static java.util.Map.entry;
@@ -58,7 +59,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    private boolean isFunction = false;
    private String expectedOutput;
    private boolean newState = false;
-   private List<String> states = new ArrayList<>();
+   private List<String> states = List.of("PICKUP", "RUNNING", "TERMINATED");
 
    private boolean equalsType(String input, String type) {
       return type.contains(input) || type.equals("ANY");
@@ -82,10 +83,12 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       String func = ctx.ID(0).getText();
       if (func.contains(":")) {
          System.err.printf("[Line %d] NameError: symbol ':' is reserved for object's attributes\n", ctx.start.getLine());
+         System.exit(1);
          return "ERROR";
       }
       if (func.contains(".")) {
          System.err.printf("[Line %d] NameError: symbol '.' is reserved for object's methods\n", ctx.start.getLine());
+         System.exit(1);
          return "ERROR";
       }
       tables.push(table);
@@ -101,18 +104,22 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
             name = ctx.ID(i).getText();
             if (name.contains(":")) {
                System.err.printf("[Line %d] NameError: symbol ':' is reserved for object's attributes\n", ctx.start.getLine());
+               System.exit(1);
                return "ERROR";
             }
             if (name.contains(".")) {
                System.err.printf("[Line %d] NameError: symbol '.' is reserved for object's methods\n", ctx.start.getLine());
+               System.exit(1);
                return "ERROR";
             }
             if (keywords.contains(name)) {
                System.err.printf("[Line %d] NameError: name '%s' is a keyword\n", ctx.start.getLine(), name);
+               System.exit(1);
                return "ERROR";
             }
             if (table.containsFunction(name) || table.containsVariable(name)) {
                System.err.printf("[Line %d] NameError: name '%s' is already defined\n", ctx.start.getLine(), name);
+               System.exit(1);
                return "ERROR";
             }
             newVars.put(name, ctx.TYPE(i).getText());
@@ -127,18 +134,22 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
             name = ctx.ID(i).getText();
             if (name.contains(":")) {
                System.err.printf("[Line %d] NameError: symbol ':' is reserved for object's attributes\n", ctx.start.getLine());
+               System.exit(1);
                return "ERROR";
             }
             if (name.contains(".")) {
                System.err.printf("[Line %d] NameError: symbol '.' is reserved for object's methods\n", ctx.start.getLine());
+               System.exit(1);
                return "ERROR";
             }
             if (keywords.contains(name)) {
                System.err.printf("[Line %d] NameError: name '%s' is a keyword\n", ctx.start.getLine(), name);
+               System.exit(1);
                return "ERROR";
             }
             if (table.containsFunction(name) || table.containsVariable(name)) {
                System.err.printf("[Line %d] NameError: name '%s' is already defined\n", ctx.start.getLine(), name);
+               System.exit(1);
                return "ERROR";
             }
             newVars.put(name, ctx.TYPE(i-1).getText());
@@ -162,7 +173,8 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       isFunction = false;
       table = tables.pop();
       if (!hasReturn && !type.equals("VOID")) {
-         System.out.printf("[Lines %d:%d] ReturnMissingError: non-void function does not have a return statement\n", ctx.start.getLine(), ctx.stop.getLine());
+         System.err.printf("[Lines %d:%d] ReturnMissingError: non-void function does not have a return statement\n", ctx.start.getLine(), ctx.stop.getLine());
+         System.exit(1);
          return "ERROR"; 
       }
       table.putFunction(func, new String[]{input.toString(), expectedOutput});
@@ -182,6 +194,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          return null;
       }
       System.err.printf("[Line %d] TypeError: condition in block 'if' must be BOOL (not %s)\n", ctx.start.getLine(), expr);
+      System.exit(1);
       return "ERROR";
    }
 
@@ -207,6 +220,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          return null;
       }
       System.err.printf("[Line %d] TypeError: condition in block 'while' must be BOOL (not %s)\n", ctx.start.getLine(), expr);
+      System.exit(1);
       return "ERROR";
    }
 
@@ -218,18 +232,22 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          String name = ctx.ID().getText();
          if (name.contains(":")) {
             System.err.printf("[Line %d] NameError: symbol ':' is reserved for object's attributes\n", ctx.start.getLine());
+            System.exit(1);
             return "ERROR";
          }
          if (name.contains(".")) {
             System.err.printf("[Line %d] NameError: symbol '.' is reserved for object's methods\n", ctx.start.getLine());
+            System.exit(1);
             return "ERROR";
          }
          if (keywords.contains(name)) {
             System.err.printf("[Line %d] NameError: name '%s' is a keyword\n", ctx.start.getLine(), name);
+            System.exit(1);
             return "ERROR";
          }
          if (table.containsFunction(name) || table.containsVariable(name)) {
             System.err.printf("[Line %d] NameError: name '%s' is already defined\n", ctx.start.getLine(), name);
+            System.exit(1);
             return "ERROR";
          }
          table.putVariable(name, expr.replace("LIST_", ""));
@@ -240,6 +258,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          return null;
       }
       System.err.printf("[Line %d] TypeError: forEach block must iterate over a list\n", ctx.start.getLine());
+      System.exit(1);
       return "ERROR";
    }
 
@@ -248,6 +267,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       if (expr.equals("BOOL"))
          return visit(ctx.call());
       System.err.printf("[Line %d] TypeError: condition in block 'until' must be BOOL (not %s)\n", ctx.start.getLine(), expr);
+      System.exit(1);
       return "ERROR";
    }
 
@@ -260,8 +280,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    @Override public String visitBlockCase(MusParser.BlockCaseContext ctx) {
       String state = ctx.expr().getText();
       if (!states.contains(state)) {
-         System.err.printf("[Line %d] StateWarning: state '%s' does not exist\n", ctx.start.getLine(), state);
-         return "ERROR";
+         System.out.printf("[Line %d] StateWarning: state %s does not exist\n", ctx.start.getLine(), state);
       }
       String stateType = visit(ctx.expr());
       if (stateType.equals("TEXT")) {
@@ -274,6 +293,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          return null;
       }
       System.err.printf("[Line %d] TypeError: states in block 'with state' must be TEXT (not %s)\n", ctx.start.getLine(), stateType);
+      System.exit(1);
       return "ERROR";
    }
 
@@ -282,44 +302,52 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          String key = ctx.ID().getText();
          if (!table.containsVariable(key)) {
             System.err.printf("[Line %d] NameError: name '%s' is not defined\n", ctx.start.getLine(), key);
+            System.exit(1);
             return "ERROR";
          }
          String[] keyParts = key.split(":");
          if (table.getVariable(keyParts[0]).equals("ENUM")) {
             System.err.printf("[Line %d] ImmutableTypeError: enum '%s' is already defined\n", ctx.start.getLine(), keyParts[0]);
+            System.exit(1);
             return "ERROR";
          }
          String type = table.getVariable(key);
          String exprType = visit(ctx.expr());
-         if (exprType.equals("ERROR")) return null; 
+         if (exprType.equals("ERROR")) System.exit(1);
          if (!equalsType(type, exprType)) {
             System.err.printf("[Line %d] TypeError: cannot assign %s to %s\n", ctx.start.getLine(), exprType, type);
+            System.exit(1);
             return "ERROR";
          }
          return null;
       }
       String type = ctx.TYPE().getText();
       String exprType = visit(ctx.expr());
-      if (exprType.equals("ERROR")) return null;
+      if (exprType.equals("ERROR")) System.exit(1);
       if (!equalsType(type, exprType)) {
          System.err.printf("[Line %d] TypeError: cannot assign %s to %s\n", ctx.start.getLine(), exprType, type);
+         System.exit(1);
          return "ERROR";
       }
       String name = ctx.ID().getText();
       if (name.contains(":")) {
          System.err.printf("[Line %d] NameError: symbol ':' is reserved for object's attributes\n", ctx.start.getLine());
+         System.exit(1);
          return "ERROR";
       }
       if (name.contains(".")) {
          System.err.printf("[Line %d] NameError: symbol '.' is reserved for object's methods\n", ctx.start.getLine());
+         System.exit(1);
          return "ERROR";
       }
       if (keywords.contains(name)) {
          System.err.printf("[Line %d] NameError: name '%s' is a keyword\n", ctx.start.getLine(), name);
+         System.exit(1);
          return "ERROR";
       }
       if (table.containsFunction(name) || table.containsVariable(name)) {
          System.err.printf("[Line %d] NameError: name '%s' is already defined\n", ctx.start.getLine(), name);
+         System.exit(1);
          return "ERROR";
       }
       if (type.equals("ENUM")) {
@@ -357,6 +385,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       else if (table.containsFunction(key)) return table.getFunction(key)[1];
       else {
          System.err.printf("[Line %d] NameError: name '%s' is not defined\n", ctx.start.getLine(), key);
+         System.exit(1);
          return "ERROR";
       }
    }
@@ -368,6 +397,8 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          element = ctx.TEXT(i).getText();
          if (currentEnum.contains(element)) {
             System.err.println("DuplicatedElementsError: enum has duplicated elements");
+            System.exit(1);
+            return "ERROR";
          }
          currentEnum.add(element);
       }
@@ -376,6 +407,8 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          element = ctx.NUM(i).getText();
          if (values.contains(element)) {
             System.err.println("DuplicatedValuesError: enum has duplicated values");
+            System.exit(1);
+            return "ERROR";
          }
          values.add(element);
       }
@@ -386,7 +419,8 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       String expr = visit(ctx.expr());
       if (expr.equals("BOOL"))
          return "BOOL";
-         System.err.printf("[Line %d] TypeError: unsupported operand type for 'not': %s\n", ctx.start.getLine(), expr);
+      System.err.printf("[Line %d] TypeError: unsupported operand type for 'not': %s\n", ctx.start.getLine(), expr);
+      System.exit(1);
       return "ERROR";
    }
 
@@ -410,6 +444,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       if (expr0.contains("LIST") && expr0.equals(expr1))
          return expr0;
       System.err.printf("[Line %d] TypeError: unsupported operand type(s) for '%s': %s and %s\n", ctx.start.getLine(), ctx.op.getText(), expr0, expr1);
+      System.exit(1);
       return "ERROR";
    }
 
@@ -418,6 +453,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       if (expr.equals("NUM"))
          return "NUM";
       System.err.printf("[Line %d] TypeError: unsupported operand type for unary operator '-': %s\n", ctx.start.getLine(), expr);
+      System.exit(1);
       return "ERROR";
    }
 
@@ -439,6 +475,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       if (equalsType(expr0, "POINT|TWIST") && equalsType(expr1, "NUM"))
          return "POSE";
       System.err.printf("[Line %d] TypeError: tuple must be ROBOT, POINT or POSE\n", ctx.start.getLine());
+      System.exit(1);
       return "ERROR";
    }
 
@@ -451,10 +488,12 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       
       if (!equalsType(expr0, "NUM") || !equalsType(expr1, "NUM")) {
          System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op1, expr0, expr1);
+         System.exit(1);
          return "ERROR";
       }
       if (!equalsType(expr1, "NUM") || !expr2.equals("NUM")) {
          System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op2, expr1, expr2);
+         System.exit(1);
          return "ERROR";
       }
       return "BOOL";
@@ -473,6 +512,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       if (op.equals("and") || op.equals("or")) {
          if (equalsType(expr0, "BOOL") && equalsType(expr1, "BOOL")) return "BOOL";
          System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op, expr0, expr1);
+         System.exit(1);
          return "ERROR";
       }
       if (expr0.contains("POINT") || expr0.contains("TWIST")) {
@@ -486,10 +526,12 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
                )
             ) return "BOOL";
          System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op, expr0, expr1);
+         System.exit(1);
          return "ERROR";
       }
       if (!equalsType(expr0, expr1)) {
          System.err.printf("[Line %d] TypeError: cannot compare %s with %s\n", ctx.start.getLine(), expr0, expr1);
+         System.exit(1);
          return "ERROR";
       }
       return "BOOL";
@@ -506,6 +548,8 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          element = ctx.TEXT(i).getText();
          if (currentEnum.contains(element)) {
             System.err.println("DuplicatedElementsError: enum has duplicated elements");
+            System.exit(1);
+            return "ERROR";
          }
          currentEnum.add(element);
       }
@@ -520,7 +564,8 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
       type = visit(it.next());
       while(it.hasNext())
          if (!equalsType(visit(it.next()), type)) {
-            System.out.println("TypeError: all list elements must have the same type");
+            System.err.println("TypeError: all list elements must have the same type");
+            System.exit(1);
             return "ERROR";
          }
       return "LIST_" + type;
@@ -551,6 +596,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          //    return expr0;
       }
       System.err.printf("[Line %d] TypeError: unsupported operand types for '%s': %s and %s\n", ctx.start.getLine(), op, expr0, expr1);
+      System.exit(1);
       return "ERROR";
    }
 
@@ -576,15 +622,19 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
                if (expectedOutput.equals(received)) return "END";
                if (expectedOutput.equals("VOID")) {
                   System.err.printf("[Line %d] InvalidReturnError: returned %s inside a void function\n", ctx.start.getLine(), received);
+                  System.exit(1);
                   return "ERROR";
                }
                System.err.printf("[Line %d] InvalidReturnError: returned %s but expected %s\n", ctx.start.getLine(), received, expectedOutput);
+               System.exit(1);
                return "ERROR";
             }
             System.err.printf("[Line %d] InvalidReturnError: function must return only 1 value\n", ctx.start.getLine());
+            System.exit(1);
             return "ERROR";
          }
          System.err.printf("[Line %d] InvalidReturnError: return statement must be inside a function\n", ctx.start.getLine());
+         System.exit(1);
          return "ERROR";
       }
 
@@ -592,6 +642,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
 
       if (!table.containsFunction(func)) {
          System.err.printf("[Line %d] NameError: name '%s' is not defined\n", ctx.start.getLine(), func);
+         System.exit(1);
          return "ERROR";
       }
       String[] info = table.getFunction(func);
@@ -602,6 +653,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          newState = false;
          if (exprs.size() != 0) {
             System.err.printf("[Line %d] ArgError: received arguments in void function\n", ctx.start.getLine());
+            System.exit(1);
             return "ERROR";
          }
          return info[1];
@@ -613,18 +665,21 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          if (!it.hasNext()) {
             System.err.printf("[Line %d] ArgError: argument of type %s is missing\n", ctx.start.getLine(), arg);
             newState = false;
+            System.exit(1);
             return "ERROR";
          }
          type = visit(it.next());
          if (!arg.contains(type) && !arg.equals("ANY")) {
             System.err.printf("[Line %d] ArgError: received %s but expected %s at position %d\n", ctx.start.getLine(), type, arg, pos);
             newState = false;
+            System.exit(1);
             return "ERROR";
          }
       }
       if (it.hasNext()) {
          System.err.printf("[Line %d] ArgError: expected only %d argument(s)\n", ctx.start.getLine(), expectedArgs.length);
          newState = false;
+         System.exit(1);
          return "ERROR";
       }
       newState = false;
