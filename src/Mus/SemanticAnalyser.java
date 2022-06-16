@@ -44,7 +44,10 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          entry("setReturningLed", new String[]{"BOOL", "VOID"}),
          entry("getVisitingLed", new String[]{"VOID", "BOOL"}),
          entry("getReturningLed", new String[]{"VOID", "BOOL"}),
-         entry("distance", new String[]{"POINT;POINT", "NUM"})
+         entry("distance", new String[]{"POINT;POINT", "NUM"}),
+         entry("isWallInFront", new String[]{"VOID", "BOOL"}),
+         entry("isWallOnRight", new String[]{"VOID", "BOOL"}),
+         entry("isWallOnLeft", new String[]{"VOID", "BOOL"})
       )),
       new HashMap<>(Map.ofEntries(
          entry("frontsensor", "NUM"), //macro
@@ -682,6 +685,13 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          newState = false;
          System.exit(1);
          return "ERROR";
+      }
+      if (func.equals("use")) {
+         if (!tables.empty()) {
+            table = tables.pop();
+         }
+         tables.push(table);
+         table = new SymbolTable(table);
       }
       newState = false;
       return info[1];

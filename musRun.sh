@@ -11,7 +11,11 @@ function main(){
         exit 1
     fi
 
-    cd ./src/Mus && java MusMain < ../../$1 && cd ../../
+    cd ./src/Mus && antlr4-build
+
+    java MusMain < ../../$1
+
+    antlr4-clean > /dev/null 2>&1 && cd ../../
 
     if [ $? -ne 0 ]; then
         echo "Invalid argument: $1"

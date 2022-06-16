@@ -1,11 +1,7 @@
 # Mus Language Documentation
 </br>
 
-**NOTA:**
-</br>
-A ordem pela qual os conteúdos são apresentados nesta documentação, difere na ordem na qual os requisitos são apresentados no guião do projeto, uma vez que a compreensão dos conteúdo torna-se mais fácil seguindo outra ordem.
-
-</br>
+> **NOTA:** A ordem pela qual os conteúdos são apresentados nesta documentação, difere na ordem na qual os requisitos são apresentados no guião do projeto, uma vez que a compreensão dos conteúdo torna-se mais fácil seguindo outra ordem.
 
 Nas seguintes secções irão ser apresentados e explicados exemplos simples e concretos da utilização da linguagem Mus (extensão .mus).
 No esquema abaixo segue-se uma breve visão do que irá ser abordado ao longo desta breve documentação.

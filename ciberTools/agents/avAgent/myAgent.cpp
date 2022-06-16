@@ -179,18 +179,17 @@ std::vector<Pose> concat_tuple (std::vector<Pose> v1, std::vector<Pose> v2) {
 
 
 
-void move_to_start(){
-    while (startDistance() > 2) {
-        float var_linearPower = 80.0;
-        float var_angularPower = 1 * startAngle();
-        motors(var_linearPower - var_angularPower, var_linearPower + var_angularPower);
+
+void robot_process_nody(){
+    init("Nody", 1);
+    cout << ("Going to beacon 1\n");
+    float var_farol = 1;
+    cout << ("..Rotating to beacon\n");
+    while (!(beaconAngle(var_farol) > -10 && beaconAngle(var_farol) < 10)) {
+        motors(80, -80);
         apply();
 
     }
-
-}
-
-void move_to_farol(float var_farol){
     while (groundType() != var_farol) {
         float var_linearPower = 80.0;
         float var_angularPower = 1 * beaconAngle(var_farol);
@@ -198,20 +197,6 @@ void move_to_farol(float var_farol){
         apply();
 
     }
-
-}
-
-
-
-void robot_process_nody(){
-    init("Nody", 1);
-    float var_farol = 1;
-    while (!(beaconAngle(var_farol) > -10 && beaconAngle(var_farol) < 10)) {
-        motors(80, -80);
-        apply();
-
-    }
-    move_to_farol(var_farol);
     motors(0, 0);
     apply();
     pickUp();
@@ -221,10 +206,17 @@ void robot_process_nody(){
         apply();
 
     }
-    move_to_start();
+    while (startDistance() > 2) {
+        float var_linearPower = 80.0;
+        float var_angularPower = 1 * startAngle();
+        motors(var_linearPower - var_angularPower, var_linearPower + var_angularPower);
+        apply();
+
+    }
     motors(0, 0);
     apply();
     finish();
+    cout << ("Bye!\n");
 
 }
 
