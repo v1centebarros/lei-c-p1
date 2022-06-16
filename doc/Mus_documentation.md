@@ -311,14 +311,14 @@ A seguir encontram-se as keywords e a respetiva funcionalidade:
 | Keyword                  | Funcionalidade                                               |
 |------------------------------|---------------------------------------------------------------------|
 | <code>print x                     </code> | função print                                          |
-| <code>rotate vel                  </code> | rodar robot sobre si próprio                                        |
-| <code>move vel vel                </code> | mover robot                                                         |
+| <code>rotate vel                  </code> | rodar robot sobre si próprio com uma velocidade <code>vel</code>    |
+| <code>move vel1 vel2                </code> | mover robot com uma velocidade <code>vel1</code> na roda direira e <code>vel2</code> na roda esquerda   |
 | <code>posX                        </code> | devolve posição x do robot                                          |
 | <code>posY                        </code> | devolve posição Y do robot                                          |
 | <code>pickUp                      </code> | função para alterar os LEDs e estado do robot para pickUp           |
 | <code>returning                   </code> | função para alterar os LEDs e estado do robot para returning        |
 | <code>finish                      </code> | função pickUp para alterar os LEDs e estado do robot para terminado |
-| <code>stop                        </code> | função para para robot                                              |
+| <code>stop                        </code> | função para parar o robot                                              |
 | <code>obstacleDistance sensor\_num</code> | obter distância a um obstáculo                                      |
 | <code> beaconAngle bn             </code> | Obter ângulo em relação ao farol com identificador bn                          |
 | <code>northAngle                  </code> | Obter o ângulo para norte                                           |
