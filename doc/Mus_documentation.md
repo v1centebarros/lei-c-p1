@@ -318,11 +318,11 @@ A seguir encontram-se as keywords e a respetiva funcionalidade:
 | <code>pickUp                      </code> | função para alterar os LEDs e estado do robot para pickUp           |
 | <code>returning                   </code> | função para alterar os LEDs e estado do robot para returning        |
 | <code>finish                      </code> | função pickUp para alterar os LEDs e estado do robot para terminado |
-| <code>stop                        </code> | função para parar o robot                                              |
+| <code>stop                        </code> | função para parar o robot                                           |
 | <code>obstacleDistance sensor\_num</code> | obter distância a um obstáculo                                      |
-| <code> beaconAngle bn             </code> | Obter ângulo em relação ao farol com identificador bn                          |
+| <code> beaconAngle bn             </code> | Obter ângulo em relação ao farol com identificador bn               |
 | <code>northAngle                  </code> | Obter o ângulo para norte                                           |
-| <code>onTarget                   </code> | Permite saber se o robot está no destino ou não                     |
+| <code>onTarget bn                 </code> | Permite saber se o robot está no target <code>bn</code> ou não      |
 | <code>beaconCount                 </code> | Devolve o número total de farois no mapa                            |
 | <code>startAngle                  </code> | Devolve o ângulo em relação à posição inicial                       |
 | <code>collides                    </code> | Devolve True se o robot colidiu, False caso contrário               |
