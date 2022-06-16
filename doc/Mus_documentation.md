@@ -334,7 +334,7 @@ A seguir encontram-se as keywords e a respetiva funcionalidade:
 
 </br></br>
 
-## **7. Instrução condicional**
+## **13. Como executar um programa em Mus**
 Para executar um programa em Mus deve primeiramente situar-se na pasta do projeto e de seguida executar o script musRun.sh, passando como primeiro argumento a localização do ficheiro .mus com o código fonte e como segundo argumento o nome do Viewer.
 
 ```
