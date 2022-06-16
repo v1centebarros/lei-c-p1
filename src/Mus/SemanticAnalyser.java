@@ -260,7 +260,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    @Override public String visitBlockCase(MusParser.BlockCaseContext ctx) {
       String state = ctx.expr().getText();
       if (!states.contains(state)) {
-         System.err.printf("[Line %d] StateWarning: state %s does not exist\n", ctx.start.getLine(), state);
+         System.err.printf("[Line %d] StateWarning: state '%s' does not exist\n", ctx.start.getLine(), state);
          return "ERROR";
       }
       String stateType = visit(ctx.expr());

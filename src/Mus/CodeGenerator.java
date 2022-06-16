@@ -136,7 +136,7 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
 
          //render ST
          String s = stringTemplate.render();
-         System.out.println("ST: \n" +  s);
+         //System.out.println("ST: \n" +  s);
          myWriter.write(s);
          myWriter.close();
          System.out.println("Successfully wrote to the file.");
