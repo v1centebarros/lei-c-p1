@@ -17,7 +17,7 @@ function main(){
 
 
     if [ $? -ne 0 ]; then
-        echo "Invalid argument: $1"
+        # echo "Invalid argument: $1"
         exit 1
     fi
 
