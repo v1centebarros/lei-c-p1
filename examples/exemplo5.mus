@@ -56,17 +56,17 @@ print "Fim do percurso do nody\n";
 
 /* definir o comportamento do robot mafarrico */
 use mafarrico;
-NUM farol = 1;
+NUM farol_ = 1;
 
 
-#alinhar o robot com o farol
-rotate 80 until -10 < beaconAngle farol < 10;
+#alinhar o robot com o farol_
+rotate 80 until -10 < beaconAngle farol_ < 10;
 
 
-#após alinhado, mover robot em direção ao farol
-while groundType != farol do
+#após alinhado, mover robot em direção ao farol_
+while groundType != farol_ do
     NUM linearPower = 80.0;
-    NUM angularPower = 1 * beaconAngle farol;
+    NUM angularPower = 1 * beaconAngle farol_;
     move linearPower-angularPower linearPower+angularPower;
 end
 
