@@ -33,7 +33,8 @@ singleCall:
     call ';';
 
 expr:
-    '(' expr ',' expr ')'                                                                   #ExprTuple  // Robot, Point, Twist, Pose
+    '(' expr ',' expr ',' expr ')'                                                          #ExprRobotMap  // Robot with map
+    | '(' expr ',' expr ')'                                                                 #ExprTuple  // Robot, Point, Twist, Pose
     | '[' (expr (',' expr)*)? ']'                                                           #ExprList
     | TEXT '->' NUM  ('|' TEXT '->' NUM)+                                                   #ExprEnumWithValues // só aceita literais
     | '(' expr ')'                                                                          #ExprParenthesis

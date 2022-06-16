@@ -8,6 +8,9 @@ typeMap ::= [
     "LIST_BOOL": "std::vector<bool>",
     "LIST_POINT": "std::vector<Point>",
     "LIST_TWIST": "std::vector<Point>",
+    "POINT": "Point",
+    "TWIST": "Twist",
+    "POSE": "Pose",
     "ROBOT": "", 
     default: "void"
 ]
@@ -39,6 +42,8 @@ externalFunctionsMap ::= [
     "setReturningLed": "setReturningLed",
     "getReturningLed": "getReturningLed",
     "getVisitingLed": "getVisitingLed",
+    "distanceTo": "distanceTo",
+    "angleTo": "angleTo",
     default: "unknown"
 ]
 
@@ -54,8 +59,11 @@ program(global, processBlock, funcBlock, main) ::= <<
 #include \<iostream>
 #include \<vector>
 #include \<math.h>
+<if(global)><global><endif>
 using namespace std;
 
+
+class Pose;
 
 class Point {
   public:
@@ -69,10 +77,18 @@ class Point {
     }
 
     // Distance point/pose
-    float distance(float x, float y) {
+    float distanceTo(float x, float y) {
       return sqrt(pow(x - this->x, 2) + pow(y - this->y, 2));
     }
 
+    // Distance point/pose
+    float distanceTo(const Point& p) {
+      return sqrt(pow(x - p.x, 2) + pow(y - p.y, 2));
+    }
+
+    // Distance point/pose
+    float distanceTo(const Pose& p);
+    
     // overload the * operator to multiply a point by a scalar
     Point operator*(float scalar) {
       return Point(this->x * scalar, this->y * scalar);
@@ -151,13 +167,44 @@ class Pose{
       }
     }
 
+    Pose (Point p, int angle) {
+      this->x = p.x;
+      this->y = p.y;
+      angle = angle % 360;
+      if(angle >180){
+        this->angle= 360 - angle;
+      }
+      else if (angle \< -180){
+        this->angle = 360 + angle;
+      }
+      else{
+        this->angle = angle;
+      }
+    }
+
     // Distance point/pose
-    float distance(float x, float y) {
+    float distanceTo(float x, float y) {
       return sqrt(pow(x - this->x, 2) + pow(y - this->y, 2));
     }
+
+    // Distance point/pose
+    float distanceTo(const Point& p) {
+      return sqrt(pow(p.x - this->x, 2) + pow(p.y - this->y, 2));
+    }
+
+    // Distance point/pose
+    float distanceTo(const Pose& p) {
+      return sqrt(pow(p.x - this->x, 2) + pow(p.y - this->y, 2));
+    }
+
     // angle between pose and point in degrees
     float angleTo(float x, float y) {
       return atan2(y - this->y, x - this->x) * 180 / M_PI - this->angle;
+    }
+
+    // angle between pose and point in degrees
+    float angleTo(const Point& p) {
+      return atan2(p.y - this->y, p.x - this->x) * 180 / M_PI - this->angle;
     }
 
     // overload the + operator
@@ -224,7 +271,10 @@ std::vector\<Pose> concat_tuple (std::vector\<Pose> v1, std::vector\<Pose> v2) {
 }
 
 
-<if(global)><global><endif>
+float Point::distanceTo(const Pose& p) {
+  return sqrt(pow(x - p.x, 2) + pow(y - p.y, 2));
+}
+
 
 <if(funcBlock)><funcBlock><endif>
 

@@ -55,6 +55,8 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    private boolean isBool;
    private boolean isText;
    private boolean isTuple;
+   private boolean hasMap;
+   private String mapFileName;
    private int robotCounter;
 
    //data types
@@ -86,6 +88,8 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       isText = false;
       isTuple = false;      
       robotCounter = 0;
+      hasMap = false;
+      mapFileName = null;
 
       //functions that need an apply statement
       needApply = false;
@@ -150,8 +154,7 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
    @Override public ST visitProgram(MusParser.ProgramContext ctx) {
       ST programaTodo = allTemplates.getInstanceOf("program");
 
-      programaTodo.add("global", "");  //see later
-
+      
       //UDFs  (need to be first!!!)
       for(int i = 0; i < ctx.defFunction().size(); i++) {
          ST funcST = visit(ctx.defFunction(i));
@@ -187,6 +190,10 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       for (String func : userFunc.keySet()) {
          programaTodo.add("funcBlock", userFunc.get(func));
       }      
+
+      if(hasMap) {
+         programaTodo.add("global", "#include \"../Labirinto/Map.h>\"");
+      }
 
 
       //print target code into file
@@ -339,7 +346,6 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       return untilST;
    }
 
-
    @Override public ST visitBlockForEach(MusParser.BlockForEachContext ctx) {
       ST forST = allTemplates.getInstanceOf("blockForeach");
       forST.add("var", "var_" + ctx.ID().getText());
@@ -384,13 +390,43 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
 
             //register string template
             isInit = true;
-            ST initRobotST = new ST("init(<expr>);\n");
+            ST initRobotST = new ST("init(<expr>);\n<map>");
             initRobotST.add("expr", visit(ctx.expr()));
             robotFunc.put(varName, allTemplates.getInstanceOf("processBlock"));
             robotFunc.get(varName).add("process_name", "robot_process_" + varName);
             robotFunc.get(varName).add("stats", initRobotST);
 
+            if(hasMap) {
+               initRobotST.add("map", "Map m(\"file\");\n");
+            } else {
+               initRobotST.add("map", "");
+            }
             return new ST("");
+
+         } 
+         if (type.equals("POINT")) {
+
+            ST initPointST = new ST("Point <name>(<expr>)");
+            initPointST.add("name", "var_" + ctx.ID().getText());
+            initPointST.add("expr", visit(ctx.expr()));
+            
+            return initPointST;
+         } 
+         if (type.equals("POSE")) {
+
+            ST initPointST = new ST("Pose <name>(<expr>)");
+            initPointST.add("name", "var_" + ctx.ID().getText());
+            initPointST.add("expr", visit(ctx.expr()));
+
+            return initPointST;
+         } 
+         if (type.equals("TWIST")) {
+
+            ST initPointST = new ST("Twist <name>(<expr>)");
+            initPointST.add("name", "var_" + ctx.ID().getText());
+            initPointST.add("expr", visit(ctx.expr()));
+
+            return initPointST;
          }
          else {
             assign.add("type", type);
@@ -437,6 +473,10 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
          callST.add("ID2", id2);
          return callST;
 
+      } else if (varName.contains(":")) {
+
+         return new ST( ("var_" + ctx.ID().getText()).replace(":", ".") );
+
       }
       else {
 
@@ -465,9 +505,6 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
          return new ST("var_" + ctx.ID().getText());
 
       }
-
-
-
    }
 
    @Override public ST visitExprEnumWithValues(MusParser.ExprEnumWithValuesContext ctx) {
@@ -521,12 +558,7 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
          }
 
       }
-      else if (!isList && isTuple){
-         //TODO: fazer operacao entre point
-      }
-
       return new ST("");
-
    }
 
    @Override public ST visitNumericNegative(MusParser.NumericNegativeContext ctx) {
@@ -546,13 +578,21 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       return res;
    }
 
+   @Override public ST visitExprRobotMap(MusParser.ExprRobotMapContext ctx) {
+
+      ST callST = new ST("<arg1>, <arg2>");
+      callST.add("arg1", visit(ctx.expr(0)));
+      callST.add("arg2", visit(ctx.expr(1)));
+      mapFileName = visit(ctx.expr(2)).render();
+      hasMap = true;
+      return callST;
+   }
+
    @Override public ST visitExprTuple(MusParser.ExprTupleContext ctx) {
 
-
-      // TODO: fazer casos para os point, etc.
-      ST callST = new ST("<robotName>, <pos>");
-      callST.add("robotName", visit(ctx.expr(0)));
-      callST.add("pos", visit(ctx.expr(1)));
+      ST callST = new ST("<arg1>, <arg2>");
+      callST.add("arg1", visit(ctx.expr(0)));
+      callST.add("arg2", visit(ctx.expr(1)));
       return callST;
    }
 
@@ -704,10 +744,6 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
          return callST;
 
       }
-
-
-
-
 
       if (ctx.ID().size() == 1) {
          func = ctx.ID(0).getText();
