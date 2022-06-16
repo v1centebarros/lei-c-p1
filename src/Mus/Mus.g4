@@ -38,7 +38,7 @@ expr:
     | TEXT '->' NUM  ('|' TEXT '->' NUM)+                                                   #ExprEnumWithValues // só aceita literais
     | '(' expr ')'                                                                          #ExprParenthesis
     | 'not' expr                                                                            #BoolNegation
-    | expr op1=('>'|'>='|'<'|'<=') expr op2=('>'|'>='|'<'|'<=') expr  #BoolDoubleCompare // -10 < beaconAngle < 10    
+    | expr op1=('>'|'>='|'<'|'<=') expr op2=('>'|'>='|'<'|'<=') expr                        #BoolDoubleCompare // -10 < beaconAngle < 10    
     | expr op=('and'|'or'|'>'|'>='|'<'|'<='|'=='|'!=') expr                                 #BoolCompare
     | '-' expr                                                                              #NumericNegative
     | expr op=('*'|'/'|'%') expr                                                            #NumericMultDivMod
