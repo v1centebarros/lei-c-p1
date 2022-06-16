@@ -19,7 +19,7 @@
 |--|--|
 |```NUM x = 0;``` ```x = 20;```||
 |```x = 20;```|NameError: name 'x' is not defined|
-|```ENUM x = "red" | "blue";``` ```x = "yellow" | "pink";```|ImmutableTypeError: enum 'x' is already defined|
+|`ENUM x = "red" \| "blue";` `x = "yellow" \| "pink";`|ImmutableTypeError: enum 'x' is already defined|
 |```NUM x = 0;``` ```x = true;```|TypeError: cannot assign BOOL to NUM|
 
 ## Declaração de tuplos
@@ -40,10 +40,10 @@
 
 |Entrada|Erro|
 |--|--|
-|```ENUM colors = "red" | "blue" | "green";```||
-|```ENUM colors = "red" -> 1 | "blue" -> 2 | "green" -> 3;```||
-|```ENUM colors = "red" | "red" | "green";```|DuplicatedElementsError: enum has duplicated elements|
-|```ENUM colors = "red" -> 1 | "blue" -> 2 | "green" -> 2;```|DuplicatedValuesError: enum has duplicated values|
+|`ENUM colors = "red" \| "blue" | "green";`||
+|`ENUM colors = "red" -> 1 \| "blue" -> 2 \| "green" -> 3;`||
+|`ENUM colors = "red" \| "red" \| "green";`|DuplicatedElementsError: enum has duplicated elements|
+|`ENUM colors = "red" -> 1 \| "blue" -> 2 \| "green" -> 2;`|DuplicatedValuesError: enum has duplicated values|
 
 ## Declaração de listas
 |Entrada|Erro|
