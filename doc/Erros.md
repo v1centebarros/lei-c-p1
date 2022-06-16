@@ -35,6 +35,13 @@
 |```((1, 1), 90)```|POSE||
 |```("x", "y")```||TypeError: tuple must be ROBOT, POINT, TWIST or POSE|
 
+### Acesso ao robô
+|Entrada|Erro|
+|--|--|
+|```ROBOT x = ("x", 1);``` ```use x;``` ```rotate 80;```||
+|```rotate 80;```|MustUseRobotError: function 'rotate' must be called after a use statement|
+|```use ("x", 1);```|ArgError: use statement expects a ROBOT variable, not literal|
+
 ## Declaração de enumerados
 - Só aceitam literais e podem ou não conter valores associados. Por omissão, os valores são sequencialmente atribuídos, por ordem crescente, a partir do 1.
 

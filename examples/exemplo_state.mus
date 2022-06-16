@@ -1,14 +1,14 @@
 #state command does not work with TEXT functions, only TEXT literals and variables
 
-state "IDLE";            #states.add("RUNNING") && currentState = "IDLE
+state "IDLE";            #currentState = "IDLE
 
 #someCode
 
-state "MOVING";          #states.add("WALKING") && currentState = "WALKING"
+state "MOVING";          #currentState = "WALKING"
 
 #someCode
 
-state "ROTATING";        #states.add("ROTATING") && currentState = "ROTATING"
+state "ROTATING";        #currentState = "ROTATING"
 
 #someCode
 
