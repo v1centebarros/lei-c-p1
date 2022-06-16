@@ -338,12 +338,12 @@ A seguir encontram-se as keywords e a respetiva funcionalidade:
 Para executar um programa em Mus deve primeiramente situar-se na pasta do projeto e de seguida executar o script musRun.sh, passando como primeiro argumento a localização do ficheiro .mus com o código fonte e como segundo argumento o nome do Viewer.
 
 ```
-./musRun ./example_path Viewer_name
+./musRun.sh ./example_path Viewer_name
 ```
 
 Para mais informação executar
 
 ```
-./musRun
+./musRun.sh
 ```
 
