@@ -153,23 +153,23 @@ stop;
 /* definir o comportamento do robot mafarrico */
 use mafarrico;
 
-NUM farol = 1;
-NUM total_farois = beaconCount;  #obter o numero total de farois no mapa
+NUM farol_ = 1;
+NUM total_farois_ = beaconCount;  #obter o numero total de farois no mapa
 
 
-while farol <= total_farois 
+while farol_ <= total_farois_
 do
     print "✔ Going to beacon ";
-    print farol;
+    print farol_;
     print "\n";
     
-    # rodar em direcao ao farol
-    rotate 80 until -10 < beaconAngle farol < 10;
+    # rodar em direcao ao farol_
+    rotate 80 until -10 < beaconAngle farol_ < 10;
 
-    while groundType != farol 
+    while groundType != farol_ 
     do
         NUM linearPower = 80.0;
-        NUM angularPower = 1 * beaconAngle farol ;
+        NUM angularPower = 1 * beaconAngle farol_ ;
 
         NUM fdist = obstacleDistance 0;
         NUM ldist = obstacleDistance 1;
@@ -212,8 +212,8 @@ do
     stop;
     pickUp;
 
-    #proximo farol
-    farol = farol + 1;
+    #proximo farol_
+    farol_ = farol_ + 1;
 
 end
 
