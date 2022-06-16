@@ -33,7 +33,7 @@
 |```("x", 1)```|ROBOT||
 |```(1, 1)```|POINT ou TWIST||
 |```((1, 1), 90)```|POSE||
-|```("x", "y")```||TypeError: tuple must be ROBOT, POINT or POSE|
+|```("x", "y")```||TypeError: tuple must be ROBOT, POINT, TWIST or POSE|
 
 ## Declaração de enumerados
 - Só aceitam literais e podem ou não conter valores associados. Por omissão, os valores são sequencialmente atribuídos, por ordem crescente, a partir do 1.
