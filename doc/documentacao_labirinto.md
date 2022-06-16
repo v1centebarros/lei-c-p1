@@ -1,8 +1,23 @@
+# Table of Contents
+
+1. [Exemplo de Labirinto](#exemplo-de-labirinto)
+2. [Iniciar o labirinto](#iniciar-o-labirinto)
+3. [Definir elementos do labirinto](#definir-elementos-do-labirinto)
+   1. [Beacon](#beacon)
+   2. [Target](#target)
+   3. [Spot](#spot)
+4. [Definir o mapa](#definir-o-mapa)
+   1. [Código de definição de mapa](#codigo-de-definicao-de-mapa)
+5. [Definir posição de saída do Robot](#definir-posicao-de-saida-do-robot)
+6. [XML Resultante](#xml-resultante)
+7. [Resultado no simulador](#resultado-no-simulador)
+   8. [Lista de possíveis Erros](#lista-de-possiveis-erros)
+
 # Exemplo de Labirinto
 
 Para o utilizador definir um labirinto para ser usado no simulador recorre-se à linguagem secundária.
 
-O exemplo a seguir define um labirinto chamado **lab01** com 28 de comprimentos e 14 de altura e com vários **beacons** (Ponto de Passagem do rato), **targets** (checkpoint) e *spots* (combinação de **beacon**  e **target**).
+O exemplo a seguir define um labirinto chamado **lab01** com 28 de comprimento e 14 de altura e com vários **beacons** (Ponto de Passagem do rato), **targets** (checkpoint) e *spots* (combinação de **beacon**  e **target**).
 
 ## Iniciar o labirinto
 
@@ -47,7 +62,7 @@ SPOT = (26,7) RADIUS = 1.5;
 
 > **NOTA**: Foi decido que apesar de os parâmetros serem opcionais, estes têm de respeitar a ordem **HEIGHT** **RADIUS** para que não ocorra nenhum erro.
 
-### Definir o mapa
+## Definir o mapa
 
 O mapa de exemplo é constiuído por 14 colunas, então para definir uma linha usa-se a instrução **ROW** com o número da linha e uma string com o *layout* da linha. Na tabela a seguir estão identificados os símbolos que podem ser usados na definição de mapa.
 
@@ -108,9 +123,17 @@ LABIRINTO (NAME = "lab01" WIDTH = 28 HEIGHT = 14) {
 
 ## Definir posição de saída do Robot
 
-Para definir as posições possíveis de saída 
+Para definir as posições possíveis de saída dentro do Robot dentro do elemento **Grid** coloca-se as várias **Position**s de onde se pode sair, indicando as coordenadas da mesma e a sua direção, que por *default* é 180.
 
-### XML Resultante
+```
+GRID{
+        POS (3,6.5) DIRECTION = -180;
+        POS (3,7.8) DIRECTION = 180;
+        POS (3,9.0); #default DIRECTION é 180
+};
+```
+
+## XML Resultante
 
 ```xml
 <Lab Name="Lab 1" Width="28.0" Height="14.0">
@@ -124,9 +147,11 @@ Para definir as posições possíveis de saída
     <Target X="26.0" Y="7" Radius="1.5"/>
     <Beacon X="26.0" Y="1" Height="3"/>
     <Target X="26.0" Y="1" Radius="1"/>
+    <Beacon X="24.0" Y="5" Height="2"/>
+    <Target X="24.0" Y="5" Radius="1.5"/>
     <Beacon X="20.0" Y="7" Height="2"/>
     <Target X="20.0" Y="7" Radius="1"/>
-    <Row  Pos="12" Pattern="           |                             "  />
+    <Row  Pos="12" Pattern="           |              |              "  />
     <Row  Pos="11" Pattern="--+--+--+--+  +--+--+--+  +  +  +  +  +  "  />
     <Row  Pos="10" Pattern="              |        |  |              "  />
     <Row  Pos="9"  Pattern="  +--+--+--+--+  +--+--+  +--+  +  +  +  "  />
@@ -139,14 +164,20 @@ Para definir as posições possíveis de saída
     <Row  Pos="2"  Pattern="  |  |  |           |     |              "  />
     <Row  Pos="1"  Pattern="  +--+  +  +  +  +  +--+--+  +  +  +  +  "  />
     <Row  Pos="0"  Pattern="        |                                "  />
-</Lab>
+    </Lab>
 
 <Grid>
-    <Position X="3.0" Y="7.0" Dir="180"/>
-    <Position X="3.0" Y="8.3" Dir="180"/>
-    <Position X="3.0" Y="9.6" Dir="180"/>
+    <Position X="3.0" Y="6.5" Dir="-180"/>
+    <Position X="3.0" Y="7.8" Dir="180"/>
+    <Position X="3.0" Y="9.0" Dir="180"/>
 </Grid>
 ```
+
+## Resultado no simulador
+
+Ao carregar o labirinto para o simulador, o resultado obtido é o seguinte
+
+![](https://cdn.discordapp.com/attachments/987006149863817216/987013950593978388/labirinto.jpg)
 
 ## Lista de possíveis Erros
 
