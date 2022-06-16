@@ -67,6 +67,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    private boolean robotInUse = false;
    private List<String> currentEnum;
    private boolean isFunction = false;
+   private boolean isLiteralRobot = false;
    private String expectedOutput;
    private boolean newState = false;
    private List<String> states = List.of("PICKUP", "RUNNING", "TERMINATED");
@@ -392,6 +393,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
 
    @Override public String visitExprVar(MusParser.ExprVarContext ctx) {
       String key = ctx.ID().getText();
+      isLiteralRobot = false;
       if (table.containsVariable(key)) return table.getVariable(key);
       if (table.containsFunction(key)) {
          String[] info = table.getFunction(key);
@@ -485,8 +487,10 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    @Override public String visitExprTuple(MusParser.ExprTupleContext ctx) {
       String expr0 = visit(ctx.expr(0));
       String expr1 = visit(ctx.expr(1));
-      if (equalsType(expr0, "TEXT") && equalsType(expr1, "NUM")) 
+      if (equalsType(expr0, "TEXT") && equalsType(expr1, "NUM")) {
+         isLiteralRobot = true;
          return "ROBOT";
+      }
       if (equalsType(expr0, "NUM") && equalsType(expr1, "NUM"))
          return "POINT|TWIST";
       if (equalsType(expr0, "POINT|TWIST") && equalsType(expr1, "NUM"))
@@ -707,12 +711,19 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          return "ERROR";
       }
       if (func.equals("use")) {
+         if (isLiteralRobot) {
+            System.err.printf("[Line %d] ArgError: use statement expects a ROBOT variable, not literal\n", ctx.start.getLine(), expectedArgs.length);
+            newState = false;
+            System.exit(1);
+            return "ERROR";
+         }
          if (!tables.empty()) {
             table = tables.pop();
          }
          tables.push(table);
          table = new SymbolTable(table);
          robotInUse = true;
+         isLiteralRobot = false;
       }
       newState = false;
       return info[1];
