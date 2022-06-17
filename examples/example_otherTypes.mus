@@ -16,7 +16,7 @@ TWIST t1 = (linear, angular);
 
 # Criar uma pose
 NUM angle_ = 100;
-POSE pos= (p2, angle_);
+POSE pos = (p2, angle_);
 
 # Obter o angulo entre essa pose e outra pose ou ponto
 NUM angle_to_point = pos.angleTo p1;

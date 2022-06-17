@@ -1,9 +1,0 @@
-NUM x = 0;
-for x in [1, 1, 1] do #MUST FAIL
-    print x;
-end
-
-for y in [1, 1, 1] do
-    print x;
-    print y;
-end

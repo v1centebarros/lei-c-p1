@@ -1,0 +1,8 @@
+TEXT txt = "sou global";
+
+function xpto (
+   NUM x = 0;
+   print txt;
+)
+
+x = 1; #MUST FAIL because x was defined as a xpto's local variable

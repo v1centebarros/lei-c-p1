@@ -5,16 +5,16 @@ ROBOT r = ("robot", 1);
 
 use r;
 
-state "IDLE";            #currentState = "IDLE
-
+state "IDLE";
+#currentState = "IDLE
 #someCode
 
-state "MOVING";          #currentState = "WALKING"
-
+state "MOVING";
+#currentState = "WALKING"
 #someCode
 
-state "ROTATING";        #currentState = "ROTATING"
-
+state "ROTATING";
+#currentState = "ROTATING"
 #someCode
 
 with state
@@ -24,7 +24,8 @@ with state
         print "MOVING";
     "ROTATING" do
         print "ROTATING";
-    "RANDOM" do         #WARNING MESSAGE
+    
+    #WARNING MESSAGE -> because state "RANDOM" was not defined
+    "RANDOM" do         
         print "RANDOM";
-
 end

@@ -1,0 +1,11 @@
+NUM x = 0;
+
+#MUST FAIL because x is already defined
+for x in [1, 1, 1] do
+    print x;
+end
+
+for y in [1, 1, 1] do
+    #print x;
+    print y;
+end

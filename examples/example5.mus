@@ -90,3 +90,7 @@ stop;
 finish;
 
 print "Fim do percurso do mafarrico\n";
+
+use nody;
+
+print "ola";

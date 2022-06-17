@@ -71,7 +71,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    private boolean isLiteralRobot = false;
    private String expectedOutput;
    private boolean newState = false;
-   private List<String> states = new ArrayList<>(Arrays.asList("PICKUP", "RUNNING", "TERMINATED"));
+   private List<String> states = new ArrayList<>();
 
    private boolean equalsType(String input, String type) {
       return type.contains(input) || type.equals("ANY");
@@ -414,28 +414,31 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    }
 
    @Override public String visitExprEnumWithValues(MusParser.ExprEnumWithValuesContext ctx) {
-      currentEnum = new ArrayList<>();
-      String element;
-      for (int i = 0; i < ctx.TEXT().size(); i++) {
-         element = ctx.TEXT(i).getText();
-         if (currentEnum.contains(element)) {
-            System.err.println("DuplicatedElementsError: enum has duplicated elements");
-            System.exit(1);
-            return "ERROR";
-         }
-         currentEnum.add(element);
-      }
-      List<String> values = new ArrayList<>();
-      for (int i = 0; i < ctx.NUM().size(); i++) {
-         element = ctx.NUM(i).getText();
-         if (values.contains(element)) {
-            System.err.println("DuplicatedValuesError: enum has duplicated values");
-            System.exit(1);
-            return "ERROR";
-         }
-         values.add(element);
-      }
-      return "ENUM";
+      System.err.println("UnsupportedTypeError: developers decided to remove ENUM type, due to its uselessness");
+      System.exit(1);
+      return null;
+      // currentEnum = new ArrayList<>();
+      // String element;
+      // for (int i = 0; i < ctx.TEXT().size(); i++) {
+      //    element = ctx.TEXT(i).getText();
+      //    if (currentEnum.contains(element)) {
+      //       System.err.println("DuplicatedElementsError: enum has duplicated elements");
+      //       System.exit(1);
+      //       return "ERROR";
+      //    }
+      //    currentEnum.add(element);
+      // }
+      // List<String> values = new ArrayList<>();
+      // for (int i = 0; i < ctx.NUM().size(); i++) {
+      //    element = ctx.NUM(i).getText();
+      //    if (values.contains(element)) {
+      //       System.err.println("DuplicatedValuesError: enum has duplicated values");
+      //       System.exit(1);
+      //       return "ERROR";
+      //    }
+      //    values.add(element);
+      // }
+      // return "ENUM";
    }
 
    @Override public String visitBoolNegation(MusParser.BoolNegationContext ctx) {
@@ -584,18 +587,21 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    }
 
    @Override public String visitExprEnum(MusParser.ExprEnumContext ctx) {
-      currentEnum = new ArrayList<>();
-      String element;
-      for (int i = 0; i < ctx.TEXT().size(); i++) {
-         element = ctx.TEXT(i).getText();
-         if (currentEnum.contains(element)) {
-            System.err.println("DuplicatedElementsError: enum has duplicated elements");
-            System.exit(1);
-            return "ERROR";
-         }
-         currentEnum.add(element);
-      }
-      return "ENUM";
+      System.err.println("UnsupportedTypeError: developers decided to remove ENUM type, due to its uselessness");
+      System.exit(1);
+      return null;
+      // currentEnum = new ArrayList<>();
+      // String element;
+      // for (int i = 0; i < ctx.TEXT().size(); i++) {
+      //    element = ctx.TEXT(i).getText();
+      //    if (currentEnum.contains(element)) {
+      //       System.err.println("DuplicatedElementsError: enum has duplicated elements");
+      //       System.exit(1);
+      //       return "ERROR";
+      //    }
+      //    currentEnum.add(element);
+      // }
+      // return "ENUM";
    }
 
    @Override public String visitExprList(MusParser.ExprListContext ctx) {
@@ -688,7 +694,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
          return "ERROR";
       }
 
-      if (!robotInUse && mustHaveRobotFunctions.contains(func)) {
+      if (!isFunction && !robotInUse && mustHaveRobotFunctions.contains(func)) {
          System.err.printf("[Line %d] MustUseRobotError: function '%s' must be called after a use statement\n", ctx.start.getLine(), func);
          System.exit(1);
          return "ERROR";
