@@ -21,8 +21,8 @@ public class MusMain {
          if (parser.getNumberOfSyntaxErrors() == 0) {
             // print LISP-style tree:
             // System.out.println(tree.toStringTree(parser));
-            //SemanticAnalyser semanticAnalyser = new SemanticAnalyser();
-            //semanticAnalyser.visit(tree);
+            SemanticAnalyser semanticAnalyser = new SemanticAnalyser();
+            semanticAnalyser.visit(tree);
             CodeGenerator codeGenerator = new CodeGenerator();
             codeGenerator.visit(tree);
          }
