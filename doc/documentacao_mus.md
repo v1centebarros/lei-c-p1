@@ -356,3 +356,7 @@ Para mais informação executar
 ```bash
 ./musRun.sh
 ```
+
+## 17. Resultado de example6.mus
+
+![](https://cdn.discordapp.com/attachments/987006149863817216/987497321522679848/mus_final_1.gif)
