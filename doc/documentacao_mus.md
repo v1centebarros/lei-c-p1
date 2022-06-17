@@ -1,6 +1,4 @@
-# Mus Language Documentation
-
-</br>
+# Documentação Mus
 
 > **NOTA:**  A ordem pela qual os conteúdos são apresentados nesta documentação, difere na ordem na qual os requisitos são apresentados no guião do projeto, uma vez que a compreensão dos conteúdo torna-se mais fácil seguindo outra ordem.
 
@@ -18,17 +16,22 @@ No esquema abaixo segue-se uma breve visão do que irá ser abordado ao longo de
 9. Funções
 10. Listas
 11. Comentários
-12. Lista completa das keywords da linguagem
-13. Como executar um programa em Mus
+12. Twist
+13. Point
+14. Pose
+15. Lista completa das keywords da linguagem
+16. Como executar um programa em Mus
 
 ## 1. Tipo de dados da linguagem MUS
 
 A linguagem MUS permite a utilização de vários tipos de dados, nomeadamente:
 
-- numérico - NUM
-- textual - TEXT
-- boleano - BOOL
-- enumerado - ENUM
+| Tipo      | Keyword |
+|:---------:|:-------:|
+| Numérico  | NUM     |
+| Textual   | TEXT    |
+| Booleano  | BOOL    |
+| Enumerado | ENUM    |
 
 ## 2. Criação de robots
 
@@ -95,11 +98,13 @@ print "Hello, World!\n";
 
 A linguagem MUS permite os seguinte operadores aritméticos:
 
-- adição: <code>+</code>
-- subtração: <code>-</code>
-- multiplicação: <code>*</code>
-- divisão: <code>/</code>
-- resto da divisão: <code>%</code>
+| Operação         | Operador |
+|:----------------:|:--------:|
+| Adicção          | `+`      |
+| Subtração        | `-`      |
+| Multiplicação    | `*`      |
+| Divisão          | `/`      |
+| Resto da Divisão | `%`      |
 
 Exemplo de utilização:
 
@@ -129,8 +134,10 @@ Exemplo de utilização:
 ```
 BOOL a = True;
 BOOL b = False;
-BOOL c = a and b; #result: False
-BOOL d = 1 > 2; #result: False
+#result: False
+BOOL c = a and b;
+#result: False
+BOOL d = 1 > 2; 
 ```
 
 ## 7. Instrução de decisão
@@ -238,13 +245,17 @@ LIST_BOOL z = [True, False];      #lista com valores booleanos
 Podemos adicionar um novo elemento a uma lista da seguinte forma:
 
 ```
-LIST_NUM x = [1, 2, 3];       #lista de números
+#lista de números
+LIST_NUM x = [1, 2, 3];
 
-x.add 4;           #adicionar número 4 à lista
+#adicionar número 4 à lista
+x.add 4;           
 
-x = x + [5, 6];    #concatenar uma lista à inicial
+#concatenar uma lista à inicial
+x = x + [5, 6];    
 
-NUM num = x.getIndex 0;   #obter elemento no index 0
+#obter elemento no index 0
+NUM num = x.getIndex 0;   
 ```
 
 Podemos ainda iterar uma lista através da instrução <i>for...end</i>.
@@ -292,8 +303,6 @@ POINT p2 = (3,4);
 NUM dist = p1.distanceTo p2;
 ```
 
-
-
 ## 14. Pose
 
 O objecto **Pose**, constituído pelas componentes: *Point* e *angle*, suporta a soma e subtração com outro objeto **Pose**, multiplicação por um escalar, o cálculo da distância a outro **Point**/**Pose** e o cálculo do ângulo relativamente a outro **Point**/**Pose**.
@@ -310,8 +319,6 @@ NUM dist1 = pos.distanceTo p1;
 > **Nota**: É possível aceder aos atributos dos objetos **Twist**, **Point** e **Pose** através de ":"
 > 
 > Exemplo:  `NUM p1_x = p1:x;`
-
-
 
 ## 15. **Lista completa das keywords da linguagem**
 
@@ -356,3 +363,7 @@ Para mais informação executar
 ```bash
 ./musRun.sh
 ```
+
+## 17. Resultado de example6.mus
+
+![](https://cdn.discordapp.com/attachments/987006149863817216/987497321522679848/mus_final_1.gif)

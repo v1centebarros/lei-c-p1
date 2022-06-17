@@ -1,18 +1,3 @@
-# Table of Contents
-
-1. [Exemplo de Labirinto](#exemplo-de-labirinto)
-2. [Iniciar o labirinto](#iniciar-o-labirinto)
-3. [Definir elementos do labirinto](#definir-elementos-do-labirinto)
-   1. [Beacon](#beacon)
-   2. [Target](#target)
-   3. [Spot](#spot)
-4. [Definir o mapa](#definir-o-mapa)
-   1. [Código de definição de mapa](#codigo-de-definicao-de-mapa)
-5. [Definir posição de saída do Robot](#definir-posicao-de-saida-do-robot)
-6. [XML Resultante](#xml-resultante)
-7. [Resultado no simulador](#resultado-no-simulador)
-   8. [Lista de possíveis Erros](#lista-de-possiveis-erros)
-
 # Exemplo de Labirinto
 
 Para o utilizador definir um labirinto para ser usado no simulador recorre-se à linguagem secundária.
