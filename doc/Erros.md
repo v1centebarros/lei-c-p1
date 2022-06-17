@@ -39,6 +39,7 @@
 |Entrada|Erro|
 |--|--|
 |```ROBOT x = ("x", 1);``` ```use x;``` ```rotate 80;```||
+|```ROBOT x = ("x", 1, "map.mpp");``` ```use x;``` ```rotate 80;```||
 |```rotate 80;```|MustUseRobotError: function 'rotate' must be called after a use statement|
 |```use ("x", 1);```|ArgError: use statement expects a ROBOT variable, not literal|
 
