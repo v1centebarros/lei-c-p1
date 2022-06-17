@@ -192,7 +192,7 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       }      
 
       if(hasMap) {
-         programaTodo.add("global", "#include \"../Labirinto/Map.h>\"");
+         programaTodo.add("global", "#include \"Map.h\"");
       }
 
 
