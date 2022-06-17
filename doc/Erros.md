@@ -47,10 +47,10 @@
 
 |Entrada|Erro|
 |--|--|
-|`ENUM colors = "red" \| "blue" | "green";`||
-|`ENUM colors = "red" -> 1 \| "blue" -> 2 \| "green" -> 3;`||
-|`ENUM colors = "red" \| "red" \| "green";`|DuplicatedElementsError: enum has duplicated elements|
-|`ENUM colors = "red" -> 1 \| "blue" -> 2 \| "green" -> 2;`|DuplicatedValuesError: enum has duplicated values|
+|`ENUM colors = "red" \| "green" \| "blue";`||
+|`ENUM colors = "red" -> 1 \| "green" -> 2 \| "blue" -> 3;`||
+|`ENUM colors = "red" \| "red" \| "blue";`|DuplicatedElementsError: enum has duplicated elements|
+|`ENUM colors = "red" -> 1 \| "green" -> 2 \| "blue" -> 2;`|DuplicatedValuesError: enum has duplicated values|
 
 ## Declaração de listas
 |Entrada|Erro|
