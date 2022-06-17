@@ -14,6 +14,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    "LIST_NUM", "LIST_BOOL", "LIST_TEXT", "LIST_ENUM", "LIST_ROBOT", "LIST_POINT", "LIST_TWIST", "LIST_POSE",
    "if", "else", "while", "until", "for", "in", "do", "end",
    "not", "and", "or",
+   "state", "case",
    "true", "false", "True", "False",
    "function", "with");
 
@@ -63,14 +64,14 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
                         "beaconAngle", "startAngle", "northAngle", "groundType", "onTarget",
                         "beaconCount", "collides", "obstacleDistance", "startDistance", "stop",
                         "setVisitingLed", "setReturningLed", "getVisitingLed", "getReturningLed",
-                        "isWallInFront", "isWallOnRight", "isWallOnLeft");
+                        "isWallInFront", "isWallOnRight", "isWallOnLeft", "state");
    private boolean robotInUse = false;
    private List<String> currentEnum;
    private boolean isFunction = false;
    private boolean isLiteralRobot = false;
    private String expectedOutput;
    private boolean newState = false;
-   private List<String> states = List.of("PICKUP", "RUNNING", "TERMINATED");
+   private List<String> states = new ArrayList<>(Arrays.asList("PICKUP", "RUNNING", "TERMINATED"));
 
    private boolean equalsType(String input, String type) {
       return type.contains(input) || type.equals("ANY");
@@ -642,7 +643,7 @@ public class SemanticAnalyser extends MusBaseVisitor<String> {
    }
 
    @Override public String visitTextLiteral(MusParser.TextLiteralContext ctx) {
-      if (newState) states.add(ctx.TEXT().getText());
+      if (newState) states.add(ctx.TEXT().getText()); 
       return "TEXT";
    }
 
