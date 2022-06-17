@@ -1,5 +1,10 @@
 #state command does not work with TEXT functions, only TEXT literals and variables
 
+#a state is always associatated with a robot 
+ROBOT r = ("robot", 1);
+
+use r;
+
 state "IDLE";            #currentState = "IDLE
 
 #someCode
@@ -15,14 +20,11 @@ state "ROTATING";        #currentState = "ROTATING"
 with state
     "IDLE" do
         print "IDLE";
-        #break implícito (escrever em C++ )
     "MOVING" do
         print "MOVING";
-        #break implícito (escrever em C++ )
     "ROTATING" do
         print "ROTATING";
-        #break implícito (escrever em C++ )
     "RANDOM" do         #WARNING MESSAGE
         print "RANDOM";
-        #break implícito (escrever em C++ )
+
 end

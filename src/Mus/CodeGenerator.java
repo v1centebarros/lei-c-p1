@@ -358,7 +358,27 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
       return forST;
    }
    
-   
+   @Override public ST visitBlockWithState(MusParser.BlockWithStateContext ctx) {
+
+      ST caseST = new ST("<cases>");
+      for(int i = 0; i < ctx.blockCase().size(); i++) {
+         caseST.add("cases", visit(ctx.blockCase(i)));
+      }
+      return caseST;
+   }
+
+   @Override public ST visitBlockCase(MusParser.BlockCaseContext ctx) {
+
+      ST ifST = allTemplates.getInstanceOf("blockIf");
+      ifST.add("expr", "keyword_var_state == " + visit(ctx.expr()).render());
+      for(int i = 0; i < ctx.stat().size(); i++) {
+         ifST.add("stat", visit(ctx.stat(i)));
+      }
+
+      return ifST;
+   }
+
+
    @Override public ST visitAssignment(MusParser.AssignmentContext ctx) {
 
       ST assign = allTemplates.getInstanceOf("assign");
@@ -390,11 +410,13 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
 
             //register string template
             isInit = true;
-            ST initRobotST = new ST("init(<expr>);\n<map>");
+            ST initRobotST = new ST("init(<expr>);\n<state><map>");
             initRobotST.add("expr", visit(ctx.expr()));
             robotFunc.put(varName, allTemplates.getInstanceOf("processBlock"));
             robotFunc.get(varName).add("process_name", "robot_process_" + varName);
             robotFunc.get(varName).add("stats", initRobotST);
+
+            initRobotST.add("state", "std::string keyword_var_state = \"\";\n");
 
             if(hasMap) {
                initRobotST.add("map", "Map m(\"file\");\n");
@@ -760,6 +782,13 @@ public class CodeGenerator extends MusBaseVisitor<ST> {
             } else {
                return new ST("return");
             }
+         }
+
+         if (func.equals("state")) {
+            ST stateST = new ST("<var_state> = <string>");
+            stateST.add("var_state", "keyword_var_state");  
+            stateST.add("string", visit(ctx.expr(0)).render());  
+            return stateST;    
          }
 
          // check if is UDF or external functions

@@ -42,6 +42,7 @@
 - Use esta secção para expôr as contribuições individuais dos vários elementos do grupo e que
   justificam as participações individuais globais apresentadas acima.
 
-Geração de código com string template: Pedro, Ema..
+Geração de código com string template: Pedro, Ema..  
 Análise semântica: Leo, Rafa   
-Segunda linguagem: Mariana, ..nuel
+Segunda linguagem: Mariana, ..nuel  
+Documentação: Vicente
