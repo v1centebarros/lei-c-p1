@@ -27,7 +27,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
 # Should TRUE and FALSE exist??
 add_compile_options(-DTRUE=1 -DFALSE=0)
 add_compile_options(-Wall)
-add_compile_options(-pthread -std=gnu++17 -I/usr/local/include/antlr4-runtime -I/home/pedro/Documents/UNI/C/Projeto/comp2022-mus-p3g3/src/Labirinto)
+add_compile_options(-pthread -std=gnu++17 -I/usr/local/include/antlr4-runtime)
 
 add_subdirectory(tools/src/simulator)
 add_subdirectory(tools/src/Viewer)
