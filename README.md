@@ -3,14 +3,14 @@
 
 ## Constituição dos grupos e participação individual global
 
-| NMec | Nome | email | Participação |
+| NMec | Nome | Email | Participação (%) |
 |:--:|:---|:---|:---:|
-| 102565 | EMANUEL GASPAR MARQUES | emanuel.gmarques@ua.pt | $$ \frac{100}{\:6}\% $$ |
-| 102536 | LEONARDO ALMEIDA | leonardoalmeida7@ua.pt | $$ \frac{100}{\:6}\% $$ |
-| 103823 | MARIANA ALEXANDRA FRANCO ANDRADE | marianaandrade@ua.pt | $$ \frac{100}{\:6}\% $$ |
-| 102778 | PEDRO HENRIQUE FIGUEIREDO RODRIGUES | pedrofrodrigues4@ua.pt | $$ \frac{100}{\:6}\% $$ |
-| 102534 | RAFAEL FERNANDES GONÇALVES | rfg@ua.pt | $$ \frac{100}{\:6}\% $$ |
-| 97787  | VICENTE MANUEL ANDRADE BARROS | vmabarros@ua.pt | $$ \frac{100}{\:6}\% $$ |
+| 102565 | EMANUEL GASPAR MARQUES | emanuel.gmarques@ua.pt | $$ \frac{100}{6}\ $$|
+| 102536 | LEONARDO ALMEIDA | leonardoalmeida7@ua.pt | $$ \frac{100}{6}\ $$ |
+| 103823 | MARIANA ALEXANDRA FRANCO ANDRADE | marianaandrade@ua.pt | $$ \frac{100}{6}\% $$ |
+| 102778 | PEDRO HENRIQUE FIGUEIREDO RODRIGUES | pedrofrodrigues4@ua.pt | $$ \frac{100}{6}\% $$ |
+| 102534 | RAFAEL FERNANDES GONÇALVES | rfg@ua.pt | $$ \frac{100}{6}\% $$ |
+| 97787  | VICENTE MANUEL ANDRADE BARROS | vmabarros@ua.pt | $$ \frac{100}{6}\% $$ |
 
 ## Organização do repositório
 
