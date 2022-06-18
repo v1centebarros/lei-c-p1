@@ -33,29 +33,29 @@
 
 - [X] Suporta nativamente o conceito de robô (robot)
 
-- [X] Permite a definição e uso de variáveis.
+- [X] Permite a definição e uso de variáveis
 
-- [X] Possui um mecanismo de leitura, que permita a interação de um utilizador com o  programa.
+- [X] Possui um mecanismo de leitura, que permita a interação de um utilizador com o  programa
 
-- [X] Possui um mecanismo de escrita, que permita a escrita no terminal.
+- [X] Possui um mecanismo de escrita, que permita a escrita no terminal
 
-- [X] Contém uma linguagem secundária de leitura de mapas (por exemplo, labirintos), com as limitações comunicadas ao professor.
+- [X] Contém uma linguagem secundária de leitura de mapas (por exemplo, labirintos), com as limitações comunicadas ao professor
 
-- [X] Permite a definição de expressões booleanas (predicados) contendo, pelo menos, relações  de ordem e operadores booleanos (conjunção disjunção, etc.).
+- [X] Permite a definição de expressões booleanas (predicados) contendo, pelo menos, relações  de ordem e operadores booleanos (conjunção disjunção, etc.)
 
-- [X] Inclui a instrução condicional (operando sobre expressões booleanas).
+- [X] Inclui a instrução condicional (operando sobre expressões booleanas)
 
-- [X] Inclui a instrução repetitiva (operando sobre expressões booleanas).
+- [X] Inclui a instrução repetitiva (operando sobre expressões booleanas)
 
-- [X] Suporta nativamente, em 2D, os conceitos de ’ponto’ (point), ’pose’ (pose) e velocidade’ (twist), assim como algumas operações sobre estes tipos de dados.
+- [X] Suporta nativamente, em 2D, os conceitos de ’ponto’ (point), ’pose’ (pose) e velocidade’ (twist), assim como algumas operações sobre estes tipos de dados
 
-- [X] Fazer com que a linguagem contenha um sistema de tipos: texto, número, booleano, robô, ponto, pose e velocidade.
+- [X] Fazer com que a linguagem contenha um sistema de tipos: texto, número, booleano, robô, ponto, pose e velocidade
 
-- [X] Implementa funções e variáveis locais às mesmas.
+- [X] Implementa funções e variáveis locais às mesmas
 
-- [X] Permite a definição de listas e a sua manipulação.
+- [X] Permite a definição de listas e a sua manipulação
 
-- [X] Possui um mecanismo de gravação em ficheiros dos mapas lidos da linguagem secundária no formato aceite pelo ambiente de simulação.
+- [X] Possui um mecanismo de gravação em ficheiros dos mapas lidos da linguagem secundária no formato aceite pelo ambiente de simulação
 
 ## Contribuições
 
