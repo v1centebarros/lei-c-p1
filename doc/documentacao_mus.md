@@ -233,11 +233,14 @@ Uma outra forma de armazenar dados na linguagem MUS, desta vez todos na mesma es
 Uma lista em MUS pode ser declarada da seguinte forma:
 
 ```
-LIST_NUM x = [1, 2, 3];           #lista de números
+#lista de números
+LIST_NUM x = [1, 2, 3];
 
-LIST_TEXT y = ["a", "b", "c"];    #lista de texto
+#lista de texto
+LIST_TEXT y = ["a", "b", "c"];
 
-LIST_BOOL z = [True, False];      #lista com valores booleanos
+#lista com valores booleanos
+LIST_BOOL z = [True, False];
 ```
 
 ### Operações suportadas pelas listas
@@ -261,7 +264,8 @@ NUM num = x.getIndex 0;
 Podemos ainda iterar uma lista através da instrução <i>for...end</i>.
 
 ```
-LIST_NUM x = [1, 2, 3, 4, 5, 6];       #lista de números
+#lista de números
+LIST_NUM x = [1, 2, 3, 4, 5, 6];
 
 
 #iterar a lista e fazer print de cada elemento
