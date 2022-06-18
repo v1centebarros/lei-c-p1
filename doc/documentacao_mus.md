@@ -1,6 +1,6 @@
 # Documentação Mus
 
-> **NOTA:**  A ordem pela qual os conteúdos são apresentados nesta documentação, difere na ordem na qual os requisitos são apresentados no guião do projeto, uma vez que a compreensão dos conteúdo torna-se mais fácil seguindo outra ordem.
+> **NOTA:**  A ordem pela qual os conteúdos são apresentados nesta documentação, difere na ordem na qual os requisitos são apresentados no guião do projeto, uma vez que a compreensão dos conteúdos torna-se mais fácil seguindo outra ordem.
 
 Nas seguintes secções irão ser apresentados e explicados exemplos simples e concretos da utilização da linguagem Mus (extensão .mus).
 No esquema abaixo segue-se uma breve visão do que irá ser abordado ao longo desta breve documentação.
@@ -35,7 +35,7 @@ A linguagem MUS permite a utilização de vários tipos de dados, nomeadamente:
 
 ## 2. Criação de robots
 
-Uma das entidades mais importantes, senão a mais importante, é a entidade ROBOT. Para criar uma entidade do tipo <i>ROBOT</i> devemo indicar o seu nome e também a sua posição inical no mapa (começando em 1).
+Uma das entidades mais importantes, senão a mais importante, é a entidade ROBOT. Para criar uma entidade do tipo <i>ROBOT</i> devemos indicar o seu nome e também a sua posição inicial no mapa (começando em 1).
 Ou seja,
 
 ```
